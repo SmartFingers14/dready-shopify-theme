@@ -1,0 +1,25 @@
+{
+  "type": "footer",
+  "name": "Footer group",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "shop": { "type": "menu", "settings": { "heading": "Shop", "menu": "main-menu" } },
+        "dready": { "type": "menu", "settings": { "heading": "Dready", "menu": "footer" } },
+        "help": { "type": "text", "settings": { "heading": "Get help", "text": "<p>Contact us<br>Wholesale enquiries<br>Licensing enquiries<br>Shipping &amp; returns</p>" } }
+      },
+      "block_order": ["shop", "dready", "help"],
+      "settings": {
+        "tagline": "Born in Birmingham, 1983. Music, art & street culture.",
+        "show_newsletter": true,
+        "newsletter_heading": "Join the community",
+        "show_country": true,
+        "show_locale": true,
+        "show_payment": true,
+        "legal_text": "All rights reserved."
+      }
+    }
+  },
+  "order": ["footer"]
+}

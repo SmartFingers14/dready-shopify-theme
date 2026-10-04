@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Concatenates .dev-src partials into the shipped theme assets.
+# Run after editing anything in .dev-src/css or .dev-src/js:
+#   bash .dev-src/build.sh
+set -euo pipefail
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT"
+
+cat .dev-src/css/01-tokens.css \
+    .dev-src/css/02-type-layout.css \
+    .dev-src/css/03-forms-media.css \
+    .dev-src/css/04-motion-scroller.css \
+    .dev-src/css/05-misc.css > assets/base.css
+
+cat .dev-src/css/c01-announcement.css \
+    .dev-src/css/c02-nav.css \
+    .dev-src/css/c03-search-cart.css \
+    .dev-src/css/c04-product-card.css \
+    .dev-src/css/c05-hero-tiers.css \
+    .dev-src/css/c06-look-dbay.css \
+    .dev-src/css/c07-culture.css \
+    .dev-src/css/c08-community-footer.css \
+    .dev-src/css/c09-pages.css \
+    .dev-src/css/c10-blog-account.css > assets/components.css
+
+cat .dev-src/js/01-core.js \
+    .dev-src/js/02-header-motion.js \
+    .dev-src/js/03-sliders.js \
+    .dev-src/js/04-interactions.js \
+    .dev-src/js/05-cart.js \
+    .dev-src/js/06-variants.js > assets/global.js
+
+node --check assets/global.js
+python3 - <<'PY'
+for f in ('assets/base.css', 'assets/components.css'):
+    s = open(f).read()
+    assert s.count('{') == s.count('}'), f'brace mismatch in {f}'
+    print(f'OK {f}: {s.count(chr(10))} lines')
+PY
+echo "OK assets/global.js"

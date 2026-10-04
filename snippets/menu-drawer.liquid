@@ -1,0 +1,70 @@
+{%- comment -%}
+  Mobile menu drawer — nested sliding panels (Daily Paper mobile pattern).
+  Params: menu (linklist), section (header section)
+{%- endcomment -%}
+<div id="MenuDrawer" class="drawer drawer--left menu-drawer" role="dialog" aria-modal="true" aria-label="{{ 'sections.header.menu' | t }}" aria-hidden="true" data-mobile-menu>
+  <div class="drawer__header">
+    <span class="label">{{ 'sections.header.menu' | t }}</span>
+    <button type="button" class="drawer__close" data-drawer-close aria-label="{{ 'accessibility.close_menu' | t }}">{% render 'icon', name: 'close', size: 22 %}</button>
+  </div>
+
+  <div class="drawer__body menu-drawer__body">
+    <ul class="menu-drawer__list">
+      {%- for link in menu.links -%}
+        <li class="menu-drawer__item">
+          {%- if link.links.size > 0 -%}
+            <button type="button" class="menu-drawer__link" data-submenu-open="{{ forloop.index }}" aria-expanded="false">
+              <span>{{ link.title }}</span>{% render 'icon', name: 'chevron-right', size: 18 %}
+            </button>
+          {%- else -%}
+            <a href="{{ link.url }}" class="menu-drawer__link"><span>{{ link.title }}</span></a>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    {%- for link in menu.links -%}
+      {%- if link.links.size > 0 -%}
+        <div class="menu-drawer__panel" data-submenu="{{ forloop.index }}" hidden>
+          <button type="button" class="menu-drawer__back" data-submenu-back>{% render 'icon', name: 'arrow-left', size: 18 %}<span>{{ link.title }}</span></button>
+          <ul class="menu-drawer__list">
+            <li class="menu-drawer__item"><a href="{{ link.url }}" class="menu-drawer__link menu-drawer__link--all"><span>{{ 'sections.header.shop_all' | t }} {{ link.title }}</span></a></li>
+            {%- for child in link.links -%}
+              <li class="menu-drawer__item">
+                {%- if child.links.size > 0 -%}
+                  <details class="menu-drawer__details">
+                    <summary class="menu-drawer__link"><span>{{ child.title }}</span>{% render 'icon', name: 'plus', size: 16 %}</summary>
+                    <ul class="menu-drawer__sublist">
+                      <li><a href="{{ child.url }}" class="menu-drawer__sublink">{{ 'sections.header.shop_all' | t }}</a></li>
+                      {%- for grandchild in child.links -%}
+                        <li><a href="{{ grandchild.url }}" class="menu-drawer__sublink">{{ grandchild.title }}</a></li>
+                      {%- endfor -%}
+                    </ul>
+                  </details>
+                {%- else -%}
+                  <a href="{{ child.url }}" class="menu-drawer__link"><span>{{ child.title }}</span></a>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="drawer__footer menu-drawer__footer">
+    {%- if section.settings.secondary_menu != blank -%}
+      <ul class="menu-drawer__secondary">
+        {%- for link in section.settings.secondary_menu.links -%}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    <div class="menu-drawer__meta">
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}" class="menu-drawer__account">{% render 'icon', name: 'user', size: 18 %}<span>{% if customer %}{{ 'sections.header.account' | t }}{% else %}{{ 'sections.header.log_in' | t }}{% endif %}</span></a>
+      {%- endif -%}
+      {% render 'social-links', size: 18 %}
+    </div>
+  </div>
+</div>

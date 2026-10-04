@@ -1,0 +1,132 @@
+/* =====================================================================
+   DREADY ORIGINAL — Base styles & design tokens
+   Style system: Minimalism & Swiss (UI/UX Pro Max). Monochrome chrome,
+   colour from photography, single Rasta-gold accent, Space Grotesk.
+   ===================================================================== */
+
+:root {
+  /* Colour — light base (Daily Paper) */
+  --color-bg: #fafafa;
+  --color-fg: #09090b;
+  --color-surface: #ffffff;
+  --color-surface-2: #f0f0f0;
+  --color-muted: #6b6b70;
+  --color-border: #e4e4e7;
+  --color-border-strong: #09090b;
+
+  /* Dark bands (Music / Events / Culture) */
+  --color-dark-bg: #000000;
+  --color-dark-fg: #fafafa;
+  --color-dark-surface: #0c0c0c;
+  --color-dark-muted: #9a9aa3;
+  --color-dark-border: #3f3f46;
+
+  /* Brand accent — sampled from the Dready Head logo */
+  --color-accent: #f8c010;
+  --color-on-accent: #09090b;
+  --color-brand-green: #109048;
+  --color-brand-red: #e83028;
+
+  /* Semantic */
+  --color-sale: #e83028;
+  --color-success: #109048;
+  --color-error: #dc2626;
+
+  /* Typography */
+  --font-body: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-display: var(--font-body);
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.5rem;
+  --text-xl: 2rem;
+  --text-2xl: clamp(2.5rem, 5vw, 4rem);
+  --text-hero: clamp(3rem, 9vw, 8rem);
+  --leading: 1.5;
+  --tracking-caps: 0.08em;
+  --tracking-tight: -0.03em;
+
+  /* Spacing — standard density */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+  --space-10: 4rem;
+  --space-12: 6rem;
+  --section-pad: clamp(3rem, 7vw, 6rem);
+  --gutter: clamp(1rem, 3vw, 2.5rem);
+
+  /* Layout */
+  --page-max: 1600px;
+  --header-height: 64px;
+  --announcement-height: 36px;
+  --radius: 0px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 150ms;
+  --dur: 250ms;
+  --dur-slow: 400ms;
+
+  /* Z-index scale */
+  --z-header: 100;
+  --z-drawer: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+}
+
+/* ---------- Reset ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img, picture, video, svg { display: block; max-width: 100%; }
+img { height: auto; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { background: none; border: 0; padding: 0; cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+h1, h2, h3, h4, h5, h6, p { margin: 0; }
+summary { list-style: none; cursor: pointer; }
+summary::-webkit-details-marker { display: none; }
+[hidden] { display: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- Focus (keyboard only, visible, 3:1) ---------- */
+:focus { outline: none; }
+:focus-visible { outline: 2px solid var(--color-fg); outline-offset: 3px; }
+.section--dark :focus-visible { outline-color: var(--color-dark-fg); }
+
+/* ---------- A11y utilities ---------- */
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: absolute; top: -100%; left: var(--space-4); z-index: 1000;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-fg); color: var(--color-bg);
+  font-size: var(--text-sm); text-transform: uppercase; letter-spacing: var(--tracking-caps);
+}
+.skip-link:focus { top: var(--space-4); }

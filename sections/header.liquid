@@ -1,0 +1,102 @@
+{%- comment -%}
+  Header — Daily Paper pattern: slim bar, logo, menu, search, account, basket.
+  Desktop: inline nav with image-rich mega menus. Mobile: hamburger → drawer.
+  Transparent over the hero on the homepage, solid on scroll.
+{%- endcomment -%}
+{%- liquid
+  assign menu = section.settings.menu
+  assign transparent = false
+  if section.settings.transparent_home and template.name == 'index'
+    assign transparent = true
+  endif
+  assign logo_h = settings.logo_height
+-%}
+<header class="header{% if transparent %} header--transparent{% endif %}{% if section.settings.sticky %} header--sticky{% endif %}" data-header {% if section.settings.hide_on_scroll %}data-hide-on-scroll{% endif %} style="--logo-h: {{ logo_h }}px;">
+  <div class="header__inner page-width">
+
+    <div class="header__left">
+      <button type="button" class="header__icon header__burger" data-drawer-open="MenuDrawer" aria-controls="MenuDrawer" aria-expanded="false" aria-label="{{ 'accessibility.open_menu' | t }}">
+        {% render 'icon', name: 'menu', size: 22 %}
+      </button>
+
+      <nav class="header__nav" aria-label="{{ 'sections.header.menu' | t }}">
+        <ul class="header__menu">
+          {%- for link in menu.links -%}
+            {%- if link.links.size > 0 -%}
+              <li class="header__menu-item" data-mega-item>
+                <a href="{{ link.url }}" class="nav-link header__menu-link{% if link.active or link.child_active %} is-active{% endif %}" data-mega-trigger aria-expanded="false" aria-haspopup="true">{{ link.title }}</a>
+                {% render 'mega-menu', link: link, section: section %}
+              </li>
+            {%- else -%}
+              <li class="header__menu-item">
+                <a href="{{ link.url }}" class="nav-link header__menu-link{% if link.active %} is-active{% endif %}">{{ link.title }}</a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </div>
+
+    <a href="{{ routes.root_url }}" class="header__logo" aria-label="{{ shop.name | escape }}">
+      {%- if settings.logo != blank -%}
+        {%- assign shop_alt = shop.name | escape -%}
+        {{ settings.logo | image_url: width: 400 | image_tag: loading: 'eager', fetchpriority: 'high', height: logo_h, alt: shop_alt, class: 'header__logo-img' }}
+      {%- else -%}
+        <img src="{{ 'dready-logo.png' | asset_url }}" alt="{{ shop.name | escape }}" class="header__logo-img" height="{{ logo_h }}" width="{{ logo_h }}" loading="eager">
+      {%- endif -%}
+      {%- if section.settings.wordmark != blank -%}
+        <span class="header__wordmark">{{ section.settings.wordmark }}</span>
+      {%- endif -%}
+    </a>
+
+    <div class="header__right">
+      <button type="button" class="header__icon" data-drawer-open="SearchDrawer" aria-controls="SearchDrawer" aria-expanded="false" aria-label="{{ 'accessibility.open_search' | t }}">
+        {% render 'icon', name: 'search', size: 20 %}
+        <span class="header__icon-text label">{{ 'sections.header.search' | t }}</span>
+      </button>
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{{ routes.account_url }}" class="header__icon header__icon--account" aria-label="{{ 'sections.header.account' | t }}">
+          {% render 'icon', name: 'user', size: 20 %}
+        </a>
+      {%- endif -%}
+      <button type="button" class="header__icon header__cart" data-drawer-open="CartDrawer" aria-controls="CartDrawer" aria-expanded="false" aria-label="{{ 'accessibility.open_cart' | t }}">
+        <span class="header__icon-text label">{{ 'sections.header.cart' | t }}</span>
+        <span class="header__cart-count{% if cart.item_count == 0 %} is-empty{% endif %}" data-cart-count>{{ cart.item_count }}</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+{% render 'menu-drawer', menu: menu, section: section %}
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "shopify-section-header",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Main menu", "default": "main-menu" },
+    { "type": "text", "id": "wordmark", "label": "Wordmark next to logo", "default": "DREADY", "info": "Leave blank to show the logo only." },
+    { "type": "checkbox", "id": "sticky", "label": "Sticky header", "default": true },
+    { "type": "checkbox", "id": "hide_on_scroll", "label": "Hide when scrolling down", "default": false },
+    { "type": "checkbox", "id": "transparent_home", "label": "Transparent over homepage hero", "default": true },
+    { "type": "header", "content": "Mobile menu" },
+    { "type": "link_list", "id": "secondary_menu", "label": "Secondary links (mobile drawer footer)", "info": "e.g. Stores, FAQ, Contact" }
+  ],
+  "blocks": [
+    {
+      "type": "mega_promo",
+      "name": "Mega menu images",
+      "settings": [
+        { "type": "text", "id": "menu_item", "label": "Menu item title", "info": "Must match a top-level menu item exactly, e.g. “Shop”." },
+        { "type": "image_picker", "id": "image_1", "label": "Image 1" },
+        { "type": "text", "id": "caption_1", "label": "Caption 1", "default": "New arrivals" },
+        { "type": "url", "id": "url_1", "label": "Link 1" },
+        { "type": "image_picker", "id": "image_2", "label": "Image 2" },
+        { "type": "text", "id": "caption_2", "label": "Caption 2", "default": "Premium" },
+        { "type": "url", "id": "url_2", "label": "Link 2" }
+      ]
+    }
+  ],
+  "max_blocks": 6
+}
+{% endschema %}

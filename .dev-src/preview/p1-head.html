@@ -1,0 +1,53 @@
+<!doctype html>
+<html class="js" lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dready Original — preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="base.css"><link rel="stylesheet" href="components.css">
+<script>window.theme={routes:{cart:'#',cartAdd:'#',cartChange:'#',predictiveSearch:'#'},strings:{addToCart:'Add to basket',soldOut:'Sold out',unavailable:'Unavailable',addedToCart:'Added',cartError:'Error'},moneyFormat:'£{{amount}}'};</script>
+<script src="global.js" defer></script>
+</head>
+<body class="template-index">
+<a class="skip-link" href="#MainContent">Skip to content</a>
+
+<div class="announcement announcement--dark" data-marquee style="--marquee-speed:35s">
+  <div class="announcement__inner">
+    <div class="announcement__track" aria-hidden="true">
+      <ul class="announcement__list"><li class="announcement__item"><span>EU customers: we pay all taxes on orders under €150</span><span class="announcement__sep">•</span></li><li class="announcement__item"><span>Embroidered pieces are made to order — allow 5 working days</span><span class="announcement__sep">•</span></li><li class="announcement__item"><span>Born in Birmingham, 1983 — music, art &amp; street culture</span><span class="announcement__sep">•</span></li></ul>
+      <ul class="announcement__list"><li class="announcement__item"><span>EU customers: we pay all taxes on orders under €150</span><span class="announcement__sep">•</span></li><li class="announcement__item"><span>Embroidered pieces are made to order — allow 5 working days</span><span class="announcement__sep">•</span></li><li class="announcement__item"><span>Born in Birmingham, 1983 — music, art &amp; street culture</span><span class="announcement__sep">•</span></li></ul>
+    </div>
+    <button type="button" class="announcement__toggle" data-marquee-toggle data-pause-label="Pause" data-play-label="Play" aria-pressed="false"><span class="announcement__toggle-pause">{{icon12:pause}}</span><span class="announcement__toggle-play">{{icon12:play}}</span></button>
+  </div>
+</div>
+
+<div class="shopify-section-header">
+<header class="header header--transparent header--sticky" data-header style="--logo-h:44px">
+  <div class="header__inner page-width">
+    <div class="header__left">
+      <button class="header__icon header__burger" aria-label="Open menu">{{icon:menu}}</button>
+      <nav class="header__nav"><ul class="header__menu">
+        <li class="header__menu-item" data-mega-item><a href="#" class="nav-link header__menu-link" data-mega-trigger aria-expanded="false">Shop</a>
+          <div class="mega-menu"><div class="mega-menu__inner page-width"><div class="mega-menu__cols">
+            <div class="mega-menu__col"><a class="mega-menu__title" href="#">Dready</a><ul class="mega-menu__list"><li><a class="mega-menu__link" href="#">Tees</a></li><li><a class="mega-menu__link" href="#">Sweatshirts</a></li><li><a class="mega-menu__link" href="#">Hoods</a></li><li><a class="mega-menu__link" href="#">Embroideries</a></li><li><a class="mega-menu__link" href="#">Shorts &amp; Joggers</a></li><li><a class="mega-menu__link" href="#">Hats</a></li></ul></div>
+            <div class="mega-menu__col"><a class="mega-menu__title" href="#">Sista</a><ul class="mega-menu__list"><li><a class="mega-menu__link" href="#">Tees</a></li><li><a class="mega-menu__link" href="#">Crop Tops</a></li><li><a class="mega-menu__link" href="#">Sweats</a></li><li><a class="mega-menu__link" href="#">Joggers</a></li></ul></div>
+            <div class="mega-menu__col"><a class="mega-menu__title" href="#">Kids</a><ul class="mega-menu__list"><li><a class="mega-menu__link" href="#">Junior Dready</a></li></ul></div>
+          </div><div class="mega-menu__promos"><a href="#" class="mega-menu__promo"><div class="media media--portrait"><img src="p-wheel-it-up-sweat.png" alt=""></div><span class="mega-menu__caption label">New arrivals {{icon14:arrow-right}}</span></a><a href="#" class="mega-menu__promo"><div class="media media--portrait"><img src="p-classic-tee.jpg" alt=""></div><span class="mega-menu__caption label">Premium {{icon14:arrow-right}}</span></a></div></div></div>
+        </li>
+        <li class="header__menu-item"><a href="#" class="nav-link header__menu-link">Premium</a></li>
+        <li class="header__menu-item"><a href="#" class="nav-link header__menu-link">DBAY</a></li>
+        <li class="header__menu-item"><a href="#" class="nav-link header__menu-link">Culture</a></li>
+      </ul></nav>
+    </div>
+    <a href="#" class="header__logo"><img src="dready-logo.png" alt="Dready Original" class="header__logo-img" height="44"><span class="header__wordmark">Dready</span></a>
+    <div class="header__right">
+      <button class="header__icon">{{icon:search}}<span class="header__icon-text label">Search</span></button>
+      <a href="#" class="header__icon header__icon--account">{{icon:user}}</a>
+      <button class="header__icon header__cart"><span class="header__icon-text label">Basket</span><span class="header__cart-count">2</span></button>
+    </div>
+  </div>
+</header>
+</div>
+
+<main id="MainContent">

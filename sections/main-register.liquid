@@ -1,0 +1,18 @@
+<div class="page-width account account--narrow">
+  <header class="page-header"><h1 class="h1">{{ 'customer.register.title' | t }}</h1></header>
+  {%- form 'create_customer', class: 'account__form' -%}
+    {%- if form.errors -%}<div class="form-status form-status--error" role="alert" tabindex="-1">{{ form.errors | default_errors }}</div>{%- endif -%}
+    <div class="contact__row">
+      <div class="field"><label class="field__label" for="RegisterFirst">{{ 'customer.register.first_name' | t }}</label><input id="RegisterFirst" class="field__input" type="text" name="customer[first_name]" autocomplete="given-name"></div>
+      <div class="field"><label class="field__label" for="RegisterLast">{{ 'customer.register.last_name' | t }}</label><input id="RegisterLast" class="field__input" type="text" name="customer[last_name]" autocomplete="family-name"></div>
+    </div>
+    <div class="field"><label class="field__label" for="RegisterEmail">{{ 'customer.register.email' | t }}</label><input id="RegisterEmail" class="field__input" type="email" name="customer[email]" autocomplete="email" required></div>
+    <div class="field"><label class="field__label" for="RegisterPassword">{{ 'customer.register.password' | t }}</label><input id="RegisterPassword" class="field__input" type="password" name="customer[password]" autocomplete="new-password" required></div>
+    <label class="checkbox"><input type="checkbox" name="customer[accepts_marketing]" checked> <span>Join the community — drops, events & member offers</span></label>
+    <button type="submit" class="btn btn--full">{{ 'customer.register.submit' | t }}</button>
+    <div class="account__links"><a href="{{ routes.account_login_url }}" class="link-underline">{{ 'customer.register.already' | t }}</a></div>
+  {%- endform -%}
+</div>
+{% schema %}
+{ "name": "Register", "settings": [] }
+{% endschema %}

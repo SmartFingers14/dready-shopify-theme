@@ -1,0 +1,47 @@
+{%- comment -%}
+  Mega menu panel for one top-level link. Daily Paper style: link columns + 2 image promos.
+  Params: link (linklist item), section (header section, for promo blocks)
+{%- endcomment -%}
+{%- liquid
+  assign promo = nil
+  for block in section.blocks
+    if block.settings.menu_item == link.title
+      assign promo = block
+    endif
+  endfor
+-%}
+<div class="mega-menu" role="region" aria-label="{{ link.title | escape }}">
+  <div class="mega-menu__inner page-width">
+    <div class="mega-menu__cols">
+      {%- for child in link.links -%}
+        <div class="mega-menu__col">
+          <a href="{{ child.url }}" class="mega-menu__title">{{ child.title }}</a>
+          {%- if child.links.size > 0 -%}
+            <ul class="mega-menu__list">
+              {%- for grandchild in child.links -%}
+                <li><a href="{{ grandchild.url }}" class="mega-menu__link">{{ grandchild.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- if promo -%}
+      <div class="mega-menu__promos" {{ promo.shopify_attributes }}>
+        {%- for i in (1..2) -%}
+          {%- assign img_key = 'image_' | append: i -%}
+          {%- assign cap_key = 'caption_' | append: i -%}
+          {%- assign url_key = 'url_' | append: i -%}
+          {%- if promo.settings[img_key] != blank -%}
+            <a href="{{ promo.settings[url_key] | default: link.url }}" class="mega-menu__promo">
+              <div class="media media--portrait">
+                {{ promo.settings[img_key] | image_url: width: 600 | image_tag: loading: 'lazy', sizes: '300px', alt: promo.settings[cap_key] | escape }}
+              </div>
+              <span class="mega-menu__caption label">{{ promo.settings[cap_key] }} {% render 'icon', name: 'arrow-right', size: 14 %}</span>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>

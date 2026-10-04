@@ -1,0 +1,4 @@
+{%- comment -%} Wrapper so layout can {% render %} the cart-drawer section. {%- endcomment -%}
+{%- if settings.cart_type == 'drawer' -%}
+  {% section 'cart-drawer' %}
+{%- endif -%}

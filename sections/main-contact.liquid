@@ -1,0 +1,45 @@
+{%- comment -%} Contact page with accessible form (labels, inline errors, error summary). {%- endcomment -%}
+<div class="page-width contact">
+  <div class="contact__layout">
+    <div class="contact__intro">
+      <header class="page-header">
+        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+        <h1 class="h1">{{ page.title }}</h1>
+        {%- if page.content != blank -%}<div class="rte">{{ page.content }}</div>{%- endif -%}
+      </header>
+      {%- if section.blocks.size > 0 -%}
+        <dl class="contact__channels">
+          {%- for block in section.blocks -%}
+            <div {{ block.shopify_attributes }}><dt class="label">{{ block.settings.title }}</dt><dd>{%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}">{{ block.settings.text }}</a>{%- else -%}{{ block.settings.text }}{%- endif -%}</dd></div>
+          {%- endfor -%}
+        </dl>
+      {%- endif -%}
+    </div>
+
+    {%- form 'contact', class: 'contact__form' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="form-status form-status--success" role="status" tabindex="-1">{% render 'icon', name: 'check', size: 16 %} {{ 'templates.contact.form.post_success' | t }}</p>
+      {%- elsif form.errors -%}
+        <div class="form-status form-status--error" role="alert" tabindex="-1" id="ContactErrors">
+          <strong>{{ 'templates.contact.form.error_heading' | t }}</strong>
+          <ul>{%- for field in form.errors -%}<li><a href="#Contact-{{ field }}">{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</a></li>{%- endfor -%}</ul>
+        </div>
+      {%- endif -%}
+      <div class="contact__row">
+        <div class="field"><label class="field__label" for="Contact-name">{{ 'templates.contact.form.name' | t }}</label><input id="Contact-name" class="field__input" type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}"></div>
+        <div class="field"><label class="field__label" for="Contact-email">{{ 'templates.contact.form.email' | t }} *</label><input id="Contact-email" class="field__input" type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}" {% if form.errors contains 'email' %}aria-invalid="true" aria-describedby="Contact-email-error"{% endif %}>{%- if form.errors contains 'email' -%}<p id="Contact-email-error" class="field__error">{% render 'icon', name: 'alert', size: 14 %} {{ form.errors.messages.email }}</p>{%- endif -%}</div>
+      </div>
+      <div class="field"><label class="field__label" for="Contact-phone">{{ 'templates.contact.form.phone' | t }}</label><input id="Contact-phone" class="field__input" type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}"></div>
+      <div class="field"><label class="field__label" for="Contact-body">{{ 'templates.contact.form.comment' | t }} *</label><textarea id="Contact-body" class="field__input" name="contact[body]" required>{{ form.body }}</textarea></div>
+      <button type="submit" class="btn">{{ 'templates.contact.form.send' | t }} {% render 'icon', name: 'arrow-right', size: 16 %}</button>
+    {%- endform -%}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Contact",
+  "settings": [ { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Get in touch" } ],
+  "blocks": [ { "type": "channel", "name": "Contact channel", "settings": [ { "type": "text", "id": "title", "label": "Title", "default": "Wholesale" }, { "type": "text", "id": "text", "label": "Text", "default": "wholesale@dreadyoriginal.com" }, { "type": "url", "id": "link", "label": "Link" } ] } ],
+  "max_blocks": 5
+}
+{% endschema %}

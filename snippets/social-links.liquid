@@ -1,0 +1,11 @@
+{%- comment -%} Social icon links from theme settings. Params: size {%- endcomment -%}
+{%- assign s = size | default: 20 -%}
+<ul class="social-links" aria-label="{{ 'general.social.follow' | t }}">
+  {%- if settings.social_instagram != blank -%}<li><a href="{{ settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">{% render 'icon', name: 'instagram', size: s %}</a></li>{%- endif -%}
+  {%- if settings.social_tiktok != blank -%}<li><a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">{% render 'icon', name: 'tiktok', size: s %}</a></li>{%- endif -%}
+  {%- if settings.social_facebook != blank -%}<li><a href="{{ settings.social_facebook }}" target="_blank" rel="noopener" aria-label="Facebook">{% render 'icon', name: 'facebook', size: s %}</a></li>{%- endif -%}
+  {%- if settings.social_twitter != blank -%}<li><a href="{{ settings.social_twitter }}" target="_blank" rel="noopener" aria-label="X">{% render 'icon', name: 'twitter', size: s %}</a></li>{%- endif -%}
+  {%- if settings.social_youtube != blank -%}<li><a href="{{ settings.social_youtube }}" target="_blank" rel="noopener" aria-label="YouTube">{% render 'icon', name: 'youtube', size: s %}</a></li>{%- endif -%}
+  {%- if settings.social_spotify != blank -%}<li><a href="{{ settings.social_spotify }}" target="_blank" rel="noopener" aria-label="Spotify">{% render 'icon', name: 'spotify', size: s %}</a></li>{%- endif -%}
+  {%- if settings.social_bandcamp != blank -%}<li><a href="{{ settings.social_bandcamp }}" target="_blank" rel="noopener" aria-label="Bandcamp">{% render 'icon', name: 'bandcamp', size: s %}</a></li>{%- endif -%}
+</ul>

@@ -1,0 +1,53 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "t1": {
+          "type": "trust",
+          "settings": {
+            "icon": "truck",
+            "text": "Worldwide shipping"
+          }
+        },
+        "t2": {
+          "type": "trust",
+          "settings": {
+            "icon": "refresh",
+            "text": "30-day returns"
+          }
+        },
+        "t3": {
+          "type": "trust",
+          "settings": {
+            "icon": "star",
+            "text": "Made in small batches"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {
+        "show_vendor": false,
+        "show_quantity": true,
+        "show_dynamic_checkout": false,
+        "swatches": true,
+        "made_to_order_text": "Hand-embroidered to order. Please allow 5 working days before dispatch."
+      }
+    },
+    "recs": {
+      "type": "product-recommendations",
+      "settings": {
+        "heading": "Complete the look",
+        "limit": 4
+      }
+    }
+  },
+  "order": [
+    "main",
+    "recs"
+  ]
+}

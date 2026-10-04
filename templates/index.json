@@ -1,0 +1,90 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-video",
+      "settings": {
+        "video_url": "https://cdn.shopify.com/videos/c/o/v/03cbc74ba39547b99b79480ecd433b97.mp4",
+        "overlay": 20, "height": "full", "align": "bottom-left",
+        "eyebrow": "New drop — now live",
+        "heading": "Roots of an icon",
+        "subheading": "Born in Birmingham in 1983, from music, art and street culture.",
+        "cta_text": "Shop the drop", "cta_url": "/collections/all",
+        "cta2_text": "Our roots", "cta2_url": "/pages/roots"
+      }
+    },
+    "featured": {
+      "type": "featured-products",
+      "settings": { "eyebrow": "New drop", "heading": "Now live", "collection": "all", "limit": 8, "layout": "grid", "columns": 4, "show_view_all": true, "view_all_text": "Shop all", "dark": false }
+    },
+    "tiers": {
+      "type": "tier-split",
+      "blocks": {
+        "premium": { "type": "tier", "settings": { "title": "Premium", "badge": "Premium", "spec": "500gsm heavyweight · hand-embroidered · made to order", "price_text": "From £65", "cta": "Shop Premium", "featured": true } },
+        "standard": { "type": "tier", "settings": { "title": "Standard", "badge": "Standard", "spec": "Classic 100% cotton · screen print · ships in 48h", "price_text": "From £30", "cta": "Shop Standard", "featured": false } }
+      },
+      "block_order": ["premium", "standard"],
+      "settings": { "eyebrow": "Two ways to wear it", "heading": "Premium & Standard", "intro": "Same designs. Choose heavyweight embroidered quality or the classic print." }
+    },
+    "look": {
+      "type": "shop-the-look",
+      "blocks": { "h1": { "type": "hotspot", "settings": { "x": 48, "y": 30 } }, "h2": { "type": "hotspot", "settings": { "x": 52, "y": 68 } } },
+      "block_order": ["h1", "h2"],
+      "settings": { "image_side": "left", "eyebrow": "Lookbook", "heading": "Shop the look", "text": "Tap the pins to shop every piece.", "cta_text": "View lookbook", "dark": false }
+    },
+    "dbay": {
+      "type": "dbay",
+      "blocks": {
+        "i1": { "type": "info", "settings": { "icon": "tag", "title": "Up to 50% off", "text": "Final reductions on last sizes and colours." } },
+        "i2": { "type": "info", "settings": { "icon": "refresh", "title": "Easy returns", "text": "30 days to return unworn items. Made-to-order excluded." } }
+      },
+      "block_order": ["i1", "i2"],
+      "settings": { "eyebrow": "Sales & returns", "heading": "DBAY", "text": "Last pieces, end-of-line colours and returned stock — checked, re-pressed and priced to go.", "limit": 8, "cta_text": "Shop DBAY", "style": "accent" }
+    },
+    "collabs": {
+      "type": "collabs",
+      "blocks": {
+        "c1": { "type": "collab", "settings": { "title": "Dready × New Era", "text": "The Walking Dread embroidered cuff beanie.", "status": "Live", "cta": "Shop the collab" } },
+        "c2": { "type": "collab", "settings": { "title": "Dready × Birmingham", "text": "Celebrating the city where it all started.", "status": "Coming soon", "cta": "Preview" } },
+        "c3": { "type": "collab", "settings": { "title": "Dready × Artist series", "text": "Limited graffiti capsule.", "status": "Sold out", "cta": "View archive" } }
+      },
+      "block_order": ["c1", "c2", "c3"],
+      "settings": { "eyebrow": "Collaborations", "heading": "Collabs", "view_all_text": "All collabs", "dark": false }
+    },
+    "comic": {
+      "type": "comic-strip",
+      "settings": { "eyebrow": "Dready culture", "heading": "The comic strip", "limit": 5, "autoplay": true, "interval": 6, "view_all_text": "Read the blog", "dark": true }
+    },
+    "music": {
+      "type": "music",
+      "blocks": {
+        "m1": { "type": "release", "settings": { "artist": "DJ Dready", "title": "Wheel It Up", "format": "12\" Vinyl" } },
+        "m2": { "type": "release", "settings": { "artist": "Dready Sound", "title": "Selecta", "format": "Digital" } },
+        "m3": { "type": "release", "settings": { "artist": "Various", "title": "Roots Mixtape Vol. 1", "format": "Cassette" } },
+        "m4": { "type": "release", "settings": { "artist": "DJ Dready", "title": "Culture Dub", "format": "7\" Vinyl" } }
+      },
+      "block_order": ["m1", "m2", "m3", "m4"],
+      "settings": { "eyebrow": "Dready sounds", "heading": "Music", "columns": 4, "view_all_text": "All releases" }
+    },
+    "events": {
+      "type": "events",
+      "blocks": {
+        "e1": { "type": "event", "settings": { "title": "Dready Sound System", "day": "18", "month": "OCT", "year": "2026", "time": "10pm – 4am", "venue": "The Night Owl", "city": "Birmingham", "lineup": "DJ Dready · Selecta Roots · MC Lion", "status": "On sale", "ticket_text": "Get tickets", "past": false } },
+        "e2": { "type": "event", "settings": { "title": "Roots Reggae Sessions", "day": "02", "month": "NOV", "year": "2026", "time": "8pm – 2am", "venue": "Hare & Hounds", "city": "Birmingham", "status": "Low stock", "ticket_text": "Get tickets", "past": false } },
+        "e3": { "type": "event", "settings": { "title": "Dready × Carnival", "day": "24", "month": "AUG", "year": "2026", "time": "All day", "venue": "Notting Hill", "city": "London", "past": true } }
+      },
+      "block_order": ["e1", "e2", "e3"],
+      "settings": { "eyebrow": "Dready live", "heading": "Events", "view_all_text": "All events" }
+    },
+    "community": {
+      "type": "community",
+      "blocks": {
+        "p1": { "type": "perk", "settings": { "icon": "star", "text": "Early access to every drop" } },
+        "p2": { "type": "perk", "settings": { "icon": "ticket", "text": "Event guest lists & presales" } },
+        "p3": { "type": "perk", "settings": { "icon": "tag", "text": "10% off your first order" } }
+      },
+      "block_order": ["p1", "p2", "p3"],
+      "settings": { "eyebrow": "Dready family", "heading": "Join the community", "text": "Early access to drops, event guest lists, collab previews and 10% off your first order.", "button_text": "Join", "small_print": "No spam. Unsubscribe any time.", "show_social": true, "dark": false }
+    }
+  },
+  "order": ["hero", "featured", "tiers", "look", "dbay", "collabs", "comic", "music", "events", "community"]
+}

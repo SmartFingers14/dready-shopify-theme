@@ -1,0 +1,44 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-contact",
+      "blocks": {
+        "c1": {
+          "type": "channel",
+          "settings": {
+            "title": "General",
+            "text": "info@dreadyoriginal.com",
+            "link": "mailto:info@dreadyoriginal.com"
+          }
+        },
+        "c2": {
+          "type": "channel",
+          "settings": {
+            "title": "Wholesale",
+            "text": "wholesale@dreadyoriginal.com",
+            "link": "mailto:wholesale@dreadyoriginal.com"
+          }
+        },
+        "c3": {
+          "type": "channel",
+          "settings": {
+            "title": "Licensing & collabs",
+            "text": "collabs@dreadyoriginal.com",
+            "link": "mailto:collabs@dreadyoriginal.com"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {
+        "eyebrow": "Get in touch"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

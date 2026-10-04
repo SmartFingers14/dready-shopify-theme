@@ -1,0 +1,92 @@
+{%- comment -%}
+  Shop the Look — Daily Paper pattern. Editorial image with numbered hotspot pins;
+  tapping a pin opens a product popover. Products also listed alongside (a11y + mobile).
+  Blocks = hotspots (product + x/y %).
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<section class="section shop-look{% if s.dark %} section--dark{% endif %}">
+  <div class="page-width">
+    <div class="shop-look__layout{% if s.image_side == 'right' %} shop-look__layout--flip{% endif %}">
+      <div class="shop-look__scene media media--portrait reveal" data-hotspots>
+        {%- if s.image != blank -%}
+          {{ s.image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 55vw, 100vw', widths: '600, 900, 1200, 1600', alt: s.heading | escape }}
+        {%- else -%}
+          <div class="media--placeholder" data-label="Lookbook image" style="position:absolute;inset:0">{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+        {%- endif -%}
+
+        {%- for block in section.blocks -%}
+          {%- assign p = block.settings.product -%}
+          <button type="button" class="hotspot" style="left: {{ block.settings.x }}%; top: {{ block.settings.y }}%;" data-hotspot aria-controls="Hotspot-{{ section.id }}-{{ forloop.index }}" aria-expanded="false" aria-label="{{ 'accessibility.view_hotspot' | t: title: p.title | default: 'Product' | escape }}" {{ block.shopify_attributes }}>
+            <span class="hotspot__dot"><span class="hotspot__num">{{ forloop.index }}</span></span>
+          </button>
+          <div id="Hotspot-{{ section.id }}-{{ forloop.index }}" class="hotspot-pop{% if block.settings.y > 60 %} hotspot-pop--up{% endif %}{% if block.settings.x > 60 %} hotspot-pop--left{% endif %}" style="left: {{ block.settings.x }}%; top: {{ block.settings.y }}%;" data-hotspot-pop hidden>
+            {%- if p != blank -%}
+              <a href="{{ p.url }}" class="hotspot-pop__inner">
+                <span class="media media--portrait hotspot-pop__media">{%- if p.featured_media -%}{{ p.featured_media | image_url: width: 240 | image_tag: loading: 'lazy', sizes: '80px', alt: p.title | escape }}{%- endif -%}</span>
+                <span class="hotspot-pop__info">
+                  <span class="hotspot-pop__title">{{ p.title }}</span>
+                  <span class="price"><span class="price__current">{{ p.price | money }}</span></span>
+                  <span class="link-underline">{{ 'sections.shop_the_look.view' | t }}</span>
+                </span>
+              </a>
+            {%- else -%}
+              <div class="hotspot-pop__inner"><span class="muted">Select a product</span></div>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="shop-look__side">
+        <div class="shop-look__intro">
+          {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+          {%- if s.heading != blank -%}<h2 class="h1">{{ s.heading }}</h2>{%- endif -%}
+          {%- if s.text != blank -%}<p class="muted">{{ s.text }}</p>{%- endif -%}
+        </div>
+        <ol class="shop-look__list">
+          {%- for block in section.blocks -%}
+            {%- assign p = block.settings.product -%}
+            <li class="shop-look__item">
+              <span class="shop-look__num">{{ forloop.index }}</span>
+              {%- if p != blank -%}
+                {% render 'product-card', product: p, lazy: true, show_quick_add: true %}
+              {%- else -%}
+                <article class="product-card"><div class="product-card__media media media--portrait media--placeholder" data-label="Product">{{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}</div><div class="product-card__info"><h3 class="product-card__title">Product</h3></div></article>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ol>
+        {%- if s.cta_text != blank -%}<a href="{{ s.cta_url }}" class="btn btn--outline shop-look__cta">{{ s.cta_text }}</a>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop the look",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Lookbook image", "info": "Portrait 4:5 works best." },
+    { "type": "select", "id": "image_side", "label": "Image side", "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ], "default": "left" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Lookbook" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop the look" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Tap the pins to shop every piece." },
+    { "type": "text", "id": "cta_text", "label": "Button text", "default": "View lookbook" },
+    { "type": "url", "id": "cta_url", "label": "Button link" },
+    { "type": "checkbox", "id": "dark", "label": "Dark background", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "hotspot",
+      "name": "Hotspot",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "range", "id": "x", "min": 2, "max": 98, "step": 1, "unit": "%", "label": "Horizontal position", "default": 50 },
+        { "type": "range", "id": "y", "min": 2, "max": 98, "step": 1, "unit": "%", "label": "Vertical position", "default": 50 }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [ { "name": "Shop the look", "blocks": [ { "type": "hotspot", "settings": { "x": 48, "y": 30 } }, { "type": "hotspot", "settings": { "x": 52, "y": 68 } } ] } ]
+}
+{% endschema %}

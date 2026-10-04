@@ -1,0 +1,46 @@
+{%- comment -%}
+  Variant picker: colour as swatches (native colour names → CSS), size as buttons.
+  Radio inputs inside fieldsets; JS resolves the variant + availability. Params: product, form_id, section
+{%- endcomment -%}
+{%- unless product.has_only_default_variant -%}
+<div class="variant-picker" data-variant-picker data-form-id="{{ form_id }}">
+  {%- for option in product.options_with_values -%}
+    {%- liquid
+      assign name_dc = option.name | downcase
+      assign is_color = false
+      if name_dc == 'color' or name_dc == 'colour'
+        assign is_color = true
+      endif
+      assign is_size = false
+      if name_dc == 'size' or name_dc == 'sizes'
+        assign is_size = true
+      endif
+    -%}
+    <fieldset class="variant-picker__group" data-option-index="{{ forloop.index0 }}">
+      <legend class="variant-picker__legend">
+        <span class="label">{{ option.name }}</span>
+        <span class="variant-picker__selected muted">{{ option.selected_value }}</span>
+        {%- if is_size and section.settings.size_guide != blank -%}
+          <a href="{{ section.settings.size_guide.url }}" class="variant-picker__guide link-underline" target="_blank" rel="noopener">{% render 'icon', name: 'ruler', size: 14 %} {{ 'sections.product.size_guide' | t }}</a>
+        {%- endif -%}
+      </legend>
+      <div class="variant-picker__values{% if is_color and section.settings.swatches %} variant-picker__values--swatch{% endif %}">
+        {%- for value in option.values -%}
+          {%- assign input_id = form_id | append: '-' | append: forloop.parentloop.index0 | append: '-' | append: forloop.index0 -%}
+          <input type="radio" id="{{ input_id }}" name="{{ form_id }}-option-{{ forloop.parentloop.index0 }}" value="{{ value | escape }}" class="visually-hidden variant-picker__input" {% if option.selected_value == value %}checked{% endif %}>
+          {%- if is_color and section.settings.swatches -%}
+            {%- capture swatch_hex %}{% render 'swatch-color', value: value %}{% endcapture -%}
+            <label for="{{ input_id }}" class="swatch" title="{{ value | escape }}" style="--swatch: {{ swatch_hex | strip }};">
+              <span class="swatch__chip" aria-hidden="true"></span>
+              <span class="visually-hidden">{{ value }}</span>
+            </label>
+          {%- else -%}
+            <label for="{{ input_id }}" class="variant-pill">{{ value }}</label>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </fieldset>
+  {%- endfor -%}
+  <script type="application/json" data-variants-json>{{ product.variants | json }}</script>
+</div>
+{%- endunless -%}

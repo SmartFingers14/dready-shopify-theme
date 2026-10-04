@@ -1,0 +1,49 @@
+{%- comment -%}
+  Event flip card. Params: block, uid
+  Front: flyer + date chip + Details button. Back: venue/time/line-up + Get tickets.
+{%- endcomment -%}
+{%- assign b = block.settings -%}
+<article class="event{% if b.past %} event--past{% endif %}" data-flip {{ block.shopify_attributes }}>
+  <div class="event__inner">
+    <div class="event__face event__front">
+      <div class="event__media media media--poster">
+        {%- if b.flyer != blank -%}
+          {{ b.flyer | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 33vw, 80vw', widths: '400, 600, 900', alt: b.title | escape }}
+        {%- else -%}
+          <div class="media--placeholder" data-label="Event flyer" style="position:absolute;inset:0">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+        {%- endif -%}
+        <div class="event__chip">
+          <span class="event__day">{{ b.day }}</span>
+          <span class="event__month label">{{ b.month }}</span>
+        </div>
+        {%- if b.past -%}<span class="badge badge--outline event__status">{{ 'sections.events.past' | t }}</span>
+        {%- elsif b.status != blank -%}<span class="badge badge--accent event__status">{{ b.status }}</span>{%- endif -%}
+      </div>
+      <div class="event__front-info">
+        <h3 class="event__title h3">{{ b.title }}</h3>
+        <p class="event__meta muted">{% render 'icon', name: 'pin', size: 14 %} {{ b.city | default: b.venue }}</p>
+        <button type="button" class="btn btn--inverse btn--sm event__flip" data-flip-toggle aria-expanded="false" aria-controls="EventBack-{{ uid }}" aria-label="{{ 'accessibility.flip_card' | t: title: b.title | escape }}">{{ 'sections.events.details' | t }} {% render 'icon', name: 'arrow-right', size: 14 %}</button>
+      </div>
+    </div>
+
+    <div class="event__face event__back" id="EventBack-{{ uid }}" data-flip-back>
+      <button type="button" class="event__close icon-btn" data-flip-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', name: 'close' %}</button>
+      <p class="eyebrow">{{ b.month }} {{ b.day }}{% if b.year != blank %}, {{ b.year }}{% endif %}</p>
+      <h3 class="h2 event__back-title">{{ b.title }}</h3>
+      <dl class="event__details">
+        {%- if b.venue != blank -%}<div><dt class="label">{{ 'sections.events.venue' | t }}</dt><dd>{{ b.venue }}{% if b.city != blank %}, {{ b.city }}{% endif %}</dd></div>{%- endif -%}
+        {%- if b.time != blank -%}<div><dt class="label">{{ 'sections.events.when' | t }}</dt><dd>{{ b.time }}</dd></div>{%- endif -%}
+        {%- if b.lineup != blank -%}<div><dt class="label">Line-up</dt><dd>{{ b.lineup }}</dd></div>{%- endif -%}
+      </dl>
+      {%- if b.text != blank -%}<p class="event__text muted">{{ b.text }}</p>{%- endif -%}
+      <div class="event__actions">
+        {%- if b.ticket_url != blank and b.past == false -%}
+          <a href="{{ b.ticket_url }}" target="_blank" rel="noopener" class="btn btn--accent btn--sm">{% render 'icon', name: 'ticket', size: 16 %} {{ b.ticket_text }}</a>
+        {%- elsif b.past == false -%}
+          <span class="badge badge--outline">{{ 'sections.events.free' | t }}</span>
+        {%- endif -%}
+        {%- if b.map_url != blank -%}<a href="{{ b.map_url }}" target="_blank" rel="noopener" class="link-underline">Map {% render 'icon', name: 'external', size: 12 %}</a>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</article>

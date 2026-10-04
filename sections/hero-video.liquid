@@ -1,0 +1,74 @@
+{%- comment -%}
+  Hero video — Daily Paper pattern. Full-bleed muted loop with poster fallback,
+  subtle overlay, eyebrow + headline + CTA. Pause control; stops off-screen;
+  honours prefers-reduced-motion (shows poster). Falls back to image if no video.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign has_video = false
+  if s.video != blank or s.video_url != blank
+    assign has_video = true
+  endif
+-%}
+<section class="hero hero--{{ s.height }} hero--align-{{ s.align }}" data-video-hero style="--overlay: {{ s.overlay | divided_by: 100.0 }};">
+  <div class="hero__media">
+    {%- if has_video -%}
+      {%- if s.video != blank -%}
+        {{ s.video | video_tag: image_size: '1920x', autoplay: false, loop: true, muted: true, playsinline: true, controls: false, preload: 'metadata', class: 'hero__video' }}
+      {%- else -%}
+        <video class="hero__video" muted loop playsinline preload="metadata" {% if s.poster != blank %}poster="{{ s.poster | image_url: width: 1920 }}"{% endif %}>
+          <source src="{{ s.video_url }}" type="video/mp4">
+        </video>
+      {%- endif -%}
+    {%- elsif s.poster != blank -%}
+      {%- assign hero_alt = s.heading | escape -%}
+      {{ s.poster | image_url: width: 2400 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', widths: '750, 1100, 1500, 1920, 2400', alt: hero_alt, class: 'hero__img' }}
+    {%- else -%}
+      <div class="hero__placeholder media--placeholder" data-label="Hero video / image">{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+    {%- endif -%}
+    <div class="hero__overlay" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero__content page-width">
+    <div class="hero__text reveal">
+      {%- if s.eyebrow != blank -%}<p class="hero__eyebrow label">{{ s.eyebrow }}</p>{%- endif -%}
+      {%- if s.heading != blank -%}<h1 class="hero__heading h-hero">{{ s.heading }}</h1>{%- endif -%}
+      {%- if s.subheading != blank -%}<p class="hero__sub body-lg">{{ s.subheading }}</p>{%- endif -%}
+      <div class="hero__actions">
+        {%- if s.cta_text != blank -%}<a href="{{ s.cta_url }}" class="btn btn--inverse">{{ s.cta_text }}</a>{%- endif -%}
+        {%- if s.cta2_text != blank -%}<a href="{{ s.cta2_url }}" class="btn btn--outline hero__btn-ghost">{{ s.cta2_text }}</a>{%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if has_video -%}
+    <button type="button" class="hero__toggle" data-video-toggle data-pause-label="{{ 'accessibility.pause' | t }}" data-play-label="{{ 'accessibility.play' | t }}" aria-pressed="false">
+      <span class="hero__toggle-pause">{% render 'icon', name: 'pause', size: 14 %}</span>
+      <span class="hero__toggle-play">{% render 'icon', name: 'play', size: 14 %}</span>
+    </button>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Hero video",
+  "tag": "section",
+  "class": "shopify-section-hero",
+  "settings": [
+    { "type": "video", "id": "video", "label": "Video (Shopify-hosted)", "info": "Upload to Content → Files. Muted, looping, 16:9 or 9:16 recommended." },
+    { "type": "url", "id": "video_url", "label": "Or external MP4 URL", "info": "Used if no Shopify video is set." },
+    { "type": "image_picker", "id": "poster", "label": "Poster / fallback image", "info": "Shown before the video loads and when reduced motion is on." },
+    { "type": "range", "id": "overlay", "min": 0, "max": 60, "step": 5, "unit": "%", "label": "Overlay darkness", "default": 15 },
+    { "type": "select", "id": "height", "label": "Height", "options": [ { "value": "full", "label": "Full screen" }, { "value": "large", "label": "Large (85vh)" }, { "value": "medium", "label": "Medium (70vh)" } ], "default": "full" },
+    { "type": "select", "id": "align", "label": "Text position", "options": [ { "value": "bottom-left", "label": "Bottom left" }, { "value": "center", "label": "Centre" }, { "value": "bottom-center", "label": "Bottom centre" } ], "default": "bottom-left" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "New drop — now live" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Roots of an icon" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Born in Birmingham in 1983, from music, art and street culture." },
+    { "type": "text", "id": "cta_text", "label": "Button text", "default": "Shop the drop" },
+    { "type": "url", "id": "cta_url", "label": "Button link" },
+    { "type": "text", "id": "cta2_text", "label": "Second button text", "default": "Our roots" },
+    { "type": "url", "id": "cta2_url", "label": "Second button link" }
+  ],
+  "presets": [ { "name": "Hero video" } ]
+}
+{% endschema %}

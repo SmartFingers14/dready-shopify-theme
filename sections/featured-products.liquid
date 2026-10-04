@@ -1,0 +1,70 @@
+{%- comment -%}
+  Featured products — Daily Paper "product cards" section.
+  Heading + subtitle, 4-up grid (or horizontal scroller), hover-swap cards with sizes.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign coll = s.collection
+  assign limit = s.limit
+-%}
+<section class="section featured-products{% if s.dark %} section--dark{% endif %}" data-scroller-wrap>
+  <div class="page-width">
+    <header class="section-header">
+      <div class="section-header__text">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="h1">{{ s.heading }}</h2>{%- endif -%}
+      </div>
+      <div class="section-header__actions">
+        {%- if s.layout == 'scroller' -%}
+          <div class="scroller-controls">
+            <button type="button" class="icon-btn" data-scroller-prev aria-label="{{ 'accessibility.previous_slide' | t }}">{% render 'icon', name: 'arrow-left' %}</button>
+            <button type="button" class="icon-btn" data-scroller-next aria-label="{{ 'accessibility.next_slide' | t }}">{% render 'icon', name: 'arrow-right' %}</button>
+          </div>
+        {%- endif -%}
+        {%- if s.show_view_all and coll != blank -%}
+          <a href="{{ coll.url }}" class="link-underline section-header__link">{{ s.view_all_text | default: 'sections.header.shop_all' | t }}</a>
+        {%- endif -%}
+      </div>
+    </header>
+
+    {%- if coll != blank and coll.products.size > 0 -%}
+      <div class="{% if s.layout == 'scroller' %}scroller{% else %}grid grid--{{ s.columns }}{% endif %} reveal-stagger" {% if s.layout == 'scroller' %}data-scroller{% endif %}>
+        {%- for product in coll.products limit: limit -%}
+          {% render 'product-card', product: product, lazy: true %}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      {%- comment -%} Editor placeholder state {%- endcomment -%}
+      <div class="{% if s.layout == 'scroller' %}scroller{% else %}grid grid--{{ s.columns }}{% endif %}" {% if s.layout == 'scroller' %}data-scroller{% endif %}>
+        {%- for i in (1..limit) -%}
+          <article class="product-card">
+            <div class="product-card__media media media--portrait media--placeholder" data-label="Product {{ i }}">{{ 'product-apparel-' | append: i | placeholder_svg_tag: 'placeholder-svg' }}</div>
+            <div class="product-card__info">
+              <h3 class="product-card__title">Product title</h3>
+              <div class="price"><span class="price__current">{{ 4500 | money }}</span></div>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured products",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "New drop" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Now live" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "limit", "min": 4, "max": 12, "step": 1, "label": "Products to show", "default": 8 },
+    { "type": "select", "id": "layout", "label": "Layout", "options": [ { "value": "grid", "label": "Grid" }, { "value": "scroller", "label": "Horizontal scroller" } ], "default": "grid" },
+    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "Columns (grid)", "default": 4 },
+    { "type": "checkbox", "id": "show_view_all", "label": "Show “view all” link", "default": true },
+    { "type": "text", "id": "view_all_text", "label": "View all text", "default": "Shop all" },
+    { "type": "checkbox", "id": "dark", "label": "Dark background", "default": false }
+  ],
+  "presets": [ { "name": "Featured products" } ]
+}
+{% endschema %}

@@ -1,0 +1,52 @@
+/* =====================================================================
+   DREADY ORIGINAL — components.css (header, nav, drawers, cards, sections)
+   ===================================================================== */
+
+/* ---------- Announcement marquee ---------- */
+.announcement { position: relative; height: var(--announcement-height); background: var(--color-surface); color: var(--color-fg); border-bottom: 1px solid var(--color-border); overflow: hidden; font-size: var(--text-xs); text-transform: uppercase; letter-spacing: var(--tracking-caps); font-weight: 500; }
+.announcement--dark { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
+.announcement__inner { height: 100%; display: flex; align-items: center; }
+.announcement__track { display: flex; width: max-content; animation: marquee var(--marquee-speed, 30s) linear infinite; will-change: transform; }
+.announcement.is-paused .announcement__track, .announcement.is-hover .announcement__track { animation-play-state: paused; }
+.announcement__list { display: flex; }
+.announcement__item { display: inline-flex; align-items: center; white-space: nowrap; padding-right: var(--space-6); }
+.announcement__item a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.announcement__sep { margin-left: var(--space-6); opacity: 0.5; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.announcement__toggle { position: absolute; right: var(--space-3); top: 50%; transform: translateY(-50%); width: 28px; height: 28px; display: grid; place-items: center; opacity: 0.7; background: inherit; }
+.announcement__toggle:hover { opacity: 1; }
+.announcement__toggle-play { display: none; }
+.announcement.is-paused .announcement__toggle-play { display: block; }
+.announcement.is-paused .announcement__toggle-pause { display: none; }
+@media (prefers-reduced-motion: reduce) { .announcement__track { animation: none; } }
+
+/* ---------- Header ---------- */
+.header { position: relative; z-index: var(--z-header); background: var(--color-bg); color: var(--color-fg); border-bottom: 1px solid var(--color-border); transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out), transform var(--dur-slow) var(--ease-out), border-color var(--dur) var(--ease-out); }
+.shopify-section-header:not(:has(.header--sticky)) { position: relative; }
+.header.is-hidden { transform: translateY(-100%); }
+.header__inner { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: var(--header-height); gap: var(--space-4); }
+.header__left { display: flex; align-items: center; justify-self: start; min-width: 0; }
+.header__right { display: flex; align-items: center; justify-self: end; gap: var(--space-1); }
+.header__icon { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 44px; height: 44px; padding-inline: var(--space-2); color: inherit; }
+.header__icon-text { display: none; }
+@media (min-width: 1024px) { .header__icon-text { display: inline; } }
+.header__burger { margin-left: -8px; }
+@media (min-width: 1024px) { .header__burger { display: none; } }
+.header__cart { position: relative; }
+.header__cart-count { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding-inline: 5px; border-radius: 999px; background: var(--color-fg); color: var(--color-bg); font-size: 10px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.header__cart-count.is-empty { background: transparent; color: inherit; border: 1px solid currentColor; }
+
+.header__logo { display: inline-flex; align-items: center; gap: var(--space-3); justify-self: center; height: var(--header-height); }
+.header__logo-img { height: var(--logo-h); width: auto; }
+.header__wordmark { font-weight: 700; font-size: var(--text-md); letter-spacing: 0.18em; text-transform: uppercase; }
+@media (max-width: 480px) { .header__wordmark { display: none; } }
+
+/* Transparent over hero (homepage): header overlays the hero, then turns solid as it sticks.
+   Sticky keeps the element in flow (no content jump); negative margin pulls the hero up under it. */
+.shopify-section-header { position: sticky; top: 0; z-index: var(--z-header); }
+.shopify-section-header:has(.header--transparent) { margin-bottom: calc(var(--header-height) * -1); }
+.header--transparent:not(.is-scrolled) { background: transparent; color: #fff; border-color: transparent; }
+.header--transparent:not(.is-scrolled) .header__cart-count { background: #fff; color: var(--color-fg); }
+.header--transparent:not(.is-scrolled) .header__cart-count.is-empty { background: transparent; color: #fff; }
+.header--transparent:not(.is-scrolled) .header__logo-img { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)); }
+.header--transparent:not(.is-scrolled) .header__wordmark { text-shadow: 0 1px 2px rgba(0,0,0,0.3); }

@@ -1,0 +1,26 @@
+<div class="page-width account">
+  <header class="page-header account__header">
+    <div><a href="{{ routes.account_url }}" class="breadcrumb">{% render 'icon', name: 'arrow-left', size: 12 %} {{ 'customer.account.return' | t }}</a><h1 class="h1">{{ 'customer.addresses.title' | t }}</h1></div>
+    <button type="button" class="btn btn--sm" data-drawer-open="AddressNew" aria-controls="AddressNew">{{ 'customer.addresses.add_new' | t }}</button>
+  </header>
+
+  <div class="grid grid--3">
+    {%- paginate customer.addresses by 12 -%}
+      {%- for address in customer.addresses -%}
+        <div class="address-card">
+          {%- if address == customer.default_address -%}<span class="badge">{{ 'customer.addresses.default' | t }}</span>{%- endif -%}
+          <address class="account__address">{{ address | format_address }}</address>
+          <div class="address-card__actions">
+            <button type="button" class="link-underline" data-drawer-open="AddressEdit-{{ address.id }}" aria-controls="AddressEdit-{{ address.id }}">{{ 'customer.addresses.edit' | t }}</button>
+            {%- form 'customer_address', address, class: 'inline' -%}<button type="submit" class="link-underline" formaction="{{ routes.account_addresses_url }}/{{ address.id }}" name="_method" value="delete" onclick="return confirm('{{ 'customer.addresses.delete_confirm' | t | escape }}')">{{ 'customer.addresses.delete' | t }}</button>{%- endform -%}
+          </div>
+        </div>
+        {% render 'address-form', address: address, id: address.id %}
+      {%- endfor -%}
+    {%- endpaginate -%}
+  </div>
+  {% render 'address-form', address: customer.new_address, id: 'New' %}
+</div>
+{% schema %}
+{ "name": "Addresses", "settings": [] }
+{% endschema %}

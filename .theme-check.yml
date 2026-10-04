@@ -1,0 +1,25 @@
+extends: :recommended
+root: .
+
+ignore:
+  - .dev-src/**
+  - .dev-assets/**
+  - node_modules/**
+
+# Dev-only partials live in .dev-src and are concatenated into assets/ by .dev-src/build.sh
+MatchingTranslations:
+  enabled: true
+TranslationKeyExists:
+  enabled: true
+MissingTemplate:
+  enabled: true
+AssetSizeJavaScript:
+  enabled: true
+  threshold_in_bytes: 60000
+AssetSizeCSS:
+  enabled: true
+  threshold_in_bytes: 120000
+RemoteAsset:
+  enabled: false
+ImgWidthAndHeight:
+  enabled: false

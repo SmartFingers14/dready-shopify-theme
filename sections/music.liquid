@@ -1,0 +1,100 @@
+{%- comment -%}
+  Music to buy — Nervous "Featured Releases" grid, Dready-styled on a dark band.
+  Each block: optional Shopify product (buyable) + optional streaming links.
+  Square album art, artist/title, price + Buy, or Listen links.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<section class="section music section--dark">
+  <div class="page-width">
+    <header class="section-header">
+      <div class="section-header__text">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="h1">{{ s.heading }}</h2>{%- endif -%}
+      </div>
+      {%- if s.view_all_url != blank -%}<a href="{{ s.view_all_url }}" class="link-underline section-header__link">{{ s.view_all_text }}</a>{%- endif -%}
+    </header>
+
+    <div class="grid grid--{{ s.columns }} reveal-stagger">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign p = b.product
+          assign art = b.image
+          if art == blank and p != blank
+            assign art = p.featured_media
+          endif
+          assign title = b.title
+          if title == blank and p != blank
+            assign title = p.title
+          endif
+        -%}
+        <article class="release" {{ block.shopify_attributes }}>
+          <div class="release__media media media--square">
+            {%- if art != blank -%}
+              {{ art | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 25vw, 50vw', widths: '320, 480, 800', alt: title | escape }}
+            {%- else -%}
+              <div class="media--placeholder" data-label="Album art" style="position:absolute;inset:0">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+            {%- endif -%}
+            {%- if b.format != blank -%}<span class="badge badge--outline release__format">{{ b.format }}</span>{%- endif -%}
+            {%- if b.preview_url != blank -%}
+              <a href="{{ b.preview_url }}" target="_blank" rel="noopener" class="release__play" aria-label="{{ 'sections.music.listen' | t }}: {{ title | escape }}">{% render 'icon', name: 'play', size: 18 %}</a>
+            {%- endif -%}
+          </div>
+          <div class="release__info">
+            {%- if b.artist != blank -%}<p class="release__artist eyebrow">{{ b.artist }}</p>{%- endif -%}
+            <h3 class="release__title h3">{%- if p != blank -%}<a href="{{ p.url }}">{{ title }}</a>{%- else -%}{{ title }}{%- endif -%}</h3>
+            <div class="release__actions">
+              {%- if p != blank -%}
+                {%- if p.available -%}
+                  <button type="button" class="btn btn--inverse btn--sm" data-quick-add="{{ p.selected_or_first_available_variant.id }}">{{ 'sections.music.buy' | t }} · {{ p.price | money }}</button>
+                {%- else -%}
+                  <span class="badge badge--soldout">{{ 'products.product.sold_out' | t }}</span>
+                {%- endif -%}
+              {%- endif -%}
+              <div class="release__links">
+                {%- if b.spotify != blank -%}<a href="{{ b.spotify }}" target="_blank" rel="noopener" class="release__link" aria-label="Spotify: {{ title | escape }}">{% render 'icon', name: 'spotify', size: 18 %}</a>{%- endif -%}
+                {%- if b.bandcamp != blank -%}<a href="{{ b.bandcamp }}" target="_blank" rel="noopener" class="release__link" aria-label="Bandcamp: {{ title | escape }}">{% render 'icon', name: 'bandcamp', size: 18 %}</a>{%- endif -%}
+                {%- if b.youtube != blank -%}<a href="{{ b.youtube }}" target="_blank" rel="noopener" class="release__link" aria-label="YouTube: {{ title | escape }}">{% render 'icon', name: 'youtube', size: 18 %}</a>{%- endif -%}
+                {%- if b.other != blank -%}<a href="{{ b.other }}" target="_blank" rel="noopener" class="release__link" aria-label="{{ 'sections.music.stream' | t }}: {{ title | escape }}">{% render 'icon', name: 'external', size: 18 %}</a>{%- endif -%}
+              </div>
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Music",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Dready sounds" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Music" },
+    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "Columns", "default": 4 },
+    { "type": "text", "id": "view_all_text", "label": "View all text", "default": "All releases" },
+    { "type": "url", "id": "view_all_url", "label": "View all link" }
+  ],
+  "blocks": [
+    {
+      "type": "release",
+      "name": "Release",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Shopify product (buyable)", "info": "Vinyl / CD / digital. Leave empty for stream-only." },
+        { "type": "image_picker", "id": "image", "label": "Album art (overrides product image)" },
+        { "type": "text", "id": "artist", "label": "Artist", "default": "DJ Dready" },
+        { "type": "text", "id": "title", "label": "Title (defaults to product title)" },
+        { "type": "text", "id": "format", "label": "Format badge", "default": "12\" Vinyl" },
+        { "type": "url", "id": "preview_url", "label": "Preview / play link" },
+        { "type": "url", "id": "spotify", "label": "Spotify" },
+        { "type": "url", "id": "bandcamp", "label": "Bandcamp" },
+        { "type": "url", "id": "youtube", "label": "YouTube" },
+        { "type": "url", "id": "other", "label": "Other link" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [ { "name": "Music", "blocks": [ { "type": "release" }, { "type": "release", "settings": { "title": "Selecta", "format": "Digital" } }, { "type": "release", "settings": { "title": "Wheel It Up", "format": "7\" Vinyl" } }, { "type": "release", "settings": { "title": "Roots Mixtape", "format": "Cassette" } } ] } ]
+}
+{% endschema %}

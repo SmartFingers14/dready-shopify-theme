@@ -1,0 +1,58 @@
+
+/* ---------- Forms ---------- */
+.field { display: grid; gap: var(--space-2); }
+.field__label { font-size: var(--text-sm); font-weight: 500; letter-spacing: 0.02em; }
+.field__input {
+  width: 100%; min-height: 48px; padding: 0 var(--space-4);
+  background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius);
+  transition: border-color var(--dur) var(--ease-out);
+}
+textarea.field__input { min-height: 140px; padding-block: var(--space-3); resize: vertical; }
+select.field__input { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2309090b' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right var(--space-4) center; padding-right: var(--space-8); }
+.field__input:focus-visible { border-color: var(--color-fg); outline-offset: 0; }
+.field__input[aria-invalid="true"] { border-color: var(--color-error); }
+.field__error { font-size: var(--text-sm); color: var(--color-error); display: flex; gap: var(--space-2); align-items: center; }
+.field__hint { font-size: var(--text-sm); color: var(--color-muted); }
+.form-status { padding: var(--space-3) var(--space-4); border: 1px solid; font-size: var(--text-sm); }
+.form-status--error { border-color: var(--color-error); color: var(--color-error); }
+.form-status--success { border-color: var(--color-success); color: var(--color-success); }
+.form-status ul { list-style: disc; padding-left: 1.25em; margin-top: var(--space-2); }
+.inline-form { display: flex; }
+.inline-form .field__input { flex: 1; border-right: 0; }
+.inline-form .btn { flex-shrink: 0; }
+.section--dark .field__input { background: transparent; border-color: var(--color-dark-border); color: var(--color-dark-fg); }
+.section--dark .field__input:focus-visible { border-color: var(--color-dark-fg); }
+.section--dark .field__input::placeholder { color: var(--color-dark-muted); }
+.checkbox { display: flex; gap: var(--space-3); align-items: flex-start; font-size: var(--text-sm); cursor: pointer; }
+.checkbox input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--color-fg); flex-shrink: 0; }
+
+/* ---------- Media ---------- */
+.media { position: relative; overflow: hidden; background: var(--color-surface-2); }
+.media > img, .media > video, .media > iframe, .media > svg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.media--portrait { aspect-ratio: 4 / 5; }
+.media--square { aspect-ratio: 1; }
+.media--landscape { aspect-ratio: 3 / 2; }
+.media--wide { aspect-ratio: 16 / 9; }
+.media--poster { aspect-ratio: 3 / 4; }
+.media--contain > img { object-fit: contain; }
+.section--dark .media { background: var(--color-dark-surface); }
+.placeholder-svg { fill: var(--color-border); background: var(--color-surface-2); }
+.section--dark .placeholder-svg { fill: var(--color-dark-border); background: var(--color-dark-surface); }
+.media--placeholder::after {
+  content: attr(data-label); position: absolute; left: var(--space-3); bottom: var(--space-3); z-index: 1;
+  font-size: var(--text-xs); text-transform: uppercase; letter-spacing: var(--tracking-caps);
+  color: var(--color-muted); border: 1px dashed var(--color-muted); padding: 2px 6px; background: rgba(255,255,255,0.7);
+}
+.section--dark .media--placeholder::after { color: var(--color-dark-muted); background: rgba(0,0,0,0.6); }
+
+/* ---------- Badges ---------- */
+.badge {
+  display: inline-flex; align-items: center; min-height: 22px; padding: 0 var(--space-2);
+  font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: var(--tracking-caps);
+  background: var(--color-fg); color: var(--color-bg);
+}
+.badge--sale { background: var(--color-sale); color: #fff; }
+.badge--accent { background: var(--color-accent); color: var(--color-on-accent); }
+.badge--outline { background: transparent; border: 1px solid currentColor; color: inherit; }
+.badge--soldout { background: var(--color-surface-2); color: var(--color-muted); }
+.badge--18 { border-radius: 999px; width: 22px; justify-content: center; padding: 0; font-size: 9px; }

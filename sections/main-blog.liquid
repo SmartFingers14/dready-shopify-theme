@@ -1,0 +1,44 @@
+{%- comment -%} Blog index: editorial grid. Comics blog gets wide image cards. {%- endcomment -%}
+<div class="page-width blog">
+  <header class="page-header">
+    <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+    <h1 class="h1">{{ blog.title }}</h1>
+    {%- if blog.all_tags.size > 0 -%}
+      <ul class="blog__tags">
+        <li><a href="{{ blog.url }}" class="badge {% unless current_tags %}badge{% else %}badge--outline{% endunless %}">{{ 'sections.blog.all_posts' | t }}</a></li>
+        {%- for tag in blog.all_tags -%}
+          <li><a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="badge {% if current_tags contains tag %}badge{% else %}badge--outline{% endif %}">{{ tag }}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </header>
+  {%- paginate blog.articles by section.settings.per_page -%}
+    <div class="grid grid--{{ section.settings.columns }} blog__grid reveal-stagger">
+      {%- for article in blog.articles -%}
+        <article class="post">
+          <a href="{{ article.url }}" class="post__media media {% if blog.handle == 'comics' %}media--wide{% else %}media--landscape{% endif %}">
+            {%- if article.image -%}{{ article.image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 33vw, 100vw', alt: article.image.alt | default: article.title | escape }}{%- else -%}{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}
+          </a>
+          <div class="post__info">
+            <p class="eyebrow">{{ article.published_at | date: '%b %d, %Y' }}{% if article.tags.size > 0 %} · {{ article.tags.first }}{% endif %}</p>
+            <h2 class="h3"><a href="{{ article.url }}">{{ article.title }}</a></h2>
+            {%- if section.settings.show_excerpt and article.excerpt_or_content != blank -%}<p class="muted">{{ article.excerpt_or_content | strip_html | truncatewords: 24 }}</p>{%- endif -%}
+            <a href="{{ article.url }}" class="link-underline">{{ 'sections.blog.read_more' | t }}</a>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+    {%- if paginate.pages > 1 -%}{{ paginate | default_pagination | replace: '&laquo;', '←' | replace: '&raquo;', '→' }}{%- endif -%}
+  {%- endpaginate -%}
+</div>
+{% schema %}
+{
+  "name": "Blog",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Dready culture" },
+    { "type": "range", "id": "per_page", "min": 6, "max": 24, "step": 3, "label": "Posts per page", "default": 12 },
+    { "type": "range", "id": "columns", "min": 2, "max": 3, "step": 1, "label": "Columns", "default": 3 },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpt", "default": true }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,21 @@
+{%- comment -%} Product buy form. Params: product, current, form_id, section {%- endcomment -%}
+{%- assign s = section.settings -%}
+{%- form 'product', product, id: form_id, class: 'pdp__form', data-product-form: '' -%}
+  <input type="hidden" name="id" value="{{ current.id }}">
+  {% render 'variant-picker', product: product, form_id: form_id, section: section %}
+  <p class="field__error" data-form-error hidden tabindex="-1" role="alert"></p>
+
+  <div class="pdp__buy">
+    {%- if s.show_quantity -%}
+      <div class="qty" data-qty>
+        <button type="button" class="qty__btn" data-qty-change="-1" aria-label="{{ 'accessibility.decrement' | t }}">{% render 'icon', name: 'minus', size: 14 %}</button>
+        <input type="number" name="quantity" class="qty__input" value="1" min="1" inputmode="numeric" aria-label="{{ 'products.product.quantity' | t }}">
+        <button type="button" class="qty__btn" data-qty-change="1" aria-label="{{ 'accessibility.increment' | t }}">{% render 'icon', name: 'plus', size: 14 %}</button>
+      </div>
+    {%- endif -%}
+    <button type="submit" class="btn btn--full pdp__submit" {% unless current.available %}disabled{% endunless %}>
+      <span>{% if current.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
+    </button>
+  </div>
+  {%- if s.show_dynamic_checkout -%}{{ form | payment_button }}{%- endif -%}
+{%- endform -%}

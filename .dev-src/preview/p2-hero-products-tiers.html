@@ -1,0 +1,46 @@
+
+<section class="hero hero--full hero--align-bottom-left is-playing" data-video-hero style="--overlay:0.2">
+  <div class="hero__media">
+    <video class="hero__video" muted loop playsinline autoplay poster="p-classic-tee.jpg"><source src="https://cdn.shopify.com/videos/c/o/v/03cbc74ba39547b99b79480ecd433b97.mp4" type="video/mp4"></video>
+    <div class="hero__overlay"></div>
+  </div>
+  <div class="hero__content page-width"><div class="hero__text reveal is-visible">
+    <p class="hero__eyebrow label">New drop — now live</p>
+    <h1 class="hero__heading h-hero">Roots of<br>an icon</h1>
+    <p class="hero__sub body-lg">Born in Birmingham in 1983, from music, art and street culture.</p>
+    <div class="hero__actions"><a href="#" class="btn btn--inverse">Shop the drop</a><a href="#" class="btn btn--outline hero__btn-ghost">Our roots</a></div>
+  </div></div>
+  <button class="hero__toggle" data-video-toggle data-pause-label="Pause" data-play-label="Play"><span class="hero__toggle-pause">{{icon14:pause}}</span><span class="hero__toggle-play">{{icon14:play}}</span></button>
+</section>
+
+<section class="section featured-products"><div class="page-width">
+  <header class="section-header"><div class="section-header__text"><p class="eyebrow">New drop</p><h2 class="h1">Now live</h2></div><a href="#" class="link-underline section-header__link">Shop all</a></header>
+  <div class="grid grid--4 reveal-stagger is-visible">{{CARDS}}</div>
+</div></section>
+
+<section class="section section--flush tier-split">
+  <div class="page-width"><header class="section-header tier-split__header"><div class="section-header__text"><p class="eyebrow">Two ways to wear it</p><h2 class="h1">Premium &amp; Standard</h2></div><p class="tier-split__intro muted">Same designs. Choose heavyweight embroidered quality or the classic print.</p></header></div>
+  <div class="tier-split__grid">
+    <a href="#" class="tier tier--featured reveal is-visible"><div class="tier__media media"><img src="p-wheel-it-up-sweat.png" alt=""><div class="tier__overlay"></div></div>
+      <div class="tier__content"><div class="tier__top"><span class="badge badge--accent">Premium</span><span class="tier__price label">From £65</span></div>
+      <div class="tier__bottom"><h3 class="tier__title h1">Premium</h3><p class="tier__spec">500gsm heavyweight · hand-embroidered · made to order</p><span class="tier__cta btn btn--inverse btn--sm">Shop Premium {{icon14:arrow-right}}</span></div></div></a>
+    <a href="#" class="tier reveal is-visible"><div class="tier__media media"><img src="p-classic-tee.jpg" alt=""><div class="tier__overlay"></div></div>
+      <div class="tier__content"><div class="tier__top"><span class="badge badge--outline">Standard</span><span class="tier__price label">From £30</span></div>
+      <div class="tier__bottom"><h3 class="tier__title h1">Standard</h3><p class="tier__spec">Classic 100% cotton · screen print · ships in 48h</p><span class="tier__cta btn btn--inverse btn--sm">Shop Standard {{icon14:arrow-right}}</span></div></div></a>
+  </div>
+</section>
+
+<section class="section shop-look"><div class="page-width"><div class="shop-look__layout">
+  <div class="shop-look__scene media media--portrait reveal is-visible" data-hotspots>
+    <img src="p-cargo-grey.jpg" alt="Lookbook">
+    <button class="hotspot" style="left:48%;top:30%" data-hotspot aria-controls="hs1" aria-expanded="false"><span class="hotspot__dot"><span class="hotspot__num">1</span></span></button>
+    <div id="hs1" class="hotspot-pop" style="left:48%;top:30%" data-hotspot-pop hidden><a href="#" class="hotspot-pop__inner"><span class="media media--portrait hotspot-pop__media"><img src="p-wheel-it-up-sweat.png" alt=""></span><span class="hotspot-pop__info"><span class="hotspot-pop__title">Black Wheel It Up!! Sweatshirt</span><span class="price"><span class="price__current">£65.00</span></span><span class="link-underline">View product</span></span></a></div>
+    <button class="hotspot" style="left:52%;top:68%" data-hotspot aria-controls="hs2" aria-expanded="false"><span class="hotspot__dot"><span class="hotspot__num">2</span></span></button>
+    <div id="hs2" class="hotspot-pop hotspot-pop--up" style="left:52%;top:68%" data-hotspot-pop hidden><a href="#" class="hotspot-pop__inner"><span class="media media--portrait hotspot-pop__media"><img src="p-cargo-grey.jpg" alt=""></span><span class="hotspot-pop__info"><span class="hotspot-pop__title">Grey Cargo Sweatpants</span><span class="price"><span class="price__current">£77.00</span></span><span class="link-underline">View product</span></span></a></div>
+  </div>
+  <div class="shop-look__side">
+    <div class="shop-look__intro"><p class="eyebrow">Lookbook</p><h2 class="h1">Shop the look</h2><p class="muted">Tap the pins to shop every piece.</p></div>
+    <ol class="shop-look__list">{{LOOK_CARDS}}</ol>
+    <a href="#" class="btn btn--outline shop-look__cta">View lookbook</a>
+  </div>
+</div></div></section>

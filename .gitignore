@@ -1,0 +1,17 @@
+# Shopify CLI
+.shopify/
+shopify.theme.toml
+config/settings_data.json
+
+# Local dev-only material (not part of the theme)
+.dev-assets/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
+node_modules/
+
+# Preview build output & screenshots (regenerable)
+.dev-src/preview/out/
+.dev-src/preview/shots/

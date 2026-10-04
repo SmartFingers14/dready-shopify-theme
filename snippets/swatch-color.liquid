@@ -1,0 +1,58 @@
+{%- comment -%}
+  Maps a colour option value to a hex for swatches. Checks most-specific names first.
+  Usage: {% render 'swatch-color', value: 'Military green' %} → #4b5320
+{%- endcomment -%}
+{%- liquid
+  assign v = value | downcase
+  assign hex = ''
+  if v contains 'military' or v contains 'olive' or v contains 'army'
+    assign hex = '#4b5320'
+  elsif v contains 'forest' or v contains 'bottle'
+    assign hex = '#1f4d2e'
+  elsif v contains 'kelly'
+    assign hex = '#2f9e44'
+  elsif v contains 'legion' or v contains 'french navy' or v contains 'navy' or v contains 'indigo'
+    assign hex = '#1a2340'
+  elsif v contains 'royal' or v contains 'stargazer'
+    assign hex = '#2b4fbf'
+  elsif v contains 'sky' or v contains 'light blue'
+    assign hex = '#7cb9e8'
+  elsif v contains 'petrol' or v contains 'teal'
+    assign hex = '#0f766e'
+  elsif v contains 'dark chocolate' or v contains 'chocolate' or v contains 'brown' or v contains 'hash'
+    assign hex = '#4a2c21'
+  elsif v contains 'caramel' or v contains 'tan'
+    assign hex = '#c68e5a'
+  elsif v contains 'sand' or v contains 'natural' or v contains 'ites' or v contains 'cream' or v contains 'off white' or v contains 'soft white'
+    assign hex = '#e3d9c2'
+  elsif v contains 'blush' or v contains 'pink'
+    assign hex = '#f4c2c2'
+  elsif v contains 'maroon' or v contains 'burgundy' or v contains 'wine'
+    assign hex = '#6d1f2b'
+  elsif v contains 'rust' or v contains 'orange'
+    assign hex = '#b7410e'
+  elsif v contains 'purple' or v contains 'haze' or v contains 'violet'
+    assign hex = '#6b21a8'
+  elsif v contains 'heather' or v contains 'graphite' or v contains 'charcoal'
+    assign hex = '#4b4f55'
+  elsif v contains 'grey' or v contains 'gray'
+    assign hex = '#9aa0a6'
+  elsif v contains 'gold' or v contains 'yellow' or v contains 'mustard'
+    assign hex = '#f8c010'
+  elsif v contains 'green'
+    assign hex = '#109048'
+  elsif v contains 'red' or v contains 'magic'
+    assign hex = '#e83028'
+  elsif v contains 'blue'
+    assign hex = '#2563eb'
+  elsif v contains 'white'
+    assign hex = '#ffffff'
+  elsif v contains 'black'
+    assign hex = '#111111'
+  elsif v contains 'rasta' or v contains 'multi'
+    assign hex = 'linear-gradient(90deg,#e83028 33%,#f8c010 33% 66%,#109048 66%)'
+  else
+    assign hex = '#cfcfd4'
+  endif
+  echo hex
+-%}

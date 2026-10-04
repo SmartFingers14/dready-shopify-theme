@@ -1,0 +1,52 @@
+{%- comment -%} Storefront filters in a drawer. Params: collection {%- endcomment -%}
+<div id="FilterDrawer" class="drawer filter-drawer" role="dialog" aria-modal="true" aria-label="{{ 'sections.collection.filter' | t }}" aria-hidden="true">
+  <form method="get" class="filter-drawer__form" id="FilterForm">
+    <input type="hidden" name="sort_by" value="{{ collection.sort_by }}">
+    <div class="drawer__header">
+      <span class="label">{{ 'sections.collection.filter' | t }}</span>
+      <button type="button" class="drawer__close" data-drawer-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', name: 'close', size: 22 %}</button>
+    </div>
+    <div class="drawer__body">
+      <div class="accordion">
+        {%- for filter in collection.filters -%}
+          <details class="accordion__item" {% if filter.active_values.size > 0 %}open{% endif %}>
+            <summary class="accordion__summary">
+              <span>{{ filter.label }}{% if filter.active_values.size > 0 %} <span class="muted">({{ filter.active_values.size }})</span>{% endif %}</span>
+              {% render 'icon', name: 'plus', size: 16 %}
+            </summary>
+            <div class="accordion__content">
+              {%- case filter.type -%}
+                {%- when 'list' or 'boolean' -%}
+                  <ul class="filter-list">
+                    {%- for value in filter.values -%}
+                      <li>
+                        <label class="checkbox{% if value.count == 0 and value.active == false %} is-disabled{% endif %}">
+                          <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value }}" {% if value.active %}checked{% endif %} {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                          <span>{{ value.label }} <span class="muted">({{ value.count }})</span></span>
+                        </label>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- when 'price_range' -%}
+                  <div class="filter-price">
+                    <div class="field">
+                      <label class="field__label" for="FilterMin">Min</label>
+                      <input id="FilterMin" class="field__input" type="number" name="{{ filter.min_value.param_name }}" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" placeholder="0" {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}>
+                    </div>
+                    <div class="field">
+                      <label class="field__label" for="FilterMax">Max</label>
+                      <input id="FilterMax" class="field__input" type="number" name="{{ filter.max_value.param_name }}" min="0" max="{{ filter.range_max | money_without_currency | replace: ',', '' }}" placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}" {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}>
+                    </div>
+                  </div>
+              {%- endcase -%}
+            </div>
+          </details>
+        {%- endfor -%}
+      </div>
+    </div>
+    <div class="drawer__footer filter-drawer__footer">
+      <a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="btn btn--outline">{{ 'sections.collection.clear_all' | t }}</a>
+      <button type="submit" class="btn">{{ 'sections.collection.apply' | t }}</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,83 @@
+{%- comment -%} Collection page: header, filters (drawer on mobile), sort, 4-up grid, pagination. {%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign per_page = s.per_page
+-%}
+<div class="collection page-width">
+  <header class="page-header collection__header">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a><span aria-hidden="true">/</span><span aria-current="page">{{ collection.title }}</span>
+    </nav>
+    <h1 class="h1">{{ collection.title }}</h1>
+    {%- if s.show_description and collection.description != blank -%}<div class="rte">{{ collection.description }}</div>{%- endif -%}
+  </header>
+
+  {%- paginate collection.products by per_page -%}
+    <div class="collection__toolbar">
+      <p class="collection__count muted" aria-live="polite">{{ 'sections.collection.results' | t: count: collection.products_count }}</p>
+      <div class="collection__tools">
+        {%- if s.enable_filtering and collection.filters.size > 0 -%}
+          <button type="button" class="btn btn--outline btn--sm" data-drawer-open="FilterDrawer" aria-controls="FilterDrawer" aria-expanded="false">{% render 'icon', name: 'filter', size: 16 %} {{ 'sections.collection.filter' | t }}</button>
+        {%- endif -%}
+        {%- if s.enable_sorting -%}
+          <form method="get" class="collection__sort" data-localization-form>
+            <label for="SortBy" class="visually-hidden">{{ 'sections.collection.sort' | t }}</label>
+            {%- for f in collection.filters -%}{%- for v in f.active_values -%}<input type="hidden" name="{{ v.param_name }}" value="{{ v.value }}">{%- endfor -%}{%- endfor -%}
+            <select id="SortBy" name="sort_by" class="field__input collection__sort-select">
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name }}</option>
+              {%- endfor -%}
+            </select>
+          </form>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if collection.products.size > 0 -%}
+      <div class="grid grid--{{ s.columns }} collection__grid reveal-stagger">
+        {%- for product in collection.products -%}
+          {%- liquid
+            assign lazy_load = true
+            if forloop.index <= 4
+              assign lazy_load = false
+            endif
+          -%}
+          {% render 'product-card', product: product, lazy: lazy_load %}
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}
+        <nav class="pagination" aria-label="Pagination">
+          {%- if paginate.previous -%}<a href="{{ paginate.previous.url }}" aria-label="{{ 'general.pagination.previous' | t }}">{% render 'icon', name: 'arrow-left', size: 16 %}</a>{%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}<a href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{ part.title }}</a>
+            {%- elsif part.title == paginate.current_page -%}<span aria-current="page">{{ part.title }}</span>
+            {%- else -%}<span>{{ part.title }}</span>{%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}<a href="{{ paginate.next.url }}" aria-label="{{ 'general.pagination.next' | t }}">{% render 'icon', name: 'arrow-right', size: 16 %}</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- else -%}
+      <div class="empty-state">
+        <p class="h3">{{ 'sections.collection.empty' | t }}</p>
+        <a href="{{ collection.url }}" class="btn btn--outline">{{ 'sections.collection.clear_all' | t }}</a>
+      </div>
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{%- if s.enable_filtering and collection.filters.size > 0 -%}
+  {% render 'filter-drawer', collection: collection %}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": [
+    { "type": "range", "id": "per_page", "min": 8, "max": 48, "step": 4, "label": "Products per page", "default": 24 },
+    { "type": "range", "id": "columns", "min": 2, "max": 4, "step": 1, "label": "Columns", "default": 4 },
+    { "type": "checkbox", "id": "show_description", "label": "Show description", "default": true },
+    { "type": "checkbox", "id": "enable_filtering", "label": "Enable filtering", "default": true },
+    { "type": "checkbox", "id": "enable_sorting", "label": "Enable sorting", "default": true }
+  ]
+}
+{% endschema %}

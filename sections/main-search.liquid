@@ -1,0 +1,37 @@
+<div class="page-width search-page">
+  <header class="page-header">
+    <h1 class="h1">{{ 'templates.search.title' | t }}</h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
+      <label for="SearchPageInput" class="visually-hidden">{{ 'general.search.search' | t }}</label>
+      <div class="search-drawer__field">
+        {% render 'icon', name: 'search', size: 22 %}
+        <input id="SearchPageInput" type="search" name="q" class="search-drawer__input" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}">
+        <input type="hidden" name="options[prefix]" value="last">
+        <button type="submit" class="btn btn--sm">{{ 'general.search.search' | t }}</button>
+      </div>
+    </form>
+    {%- if search.performed -%}
+      <p class="muted" role="status">{%- if search.results_count == 0 -%}{{ 'templates.search.no_results' | t: terms: search.terms }}{%- else -%}{{ 'templates.search.results_with_count' | t: count: search.results_count, terms: search.terms }}{%- endif -%}</p>
+    {%- endif -%}
+  </header>
+  {%- if search.performed and search.results_count > 0 -%}
+    {%- paginate search.results by 24 -%}
+      <div class="grid grid--4 reveal-stagger">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' -%}
+            {% render 'product-card', product: item, lazy: true %}
+          {%- else -%}
+            <article class="post">
+              <a href="{{ item.url }}" class="post__media media media--landscape">{%- if item.image -%}{{ item.image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '25vw', alt: item.title | escape }}{%- else -%}{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}</a>
+              <div class="post__info"><p class="eyebrow">{{ item.object_type }}</p><h2 class="h3"><a href="{{ item.url }}">{{ item.title }}</a></h2></div>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}{{ paginate | default_pagination }}{%- endif -%}
+    {%- endpaginate -%}
+  {%- endif -%}
+</div>
+{% schema %}
+{ "name": "Search", "settings": [] }
+{% endschema %}

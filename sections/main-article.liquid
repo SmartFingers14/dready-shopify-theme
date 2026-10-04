@@ -1,0 +1,38 @@
+{%- comment -%} Article page — editorial, narrow measure; comic strips render the image full-width. {%- endcomment -%}
+<article class="article">
+  <header class="page-width page-width--narrow page-header article__header">
+    <nav class="breadcrumb" aria-label="Breadcrumb"><a href="{{ blog.url }}">{{ blog.title }}</a></nav>
+    <h1 class="h1">{{ article.title }}</h1>
+    <p class="muted">{{ article.published_at | date: '%B %d, %Y' }}{% if section.settings.show_author and article.author != blank %} · {{ 'sections.blog.by' | t: author: article.author }}{% endif %}</p>
+  </header>
+  {%- if article.image and section.settings.show_image -%}
+    <div class="page-width article__hero">
+      <div class="media {% if blog.handle == 'comics' %}media--wide media--contain{% else %}media--wide{% endif %}">
+        {{ article.image | image_url: width: 2000 | image_tag: loading: 'eager', sizes: '100vw', widths: '750, 1100, 1500, 2000', alt: article.image.alt | default: article.title | escape }}
+      </div>
+    </div>
+  {%- endif -%}
+  <div class="page-width page-width--narrow article__body rte">{{ article.content }}</div>
+  <footer class="page-width page-width--narrow article__footer">
+    {%- if article.tags.size > 0 -%}
+      <ul class="blog__tags">{%- for tag in article.tags -%}<li><a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="badge badge--outline">{{ tag }}</a></li>{%- endfor -%}</ul>
+    {%- endif -%}
+    <div class="article__share">
+      <span class="eyebrow">Share</span>
+      <button type="button" class="link-underline" data-copy="{{ shop.url }}{{ article.url }}" data-copied-label="{{ 'general.share.copied' | t }}">{{ 'general.share.copy' | t }}</button>
+    </div>
+    <div class="article__nav">
+      {%- if blog.previous_article -%}<a href="{{ blog.previous_article }}" class="link-underline">{% render 'icon', name: 'arrow-left', size: 14 %} Previous</a>{%- endif -%}
+      {%- if blog.next_article -%}<a href="{{ blog.next_article }}" class="link-underline">Next {% render 'icon', name: 'arrow-right', size: 14 %}</a>{%- endif -%}
+    </div>
+  </footer>
+</article>
+{% schema %}
+{
+  "name": "Article",
+  "settings": [
+    { "type": "checkbox", "id": "show_image", "label": "Show featured image", "default": true },
+    { "type": "checkbox", "id": "show_author", "label": "Show author", "default": false }
+  ]
+}
+{% endschema %}

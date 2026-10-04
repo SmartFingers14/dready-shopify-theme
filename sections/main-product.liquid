@@ -1,0 +1,88 @@
+{%- comment -%}
+  Product page — Daily Paper PDP pattern: scrolling gallery left, sticky buy panel right.
+  Variant picker (colour swatches + size buttons), size guide, accordions, trust strip.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign current = product.selected_or_first_available_variant
+  assign form_id = 'ProductForm-' | append: section.id
+  assign on_sale = false
+  if current.compare_at_price > current.price
+    assign on_sale = true
+  endif
+  assign is_premium = false
+  if product.tags contains 'premium' or product.tags contains 'Premium'
+    assign is_premium = true
+  endif
+  assign made_to_order = false
+  if product.tags contains 'made-to-order' or product.description contains 'made to order' or product.description contains 'working days'
+    assign made_to_order = true
+  endif
+-%}
+<div class="pdp page-width">
+  <nav class="breadcrumb pdp__crumbs" aria-label="Breadcrumb">
+    <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a><span aria-hidden="true">/</span>
+    {%- if collection -%}<a href="{{ collection.url }}">{{ collection.title }}</a><span aria-hidden="true">/</span>{%- endif -%}
+    <span aria-current="page">{{ product.title }}</span>
+  </nav>
+
+  <div class="pdp__layout">
+    {% render 'product-gallery', product: product, section: section %}
+
+    <div class="pdp__panel">
+      <div class="pdp__info">
+        <div class="pdp__badges">
+          {%- if on_sale -%}<span class="badge badge--sale">{{ 'products.product.on_sale' | t }}</span>{%- endif -%}
+          {%- if is_premium -%}<span class="badge">{{ 'products.product.premium' | t }}</span>{%- endif -%}
+          {%- if made_to_order -%}<span class="badge badge--outline">{{ 'sections.product.made_to_order' | t }}</span>{%- endif -%}
+        </div>
+        {%- if s.show_vendor -%}<p class="eyebrow">{{ product.vendor }}</p>{%- endif -%}
+        <h1 class="pdp__title h2">{{ product.title }}</h1>
+        <div class="price pdp__price{% if on_sale %} price--sale{% endif %}">
+          <span class="price__current" data-product-price>{{ current.price | money }}</span>
+          <s class="price__compare" data-product-compare {% unless on_sale %}hidden{% endunless %}>{{ current.compare_at_price | money }}</s>
+        </div>
+        {%- if cart.taxes_included -%}<p class="pdp__tax muted">{{ 'products.product.include_taxes' | t }}</p>{%- endif -%}
+      </div>
+
+      {% render 'product-form', product: product, current: current, form_id: form_id, section: section %}
+
+      {%- if made_to_order and s.made_to_order_text != blank -%}
+        <p class="pdp__notice">{% render 'icon', name: 'alert', size: 16 %} {{ s.made_to_order_text }}</p>
+      {%- endif -%}
+
+      {% render 'product-accordions', product: product, section: section %}
+
+      {%- if section.blocks.size > 0 -%}
+        <ul class="pdp__trust">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'trust' -%}
+              <li {{ block.shopify_attributes }}>{% render 'icon', name: block.settings.icon, size: 16 %} <span>{{ block.settings.text }}</span></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product",
+  "settings": [
+    { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false },
+    { "type": "checkbox", "id": "show_quantity", "label": "Show quantity selector", "default": true },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout button", "default": false },
+    { "type": "checkbox", "id": "swatches", "label": "Show colour swatches", "default": true },
+    { "type": "page", "id": "size_guide", "label": "Size guide page" },
+    { "type": "text", "id": "made_to_order_text", "label": "Made-to-order notice", "default": "Hand-embroidered to order. Please allow 5 working days before dispatch." },
+    { "type": "header", "content": "Accordions" },
+    { "type": "richtext", "id": "shipping_text", "label": "Shipping & returns", "default": "<p>Free UK shipping over £75. 30-day returns on unworn items. Made-to-order pieces are final sale.</p>" },
+    { "type": "richtext", "id": "care_text", "label": "Details & care", "default": "<p>Wash cold inside out. Do not tumble dry embroidery.</p>" }
+  ],
+  "blocks": [
+    { "type": "trust", "name": "Trust point", "settings": [ { "type": "select", "id": "icon", "label": "Icon", "options": [ { "value": "truck", "label": "Shipping" }, { "value": "refresh", "label": "Returns" }, { "value": "shield", "label": "Secure" }, { "value": "star", "label": "Quality" } ], "default": "truck" }, { "type": "text", "id": "text", "label": "Text", "default": "Worldwide shipping" } ] }
+  ],
+  "max_blocks": 4
+}
+{% endschema %}

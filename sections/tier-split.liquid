@@ -1,0 +1,98 @@
+{%- comment -%}
+  Premium / Standard — two-up tier banners (replaces Daily Paper's FW26 collection banners).
+  Same designs, two qualities, two prices. Each tile: image, tier name, spec line, "from" price, CTA.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<section class="section section--flush tier-split">
+  {%- if s.heading != blank or s.eyebrow != blank -%}
+    <div class="page-width">
+      <header class="section-header tier-split__header">
+        <div class="section-header__text">
+          {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+          {%- if s.heading != blank -%}<h2 class="h1">{{ s.heading }}</h2>{%- endif -%}
+        </div>
+        {%- if s.intro != blank -%}<p class="tier-split__intro muted">{{ s.intro }}</p>{%- endif -%}
+      </header>
+    </div>
+  {%- endif -%}
+
+  <div class="tier-split__grid">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign b = block.settings
+        assign coll = b.collection
+        assign from_price = nil
+        if coll != blank and coll.products.size > 0
+          assign from_price = coll.products | map: 'price_min' | sort | first
+        endif
+        assign url = b.url
+        if url == blank and coll != blank
+          assign url = coll.url
+        endif
+      -%}
+      <a href="{{ url }}" class="tier{% if b.featured %} tier--featured{% endif %} reveal" {{ block.shopify_attributes }}>
+        <div class="tier__media media">
+          {%- if b.image != blank -%}
+            {{ b.image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(min-width: 768px) 50vw, 100vw', widths: '600, 900, 1200, 1600', alt: b.title | escape }}
+          {%- elsif coll != blank and coll.image -%}
+            {{ coll.image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(min-width: 768px) 50vw, 100vw', alt: b.title | escape }}
+          {%- else -%}
+            <div class="media--placeholder" data-label="{{ b.title }} image" style="position:absolute;inset:0">{{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+          {%- endif -%}
+          <div class="tier__overlay" aria-hidden="true"></div>
+        </div>
+        <div class="tier__content">
+          <div class="tier__top">
+            <span class="badge {% if b.featured %}badge--accent{% else %}badge--outline{% endif %}">{{ b.badge | default: b.title }}</span>
+            {%- if from_price -%}<span class="tier__price label">{{ 'products.product.from' | t: price: from_price | money }}</span>{%- elsif b.price_text != blank -%}<span class="tier__price label">{{ b.price_text }}</span>{%- endif -%}
+          </div>
+          <div class="tier__bottom">
+            <h3 class="tier__title h1">{{ b.title }}</h3>
+            {%- if b.spec != blank -%}<p class="tier__spec">{{ b.spec }}</p>{%- endif -%}
+            <span class="tier__cta btn btn--inverse btn--sm">{{ b.cta | default: 'sections.header.shop_all' | t }} {% render 'icon', name: 'arrow-right', size: 14 %}</span>
+          </div>
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Premium / Standard tiers",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Two ways to wear it" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Premium & Standard" },
+    { "type": "text", "id": "intro", "label": "Intro", "default": "Same designs. Choose heavyweight embroidered quality or the classic print." }
+  ],
+  "blocks": [
+    {
+      "type": "tier",
+      "name": "Tier",
+      "limit": 2,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Tier name", "default": "Premium" },
+        { "type": "text", "id": "badge", "label": "Badge label", "info": "Defaults to tier name." },
+        { "type": "text", "id": "spec", "label": "Spec line", "default": "500gsm heavyweight · hand-embroidered · made to order" },
+        { "type": "text", "id": "price_text", "label": "Price text (fallback)", "info": "Used if no collection is set, e.g. “From £65”." },
+        { "type": "collection", "id": "collection", "label": "Collection", "info": "“From” price is calculated from this collection." },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "url", "id": "url", "label": "Link (defaults to collection)" },
+        { "type": "text", "id": "cta", "label": "Button text", "default": "Shop Premium" },
+        { "type": "checkbox", "id": "featured", "label": "Highlight with accent", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 2,
+  "presets": [
+    {
+      "name": "Premium / Standard tiers",
+      "blocks": [
+        { "type": "tier", "settings": { "title": "Premium", "spec": "500gsm heavyweight · hand-embroidered · made to order", "cta": "Shop Premium", "featured": true } },
+        { "type": "tier", "settings": { "title": "Standard", "spec": "Classic 100% cotton · screen print · ships in 48h", "cta": "Shop Standard", "featured": false } }
+      ]
+    }
+  ]
+}
+{% endschema %}

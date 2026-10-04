@@ -1,0 +1,81 @@
+{%- comment -%}
+  Collabs — Daily Paper "Collaborations" pattern. Horizontal scroller of large
+  landscape tiles: partner image, "Dready × Partner" title, short line, link.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<section class="section collabs{% if s.dark %} section--dark{% endif %}" data-scroller-wrap>
+  <div class="page-width">
+    <header class="section-header">
+      <div class="section-header__text">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="h1">{{ s.heading }}</h2>{%- endif -%}
+      </div>
+      <div class="section-header__actions">
+        <div class="scroller-controls">
+          <button type="button" class="icon-btn" data-scroller-prev aria-label="{{ 'accessibility.previous_slide' | t }}">{% render 'icon', name: 'arrow-left' %}</button>
+          <button type="button" class="icon-btn" data-scroller-next aria-label="{{ 'accessibility.next_slide' | t }}">{% render 'icon', name: 'arrow-right' %}</button>
+        </div>
+        {%- if s.view_all_url != blank -%}<a href="{{ s.view_all_url }}" class="link-underline section-header__link">{{ s.view_all_text }}</a>{%- endif -%}
+      </div>
+    </header>
+
+    <div class="scroller scroller--3 reveal-stagger" data-scroller>
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign url = b.url
+          if url == blank and b.collection != blank
+            assign url = b.collection.url
+          endif
+        -%}
+        <a href="{{ url }}" class="collab" {{ block.shopify_attributes }}>
+          <div class="collab__media media media--landscape">
+            {%- if b.image != blank -%}
+              {{ b.image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 33vw, 80vw', widths: '480, 800, 1200', alt: b.title | escape }}
+            {%- else -%}
+              <div class="media--placeholder" data-label="Collab image" style="position:absolute;inset:0">{{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}</div>
+            {%- endif -%}
+            {%- if b.logo != blank -%}<div class="collab__logo">{{ b.logo | image_url: width: 240 | image_tag: loading: 'lazy', sizes: '120px', alt: '' }}</div>{%- endif -%}
+            {%- if b.status != blank -%}<span class="badge {% if b.status == 'Live' or b.status == 'live' %}badge--accent{% else %}badge--outline{% endif %} collab__status">{{ b.status }}</span>{%- endif -%}
+          </div>
+          <div class="collab__info">
+            <h3 class="collab__title h3">{{ b.title }}</h3>
+            {%- if b.text != blank -%}<p class="collab__text muted">{{ b.text }}</p>{%- endif -%}
+            <span class="link-underline">{{ b.cta | default: 'View' }}</span>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collabs",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Collaborations" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Collabs" },
+    { "type": "text", "id": "view_all_text", "label": "View all text", "default": "All collabs" },
+    { "type": "url", "id": "view_all_url", "label": "View all link" },
+    { "type": "checkbox", "id": "dark", "label": "Dark background", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "collab",
+      "name": "Collab",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Dready × New Era" },
+        { "type": "text", "id": "text", "label": "Short line", "default": "The Walking Dread embroidered cuff beanie." },
+        { "type": "text", "id": "status", "label": "Status badge", "default": "Live", "info": "e.g. Live, Sold out, Coming soon" },
+        { "type": "image_picker", "id": "image", "label": "Image (3:2)" },
+        { "type": "image_picker", "id": "logo", "label": "Partner logo (optional)" },
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "url", "id": "url", "label": "Link (defaults to collection)" },
+        { "type": "text", "id": "cta", "label": "Link text", "default": "Shop the collab" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Collabs", "blocks": [ { "type": "collab" }, { "type": "collab", "settings": { "title": "Dready × Birmingham", "text": "Celebrating the city where it all started.", "status": "Coming soon" } }, { "type": "collab", "settings": { "title": "Dready × Artist series", "text": "Limited graffiti capsule.", "status": "Sold out" } } ] } ]
+}
+{% endschema %}

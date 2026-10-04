@@ -1,0 +1,92 @@
+{%- comment -%}
+  Join the community — Daily Paper "UNITE membership" pattern.
+  Big statement, perks list, email capture (Shopify customer form), optional image.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<section class="section community{% if s.dark %} section--dark{% endif %}">
+  <div class="page-width">
+    <div class="community__layout{% if s.image == blank %} community__layout--noimg{% endif %}">
+      {%- if s.image != blank -%}
+        <div class="community__media media media--portrait reveal">
+          {{ s.image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 40vw, 100vw', widths: '600, 900, 1200', alt: s.heading | escape }}
+        </div>
+      {%- endif -%}
+      <div class="community__content reveal">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        <h2 class="community__heading h-hero">{{ s.heading }}</h2>
+        {%- if s.text != blank -%}<p class="community__text body-lg">{{ s.text }}</p>{%- endif -%}
+
+        {%- if section.blocks.size > 0 -%}
+          <ul class="community__perks">
+            {%- for block in section.blocks -%}
+              <li class="community__perk" {{ block.shopify_attributes }}>
+                {% render 'icon', name: block.settings.icon, size: 18 %}
+                <span>{{ block.settings.text }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        {%- form 'customer', id: 'CommunityForm', class: 'community__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter,community">
+          {%- if form.posted_successfully? -%}
+            <p class="form-status form-status--success" role="status" tabindex="-1">{% render 'icon', name: 'check', size: 16 %} {{ 'general.newsletter.success' | t }}</p>
+          {%- else -%}
+            <div class="inline-form">
+              <label for="CommunityEmail" class="visually-hidden">{{ 'general.newsletter.label' | t }}</label>
+              <input id="CommunityEmail" type="email" name="contact[email]" class="field__input" placeholder="{{ 'general.newsletter.label' | t }}" required autocomplete="email" {% if form.errors %}aria-invalid="true" aria-describedby="CommunityEmailError"{% endif %}>
+              <button type="submit" class="btn {% if s.dark %}btn--inverse{% endif %}">{{ s.button_text }}</button>
+            </div>
+            {%- if form.errors -%}<p id="CommunityEmailError" class="field__error" role="alert">{% render 'icon', name: 'alert', size: 14 %} {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>{%- endif -%}
+            {%- if s.small_print != blank -%}<p class="community__small muted">{{ s.small_print }}</p>{%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+
+        {%- if s.show_social -%}
+          <div class="community__social">
+            <span class="eyebrow">{{ 'general.social.follow' | t }}</span>
+            {% render 'social-links', size: 20 %}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Join the community",
+  "tag": "section",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image (optional, 4:5)" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Dready family" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Join the community" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Early access to drops, event guest lists, collab previews and 10% off your first order." },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "Join" },
+    { "type": "text", "id": "small_print", "label": "Small print", "default": "No spam. Unsubscribe any time." },
+    { "type": "checkbox", "id": "show_social", "label": "Show social links", "default": true },
+    { "type": "checkbox", "id": "dark", "label": "Dark background", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "Perk",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [ { "value": "star", "label": "Star" }, { "value": "tag", "label": "Tag" }, { "value": "ticket", "label": "Ticket" }, { "value": "music", "label": "Music" }, { "value": "eye", "label": "Eye" }, { "value": "check", "label": "Check" } ], "default": "star" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Early access to every drop" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Join the community",
+      "blocks": [
+        { "type": "perk", "settings": { "icon": "star", "text": "Early access to every drop" } },
+        { "type": "perk", "settings": { "icon": "ticket", "text": "Event guest lists & presales" } },
+        { "type": "perk", "settings": { "icon": "tag", "text": "10% off your first order" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
