@@ -18,7 +18,7 @@
         {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
         {%- if s.heading != blank -%}<h2 class="h1">{{ s.heading }}</h2>{%- endif -%}
       </div>
-      {%- if blog != blank -%}<a href="{{ blog.url }}" class="link-underline section-header__link">{{ s.view_all_text | default: 'sections.blog.all_posts' | t }}</a>{%- endif -%}
+      {%- if blog != blank -%}<a href="{{ blog.url }}" class="link-underline section-header__link">{%- if s.view_all_text != blank -%}{{ s.view_all_text }}{%- else -%}{{ 'sections.blog.all_posts' | t }}{%- endif -%}</a>{%- endif -%}
     </header>
 
     {%- if count > 0 -%}

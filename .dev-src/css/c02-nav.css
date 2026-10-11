@@ -1,7 +1,8 @@
 
 /* Desktop nav */
 .header__nav { display: none; }
-@media (min-width: 1024px) { .header__nav { display: block; } }
+/* 7 top-level links need ~565px beside the centred logo; below 1360px the burger menu is used instead */
+@media (min-width: 1360px) { .header__nav { display: block; } }
 .header__menu { display: flex; gap: var(--space-1); }
 .header__menu-link { display: inline-flex; align-items: center; height: var(--header-height); padding-inline: var(--space-3); font-size: var(--text-sm); font-weight: 500; letter-spacing: var(--tracking-caps); position: relative; }
 .header__menu-link::after { content: ''; position: absolute; left: var(--space-3); right: var(--space-3); bottom: 18px; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform var(--dur) var(--ease-out); }

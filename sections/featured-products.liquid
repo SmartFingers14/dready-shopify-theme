@@ -22,7 +22,7 @@
           </div>
         {%- endif -%}
         {%- if s.show_view_all and coll != blank -%}
-          <a href="{{ coll.url }}" class="link-underline section-header__link">{{ s.view_all_text | default: 'sections.header.shop_all' | t }}</a>
+          <a href="{{ coll.url }}" class="link-underline section-header__link">{%- if s.view_all_text != blank -%}{{ s.view_all_text }}{%- else -%}{{ 'sections.header.shop_all' | t }}{%- endif -%}</a>
         {%- endif -%}
       </div>
     </header>

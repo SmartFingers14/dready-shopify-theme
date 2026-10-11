@@ -49,7 +49,7 @@
           <div class="tier__bottom">
             <h3 class="tier__title h1">{{ b.title }}</h3>
             {%- if b.spec != blank -%}<p class="tier__spec">{{ b.spec }}</p>{%- endif -%}
-            <span class="tier__cta btn btn--inverse btn--sm">{{ b.cta | default: 'sections.header.shop_all' | t }} {% render 'icon', name: 'arrow-right', size: 14 %}</span>
+            <span class="tier__cta btn btn--inverse btn--sm">{%- if b.cta != blank -%}{{ b.cta }}{%- else -%}{{ 'sections.header.shop_all' | t }}{%- endif -%} {% render 'icon', name: 'arrow-right', size: 14 %}</span>
           </div>
         </div>
       </a>
