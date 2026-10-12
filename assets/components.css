@@ -303,12 +303,12 @@
 .collab__text { font-size: var(--text-sm); }
 
 /* ---------- Comic strip slideshow ---------- */
-.comic__show { position: relative; display: grid; gap: var(--space-4); }
-.comic__viewport { position: relative; display: grid; }
+.comic__show { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+.comic__viewport { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); }
 .comic__slide { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity var(--dur-slow) var(--ease-out), visibility 0s linear var(--dur-slow); }
 .comic__slide.is-active { opacity: 1; visibility: visible; transition-delay: 0s; }
-.comic__link { display: grid; grid-template-columns: 1fr 300px; gap: var(--space-6); align-items: end; }
-@media (max-width: 1023px) { .comic__link { grid-template-columns: 1fr; gap: var(--space-4); } }
+.comic__link { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: var(--space-6); align-items: end; }
+@media (max-width: 1023px) { .comic__link { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); } }
 .comic__media { border: 1px solid var(--color-dark-border); }
 .comic__media img { object-fit: contain; background: #fff; }
 .comic__caption { display: grid; gap: var(--space-3); justify-items: start; padding-bottom: var(--space-2); }
