@@ -27,9 +27,47 @@
     },
     "look": {
       "type": "shop-the-look",
-      "blocks": { "h1": { "type": "hotspot", "settings": { "x": 48, "y": 30 } }, "h2": { "type": "hotspot", "settings": { "x": 52, "y": 68 } } },
-      "block_order": ["h1", "h2"],
-      "settings": { "image_side": "left", "eyebrow": "Lookbook", "heading": "Shop the look", "text": "Tap the pins to shop every piece.", "cta_text": "View lookbook", "dark": false }
+      "blocks": {
+        "h1": {
+          "type": "hotspot",
+          "settings": {
+            "product": "dready-rasta-beanie",
+            "x": 45,
+            "y": 8
+          }
+        },
+        "h2": {
+          "type": "hotspot",
+          "settings": {
+            "product": "dready-og-97-embroidered-hood",
+            "x": 56,
+            "y": 29
+          }
+        },
+        "h3": {
+          "type": "hotspot",
+          "settings": {
+            "product": "dready-head-grey-90s-extra-heavy-brushed-fleece-logo-cargo-sweatpants-copy",
+            "x": 60,
+            "y": 74
+          }
+        }
+      },
+      "block_order": [
+        "h2",
+        "h3",
+        "h1"
+      ],
+      "settings": {
+        "image_side": "left",
+        "eyebrow": "Lookbook",
+        "heading": "Shop the look",
+        "text": "Tap the pins to shop every piece.",
+        "cta_text": "Shop premium hoods",
+        "dark": false,
+        "image": "shopify://shop_images/F3A6F079-501F-4555-B4EA-608CE7D16F2B.png",
+        "cta_url": "/collections/premium-hoods"
+      }
     },
     "dbay": {
       "type": "dbay",
