@@ -2,7 +2,8 @@
 /* ---------- Blog / article ---------- */
 .blog__tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
 .blog__grid { margin-bottom: var(--section-pad); }
-.post { display: grid; gap: var(--space-3); align-content: start; }
+.post { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); align-content: start; }
+.post__info { overflow-wrap: anywhere; }
 .post__media img { transition: transform var(--dur-slow) var(--ease-out); }
 .post:hover .post__media img { transform: scale(1.03); }
 .post__info { display: grid; gap: var(--space-2); justify-items: start; }
