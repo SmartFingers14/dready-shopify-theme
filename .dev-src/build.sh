@@ -22,7 +22,8 @@ cat .dev-src/css/c01-announcement.css \
     .dev-src/css/c08-community-footer.css \
     .dev-src/css/c09-pages.css \
     .dev-src/css/c10-blog-account.css \
-    .dev-src/css/c11-culture-pages.css > assets/components.css
+    .dev-src/css/c11-culture-pages.css \
+    .dev-src/css/c12-gift-card.css > assets/components.css
 
 cat .dev-src/js/01-core.js \
     .dev-src/js/02-header-motion.js \

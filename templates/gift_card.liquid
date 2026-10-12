@@ -1,0 +1,190 @@
+{%- layout none -%}
+{%- comment -%}
+  Gift card — the page a Dready gift card email links to. Standalone document (layout none):
+  light shop bar, black band with the balance and a physical-feeling card, then the code
+  (one-tap copy), Shop / Apple Wallet / Print, the in-store QR code and how to redeem.
+{%- endcomment -%}
+{%- liquid
+  assign balance = gift_card.balance | money
+  assign initial = gift_card.initial_value | money
+  assign is_live = true
+  if gift_card.expired or gift_card.enabled == false
+    assign is_live = false
+  endif
+  assign code_spaced = gift_card.code | format_code
+  assign expires_short = gift_card.expires_on | date: '%d %b %Y'
+  assign expires_long = gift_card.expires_on | date: '%d %B %Y'
+-%}
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09090b">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{{ 'gift_card.title' | t: value: initial }} &ndash; {{ shop.name }}</title>
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {%- else -%}
+    <link rel="icon" type="image/png" href="{{ 'dready-icon.png' | asset_url }}">
+  {%- endif -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>:root { --color-accent: {{ settings.color_accent | default: '#f8c010' }}; --page-max: {{ settings.page_width | default: 1600 }}px; }</style>
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+  {{ 'components.css' | asset_url | stylesheet_tag }}
+  <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+  {{ content_for_header }}
+</head>
+<body class="template-gift-card">
+  <div class="gc">
+    <header class="gc__bar page-width">
+      <a href="{{ routes.root_url }}" class="gc__logo" aria-label="{{ shop.name | escape }}">
+        {%- if settings.logo != blank -%}
+          {{ settings.logo | image_url: width: 200 | image_tag: height: 40, alt: '' }}
+        {%- else -%}
+          <img src="{{ 'dready-logo.png' | asset_url }}" alt="" width="40" height="40">
+        {%- endif -%}
+        <span class="gc__wordmark">Dready</span>
+      </a>
+      <a href="{{ routes.root_url }}" class="btn btn--outline btn--sm">{{ 'gift_card.shop' | t }}</a>
+    </header>
+
+    <main id="MainContent" role="main">
+      <section class="gc__hero">
+        <div class="page-width gc__hero-grid">
+          <div class="gc__intro">
+            <p class="eyebrow">{{ 'gift_card.eyebrow' | t }}</p>
+            <h1 class="visually-hidden">{{ 'gift_card.title' | t: value: initial }}</h1>
+            <p class="gc__balance" aria-label="{{ 'gift_card.balance' | t }}: {{ balance }}">{{ balance }}</p>
+            {%- if is_live -%}
+              <p class="gc__status gc__status--live">{% render 'icon', name: 'check', size: 14 %} {{ 'gift_card.active' | t }}</p>
+            {%- elsif gift_card.expired -%}
+              <p class="gc__status gc__status--off">{% render 'icon', name: 'alert', size: 14 %} {{ 'gift_card.expired' | t: date: expires_short }}</p>
+            {%- else -%}
+              <p class="gc__status gc__status--off">{% render 'icon', name: 'alert', size: 14 %} {{ 'gift_card.disabled' | t }}</p>
+            {%- endif -%}
+            <p class="gc__sub body-lg">
+              {%- if gift_card.balance != gift_card.initial_value -%}
+                {{ 'gift_card.remaining' | t: initial: initial }}
+              {%- else -%}
+                {{ 'gift_card.lede' | t }}
+              {%- endif -%}
+            </p>
+          </div>
+
+          <div class="gc__card-wrap">
+            <div class="gc-card{% unless is_live %} gc-card--off{% endunless %}" aria-hidden="true">
+              <div class="gc-card__top">
+                <span class="gc-card__mark-wrap"><img src="{{ 'dready-icon.png' | asset_url }}" alt="" class="gc-card__mark" width="44" height="44"></span>
+                <span class="gc-card__brand">Dready Original</span>
+              </div>
+              <span></span>
+              <div class="gc-card__bottom">
+                <div>
+                  <span class="gc-card__label">{{ 'gift_card.card_label' | t }}</span>
+                  <span class="gc-card__num">&bull;&bull;&bull;&bull; {{ gift_card.last_four_characters | upcase }}</span>
+                </div>
+                <div class="gc-card__value">{{ initial }}</div>
+              </div>
+              <span class="gc-card__stripe"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="gc__body">
+        <div class="page-width gc__body-grid">
+          <div class="gc__panel">
+            <h2 class="label">{{ 'gift_card.code_label' | t }}</h2>
+            <div class="gc__code-box">
+              <p class="gc__code" id="GiftCardCode" data-code="{{ gift_card.code }}">{{ code_spaced }}</p>
+              <button type="button" class="btn gc__copy" data-copy-code aria-describedby="GiftCardCode">
+                <span class="gc__copy-idle">{{ 'gift_card.copy' | t }}</span>
+                <span class="gc__copy-done">{% render 'icon', name: 'check', size: 16 %} {{ 'gift_card.copied' | t }}</span>
+              </button>
+            </div>
+            <p class="visually-hidden" role="status" aria-live="polite" data-copy-status></p>
+
+            {%- if gift_card.message != blank -%}
+              <figure class="gc__message">
+                <figcaption class="eyebrow">{{ 'gift_card.message_label' | t }}</figcaption>
+                <blockquote class="gc__message-text">{{ gift_card.message | escape | newline_to_br }}</blockquote>
+              </figure>
+            {%- endif -%}
+
+            <div class="gc__actions">
+              {%- if is_live -%}<a href="{{ routes.all_products_collection_url }}" class="btn">{{ 'gift_card.shop_now' | t }} {% render 'icon', name: 'arrow-right', size: 14 %}</a>{%- endif -%}
+              {%- if gift_card.pass_url -%}
+                <a href="{{ gift_card.pass_url }}" class="gc__wallet"><img src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" width="120" height="40" alt="{{ 'gift_card.apple_wallet' | t }}" loading="lazy"></a>
+              {%- endif -%}
+              <button type="button" class="btn btn--outline" onclick="window.print()">{{ 'gift_card.print' | t }}</button>
+            </div>
+
+            <div class="gc__meta">
+              {%- if gift_card.expires_on and gift_card.expired == false -%}<p>{{ 'gift_card.expires' | t: date: expires_long }}</p>{%- endif -%}
+              <p>{{ 'gift_card.help' | t }}</p>
+            </div>
+          </div>
+
+          <div class="gc__panel">
+            <h2 class="label">{{ 'gift_card.how_title' | t }}</h2>
+            <ol class="gc__steps">
+              <li class="gc__step"><span class="gc__step-num">01</span><p><strong>{{ 'gift_card.step_1_title' | t }}</strong><span>{{ 'gift_card.step_1' | t }}</span></p></li>
+              <li class="gc__step"><span class="gc__step-num">02</span><p><strong>{{ 'gift_card.step_2_title' | t }}</strong><span>{{ 'gift_card.step_2' | t }}</span></p></li>
+              <li class="gc__step"><span class="gc__step-num">03</span><p><strong>{{ 'gift_card.step_3_title' | t }}</strong><span>{{ 'gift_card.step_3' | t }}</span></p></li>
+            </ol>
+            <div class="gc__qr">
+              <div class="gc__qr-code" id="GiftCardQr" data-identifier="{{ gift_card.qr_identifier }}"></div>
+              <p class="muted">{{ 'gift_card.qr' | t }}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="gc__foot">
+      <div class="page-width">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }} &middot; Roots &bull; Culture &bull; Peace</div>
+    </footer>
+  </div>
+
+  <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var qr = document.getElementById('GiftCardQr');
+      if (qr && window.QRCode && qr.dataset.identifier) {
+        new QRCode(qr, { text: qr.dataset.identifier, width: 240, height: 240, correctLevel: QRCode.CorrectLevel.M });
+        var img = qr.querySelector('img'); if (img) img.alt = {{ 'gift_card.qr_alt' | t | json }};
+      }
+      var btn = document.querySelector('[data-copy-code]');
+      var status = document.querySelector('[data-copy-status]');
+      var code = document.getElementById('GiftCardCode');
+      if (!btn || !code) return;
+      var done = function () {
+        btn.classList.add('is-copied');
+        status.textContent = {{ 'gift_card.copied_status' | t | json }};
+        setTimeout(function () { btn.classList.remove('is-copied'); }, 2500);
+      };
+      var fallback = function () {
+        var ta = document.createElement('textarea');
+        ta.value = code.dataset.code; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+        document.body.appendChild(ta); ta.select();
+        var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+        if (ok) { done(); return; }
+        var range = document.createRange(); range.selectNodeContents(code);
+        var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+        status.textContent = {{ 'gift_card.copy_manual' | t | json }};
+      };
+      btn.addEventListener('click', function () {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(code.dataset.code).then(done, fallback);
+        } else {
+          fallback();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
