@@ -35,7 +35,7 @@ details[open] > .accordion__summary svg { transform: rotate(45deg); }
 .toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
 
 /* ---------- Page header (collection / blog / page) ---------- */
-.page-header { padding-block: var(--space-8) var(--space-6); display: grid; gap: var(--space-3); }
+.page-header { padding-block: var(--space-8) var(--space-6); display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
 .page-header .rte { max-width: 60ch; color: var(--color-muted); }
 
 /* ---------- Simple page / policy ---------- */
