@@ -1,14 +1,24 @@
 {%- comment -%}
-  Comic strip slideshow — pulls latest articles from a "Comics" blog.
-  Each slide = article image + title; links to the article. Auto-rotates with
-  pause/play, prev/next, dots, live region; stops on hover/focus/off-screen.
+  Comic strip slideshow — Dready artwork (blocks) or, when no artwork is added, the latest
+  articles from a blog. Auto-rotates with pause/play, prev/next, dots, live region;
+  stops on hover/focus/off-screen.
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
   assign blog = s.blog
+  assign use_art = false
+  if section.blocks.size > 0
+    assign use_art = true
+  endif
   assign count = 0
-  if blog != blank
+  if use_art
+    assign count = section.blocks.size
+  elsif blog != blank
     assign count = blog.articles.size | at_most: s.limit
+  endif
+  assign more_url = s.view_all_url
+  if more_url == blank and blog != blank
+    assign more_url = blog.url
   endif
 -%}
 <section class="section comic{% if s.dark %} section--dark{% endif %}">
@@ -18,38 +28,64 @@
         {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
         {%- if s.heading != blank -%}<h2 class="h1">{{ s.heading }}</h2>{%- endif -%}
       </div>
-      {%- if blog != blank -%}<a href="{{ blog.url }}" class="link-underline section-header__link">{%- if s.view_all_text != blank -%}{{ s.view_all_text }}{%- else -%}{{ 'sections.blog.all_posts' | t }}{%- endif -%}</a>{%- endif -%}
+      {%- if more_url != blank -%}<a href="{{ more_url }}" class="link-underline section-header__link">{%- if s.view_all_text != blank -%}{{ s.view_all_text }}{%- else -%}{{ 'sections.blog.all_posts' | t }}{%- endif -%}</a>{%- endif -%}
     </header>
 
     {%- if count > 0 -%}
       {%- assign slide_label = 'accessibility.slide_of' | t: current: '__CUR__', total: '__TOT__' | replace: '__CUR__', '{{ current }}' | replace: '__TOT__', '{{ total }}' -%}
       <div class="comic__show" data-slideshow {% if s.autoplay %}data-autoplay{% endif %} data-interval="{{ s.interval | times: 1000 }}" data-slide-label="{{ slide_label | escape }}" role="region" aria-roledescription="carousel" aria-label="{{ s.heading | escape }}" tabindex="0">
         <div class="comic__viewport">
+          {%- if use_art -%}
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign b = block.settings
+                assign art_alt = b.alt | default: b.title | escape
+                assign art_loading = 'lazy'
+                if forloop.first
+                  assign art_loading = 'eager'
+                endif
+              -%}
+              <article class="comic__slide{% if forloop.first %} is-active{% endif %}" data-slide role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} / {{ count }}" {{ block.shopify_attributes }}>
+                <a href="{{ b.url | default: more_url }}" class="comic__link">
+                  <div class="comic__media media media--wide">
+                    {% render 'culture-image', image: b.image, asset: b.asset, alt: art_alt, loading: art_loading, sizes: '(min-width: 1024px) 70vw, 100vw' %}
+                  </div>
+                  <div class="comic__caption">
+                    <span class="comic__num label">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                    <h3 class="comic__title h3">{{ b.title }}</h3>
+                    {%- if b.credit != blank -%}<p class="comic__credit muted">{{ b.credit }}</p>{%- endif -%}
+                    <span class="link-underline">{{ b.link_label | default: s.view_all_text }}</span>
+                  </div>
+                </a>
+              </article>
+            {%- endfor -%}
+          {%- else -%}
           {%- for article in blog.articles limit: s.limit -%}
-            <article class="comic__slide{% if forloop.first %} is-active{% endif %}" data-slide role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} / {{ count }}">
-              <a href="{{ article.url }}" class="comic__link">
-                <div class="comic__media media media--wide">
-                  {%- if article.image -%}
-                    {{ article.image | image_url: width: 1800 | image_tag: loading: forloop.first | default: 'lazy', sizes: '(min-width: 1024px) 70vw, 100vw', widths: '600, 900, 1200, 1800', alt: article.image.alt | default: article.title | escape }}
-                  {%- else -%}
-                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
-                  {%- endif -%}
-                </div>
-                <div class="comic__caption">
-                  <span class="comic__num label">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
-                  <h3 class="comic__title h3">{{ article.title }}</h3>
-                  <span class="link-underline">{{ 'sections.blog.read_more' | t }}</span>
-                </div>
-              </a>
-            </article>
-          {%- endfor -%}
+              <article class="comic__slide{% if forloop.first %} is-active{% endif %}" data-slide role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} / {{ count }}">
+                <a href="{{ article.url }}" class="comic__link">
+                  <div class="comic__media media media--wide">
+                    {%- if article.image -%}
+                      {{ article.image | image_url: width: 1800 | image_tag: loading: forloop.first | default: 'lazy', sizes: '(min-width: 1024px) 70vw, 100vw', widths: '600, 900, 1200, 1800', alt: article.image.alt | default: article.title | escape }}
+                    {%- else -%}
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </div>
+                  <div class="comic__caption">
+                    <span class="comic__num label">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                    <h3 class="comic__title h3">{{ article.title }}</h3>
+                    <span class="link-underline">{{ 'sections.blog.read_more' | t }}</span>
+                  </div>
+                </a>
+              </article>
+            {%- endfor -%}
+          {%- endif -%}
         </div>
 
         <div class="comic__controls">
           <button type="button" class="icon-btn" data-slide-prev aria-label="{{ 'accessibility.previous_slide' | t }}">{% render 'icon', name: 'arrow-left' %}</button>
           <div class="comic__dots" role="tablist">
-            {%- for article in blog.articles limit: s.limit -%}
-              <button type="button" class="comic__dot" data-slide-dot aria-label="{{ 'accessibility.slide_of' | t: current: forloop.index, total: count }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}"></button>
+            {%- for i in (1..count) -%}
+              <button type="button" class="comic__dot" data-slide-dot aria-label="{{ 'accessibility.slide_of' | t: current: i, total: count }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}"></button>
             {%- endfor -%}
           </div>
           <button type="button" class="icon-btn" data-slide-next aria-label="{{ 'accessibility.next_slide' | t }}">{% render 'icon', name: 'arrow-right' %}</button>
@@ -62,7 +98,7 @@
       </div>
     {%- else -%}
       <div class="comic__show">
-        <div class="comic__slide is-active"><div class="comic__media media media--wide media--placeholder" data-label="Comic strip — select a blog">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div></div>
+        <div class="comic__slide is-active"><div class="comic__media media media--wide media--placeholder" data-label="Comic strip — add artwork or select a blog">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div></div>
       </div>
     {%- endif -%}
   </div>
@@ -80,8 +116,25 @@
     { "type": "checkbox", "id": "autoplay", "label": "Auto-rotate", "default": true },
     { "type": "range", "id": "interval", "min": 3, "max": 10, "step": 1, "unit": "s", "label": "Interval", "default": 6 },
     { "type": "text", "id": "view_all_text", "label": "View all text", "default": "Read the blog" },
+    { "type": "url", "id": "view_all_url", "label": "View all link", "info": "Defaults to the blog." },
     { "type": "checkbox", "id": "dark", "label": "Dark background", "default": true }
   ],
+  "blocks": [
+    {
+      "type": "artwork",
+      "name": "Artwork",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "asset", "label": "Theme image file", "info": "Used when no image is picked above." },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "credit", "label": "Credit / caption" },
+        { "type": "text", "id": "alt", "label": "Image description (alt text)" },
+        { "type": "url", "id": "url", "label": "Link" },
+        { "type": "text", "id": "link_label", "label": "Link label" }
+      ]
+    }
+  ],
+  "max_blocks": 10,
   "presets": [ { "name": "Comic strip slideshow" } ]
 }
 {% endschema %}

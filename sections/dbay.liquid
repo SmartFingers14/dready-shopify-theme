@@ -6,6 +6,43 @@
 {%- liquid
   assign s = section.settings
   assign coll = s.collection
+  assign tag = s.tag | strip
+  assign use_tag = false
+  if coll == blank and tag != blank
+    assign use_tag = true
+  endif
+-%}
+{%- comment -%} Tag mode scans the whole catalogue (one page of up to 250) for products carrying the tag. {%- endcomment -%}
+{%- paginate collections.all.products by 250 -%}
+{%- liquid
+  assign max_off = 0
+  assign tagged = 0
+  if use_tag
+    for product in collections.all.products
+      if product.tags contains tag and product.available
+        assign tagged = tagged | plus: 1
+        if product.compare_at_price_max > product.price_min
+          assign off = product.compare_at_price_max | minus: product.price_min | times: 100 | divided_by: product.compare_at_price_max
+          if off > max_off
+            assign max_off = off
+          endif
+        endif
+      endif
+    endfor
+    assign tag_handle = tag | handle
+    assign shop_url = routes.all_products_collection_url | append: '/' | append: tag_handle
+  else
+    assign shop_url = coll.url
+    for product in coll.products
+      if product.compare_at_price_max > product.price_min
+        assign off = product.compare_at_price_max | minus: product.price_min | times: 100 | divided_by: product.compare_at_price_max
+        if off > max_off
+          assign max_off = off
+        endif
+      endif
+    endfor
+  endif
+  assign max_label = max_off | append: '%'
 -%}
 <section class="section dbay dbay--{{ s.style }}" data-scroller-wrap>
   <div class="page-width">
@@ -18,36 +55,49 @@
       <div class="dbay__meta">
         {%- for block in section.blocks -%}
           {%- if block.type == 'info' -%}
+            {%- if block.settings.title contains '[max]' and max_off == 0 -%}{%- continue -%}{%- endif -%}
             <div class="dbay__info" {{ block.shopify_attributes }}>
               {% render 'icon', name: block.settings.icon, size: 20 %}
               <div>
-                <p class="label">{{ block.settings.title }}</p>
+                <p class="label">{{ block.settings.title | replace: '[max]', max_label }}</p>
                 <p class="muted">{{ block.settings.text }}</p>
               </div>
             </div>
           {%- endif -%}
         {%- endfor -%}
         {%- if s.cta_text != blank -%}
-          <a href="{{ s.cta_url | default: coll.url }}" class="btn {% if s.style == 'accent' %}btn--outline{% else %}btn--accent{% endif %}">{{ s.cta_text }} {% render 'icon', name: 'arrow-right', size: 16 %}</a>
+          <a href="{{ s.cta_url | default: shop_url }}" class="btn {% if s.style == 'accent' %}btn--outline{% else %}btn--accent{% endif %}">{{ s.cta_text }} {% render 'icon', name: 'arrow-right', size: 16 %}</a>
         {%- endif -%}
       </div>
     </div>
 
-    {%- if coll != blank and coll.products.size > 0 -%}
+    {%- if use_tag and tagged > 0 or use_tag == false and coll != blank and coll.products.size > 0 -%}
       <div class="dbay__products">
         <div class="dbay__controls scroller-controls">
           <button type="button" class="icon-btn" data-scroller-prev aria-label="{{ 'accessibility.previous_slide' | t }}">{% render 'icon', name: 'arrow-left' %}</button>
           <button type="button" class="icon-btn" data-scroller-next aria-label="{{ 'accessibility.next_slide' | t }}">{% render 'icon', name: 'arrow-right' %}</button>
         </div>
         <div class="scroller" data-scroller>
-          {%- for product in coll.products limit: s.limit -%}
-            {% render 'product-card', product: product, lazy: true %}
-          {%- endfor -%}
+          {%- if use_tag -%}
+            {%- assign shown = 0 -%}
+            {%- for product in collections.all.products -%}
+              {%- if shown >= s.limit -%}{%- break -%}{%- endif -%}
+              {%- if product.tags contains tag and product.available -%}
+                {%- assign shown = shown | plus: 1 -%}
+                {% render 'product-card', product: product, lazy: true %}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            {%- for product in coll.products limit: s.limit -%}
+              {% render 'product-card', product: product, lazy: true %}
+            {%- endfor -%}
+          {%- endif -%}
         </div>
       </div>
     {%- endif -%}
   </div>
 </section>
+{%- endpaginate -%}
 
 {% schema %}
 {
@@ -58,6 +108,7 @@
     { "type": "text", "id": "heading", "label": "Heading", "default": "DBAY" },
     { "type": "textarea", "id": "text", "label": "Text", "default": "Last pieces, end-of-line colours and returned stock — checked, re-pressed and priced to go." },
     { "type": "collection", "id": "collection", "label": "Collection", "info": "e.g. a “DBAY” or “Sale” collection." },
+    { "type": "text", "id": "tag", "label": "…or product tag", "info": "Used when no collection is chosen, e.g. Sale. Shows available products with this tag." },
     { "type": "range", "id": "limit", "min": 4, "max": 12, "step": 1, "label": "Products to show", "default": 8 },
     { "type": "text", "id": "cta_text", "label": "Button text", "default": "Shop DBAY" },
     { "type": "url", "id": "cta_url", "label": "Button link (defaults to collection)" },
@@ -69,7 +120,7 @@
       "name": "Info point",
       "settings": [
         { "type": "select", "id": "icon", "label": "Icon", "options": [ { "value": "tag", "label": "Tag" }, { "value": "refresh", "label": "Returns" }, { "value": "truck", "label": "Shipping" }, { "value": "shield", "label": "Guarantee" }, { "value": "check", "label": "Check" } ], "default": "tag" },
-        { "type": "text", "id": "title", "label": "Title", "default": "Up to 50% off" },
+        { "type": "text", "id": "title", "label": "Title", "info": "Use [max] to show the biggest real discount, e.g. Up to [max] off", "default": "Up to 50% off" },
         { "type": "text", "id": "text", "label": "Text", "default": "Final reductions on last sizes." }
       ]
     }

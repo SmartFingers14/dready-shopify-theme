@@ -11,7 +11,7 @@
         "heading": "Roots of an icon",
         "subheading": "Born in Birmingham in 1983, from music, art and street culture.",
         "cta_text": "Shop the drop",
-        "cta_url": "/collections/all",
+        "cta_url": "/collections/new-26-drop",
         "cta2_text": "Our roots",
         "cta2_url": "/blogs/news"
       }
@@ -19,14 +19,14 @@
     "featured": {
       "type": "featured-products",
       "settings": {
-        "eyebrow": "New drop",
+        "eyebrow": "New 26 drop",
         "heading": "Now live",
-        "collection": "all",
+        "collection": "new-26-drop",
         "limit": 8,
         "layout": "grid",
         "columns": 4,
         "show_view_all": true,
-        "view_all_text": "Shop all",
+        "view_all_text": "Shop the drop",
         "dark": false
       }
     },
@@ -38,8 +38,10 @@
           "settings": {
             "title": "Premium",
             "badge": "Premium",
-            "spec": "500gsm heavyweight · hand-embroidered · made to order",
-            "price_text": "From £65",
+            "spec": "Ultra-heavy 320–500g fleece · 385g tees · embroidered",
+            "price_text": "From £40",
+            "image": "shopify://shop_images/6D58A626-C83C-48D7-8C62-3CC0ACB6B835.png",
+            "url": "/search?q=premium&type=product",
             "cta": "Shop Premium",
             "featured": true
           }
@@ -47,11 +49,13 @@
         "standard": {
           "type": "tier",
           "settings": {
-            "title": "Standard",
-            "badge": "Standard",
-            "spec": "Classic 100% cotton · screen print · ships in 48h",
+            "title": "Regular",
+            "badge": "Regular",
+            "spec": "Classic 285g hoods · 145g tees · embroidered & printed",
             "price_text": "From £30",
-            "cta": "Shop Standard",
+            "image": "shopify://shop_images/12A3467D-39BE-4B00-87E8-FBFDF4823469.png",
+            "url": "/search?q=regular&type=product",
+            "cta": "Shop Regular",
             "featured": false
           }
         }
@@ -62,8 +66,8 @@
       ],
       "settings": {
         "eyebrow": "Two ways to wear it",
-        "heading": "Premium & Standard",
-        "intro": "Same designs. Choose heavyweight embroidered quality or the classic print."
+        "heading": "Premium & Regular",
+        "intro": "Same designs, two weights. Go ultra-heavy Premium or keep it classic with Regular."
       }
     },
     "look": {
@@ -80,7 +84,7 @@
         "h2": {
           "type": "hotspot",
           "settings": {
-            "product": "dready-og-97-embroidered-hood",
+            "product": "dready-regular-285-og-97-embroidered-hood",
             "x": 56,
             "y": 29
           }
@@ -117,7 +121,7 @@
           "type": "info",
           "settings": {
             "icon": "tag",
-            "title": "Up to 50% off",
+            "title": "Up to [max] off",
             "text": "Final reductions on last sizes and colours."
           }
         },
@@ -140,7 +144,8 @@
         "text": "Last pieces, end-of-line colours and returned stock — checked, re-pressed and priced to go.",
         "limit": 8,
         "cta_text": "Shop DBAY",
-        "style": "accent"
+        "style": "accent",
+        "tag": "Sale"
       }
     },
     "collabs": {
@@ -152,51 +157,134 @@
             "title": "Dready × New Era",
             "text": "The Walking Dread embroidered cuff beanie.",
             "status": "Live",
-            "cta": "Shop the collab"
+            "asset": "collab-new-era.jpg",
+            "url": "/products/dready-x-new-era-walking-dread-beanie",
+            "cta": "Shop the beanie"
           }
         },
         "c2": {
           "type": "collab",
           "settings": {
-            "title": "Dready × Birmingham",
-            "text": "Celebrating the city where it all started.",
-            "status": "Coming soon",
-            "cta": "Preview"
+            "title": "Dready × Nike",
+            "text": "Air Force 1 Mids in Rasta red, gold and green.",
+            "status": "Archive",
+            "asset": "collab-nike.jpg",
+            "url": "/pages/collabs",
+            "cta": "View collab"
           }
         },
         "c3": {
           "type": "collab",
           "settings": {
-            "title": "Dready × Artist series",
-            "text": "Limited graffiti capsule.",
-            "status": "Sold out",
-            "cta": "View archive"
+            "title": "Dready Selecta — Volume On!",
+            "text": "Reggae and dancehall from Tan-Tan & Silvalox.",
+            "status": "Live",
+            "asset": "music-selecta.jpg",
+            "url": "/pages/music",
+            "cta": "Listen & buy"
+          }
+        },
+        "c4": {
+          "type": "collab",
+          "settings": {
+            "title": "Dready × Johnny Hoxton",
+            "text": "Fine jewellery from a Hatton Garden craftsman's son.",
+            "status": "Archive",
+            "asset": "collab-johnny-hoxton.jpg",
+            "url": "/blogs/news/dready-x-johnny-hoxton",
+            "cta": "Read the story"
           }
         }
       },
       "block_order": [
         "c1",
         "c2",
-        "c3"
+        "c3",
+        "c4"
       ],
       "settings": {
         "eyebrow": "Collaborations",
         "heading": "Collabs",
         "view_all_text": "All collabs",
-        "dark": false
+        "dark": false,
+        "view_all_url": "/pages/collabs"
       }
     },
     "comic": {
       "type": "comic-strip",
       "settings": {
         "eyebrow": "Dready culture",
-        "heading": "The comic strip",
+        "heading": "From the sketchbook",
         "limit": 5,
         "autoplay": true,
         "interval": 6,
-        "view_all_text": "Read the blog",
-        "dark": true
-      }
+        "view_all_text": "View the gallery",
+        "dark": true,
+        "view_all_url": "/pages/gallery"
+      },
+      "blocks": {
+        "a1": {
+          "type": "artwork",
+          "settings": {
+            "title": "Roots · Culture · Peace",
+            "alt": "Dready character in a Rasta hat in front of a graffiti wall reading Peace",
+            "url": "/pages/graffiti",
+            "link_label": "See the walls",
+            "image": "shopify://shop_images/in-the-beginning-image-v2.jpg"
+          }
+        },
+        "a2": {
+          "type": "artwork",
+          "settings": {
+            "title": "The Dready crew",
+            "alt": "Comic-panel style poster of the Dready crew",
+            "url": "/pages/street-art",
+            "link_label": "More fan art",
+            "asset": "dg-fanart-07.jpg",
+            "credit": "Fan art"
+          }
+        },
+        "a3": {
+          "type": "artwork",
+          "settings": {
+            "title": "On the decks",
+            "alt": "Illustration of Dready DJing in front of a sound system",
+            "url": "/pages/street-art",
+            "link_label": "More fan art",
+            "asset": "dg-fanart-09.jpg",
+            "credit": "Fan art"
+          }
+        },
+        "a4": {
+          "type": "artwork",
+          "settings": {
+            "title": "Peace sign",
+            "alt": "Dready peace-sign artwork in Rasta colours",
+            "url": "/pages/street-art",
+            "link_label": "More fan art",
+            "asset": "dg-fanart-21.jpg",
+            "credit": "Fan art"
+          }
+        },
+        "a5": {
+          "type": "artwork",
+          "settings": {
+            "title": "Selecta on the wall",
+            "alt": "Dready DJ character painted on a red wall",
+            "url": "/pages/graffiti",
+            "link_label": "See the walls",
+            "asset": "dg-graffiti-04.jpg",
+            "credit": "Graffiti"
+          }
+        }
+      },
+      "block_order": [
+        "a1",
+        "a2",
+        "a3",
+        "a4",
+        "a5"
+      ]
     },
     "music": {
       "type": "music",
@@ -204,33 +292,45 @@
         "m1": {
           "type": "release",
           "settings": {
-            "artist": "DJ Dready",
-            "title": "Wheel It Up",
-            "format": "12\" Vinyl"
+            "product": "dready-selecta-volume-on",
+            "asset": "music-selecta.jpg",
+            "artist": "Tan-Tan & Silvalox",
+            "title": "Dready Selecta — Volume On!",
+            "format": "MP3 album",
+            "other": "https://www.amazon.co.uk/Dready-Selecta-Tan-Tan-Silvalox/dp/B0C2D8NVXK"
           }
         },
         "m2": {
           "type": "release",
           "settings": {
-            "artist": "Dready Sound",
-            "title": "Selecta",
-            "format": "Digital"
+            "asset": "music-reds.jpg",
+            "artist": "Reds",
+            "title": "Dready × Reds",
+            "format": "Single",
+            "preview_url": "https://youtu.be/Mp28XXp1Gn0",
+            "youtube": "https://youtu.be/Mp28XXp1Gn0"
           }
         },
         "m3": {
           "type": "release",
           "settings": {
-            "artist": "Various",
-            "title": "Roots Mixtape Vol. 1",
-            "format": "Cassette"
+            "asset": "music-ashwalker.jpg",
+            "artist": "Ash Walker",
+            "title": "Dready Roots Mix",
+            "format": "Mix",
+            "preview_url": "https://www.youtube.com/watch?v=cCeDUQDT4v8",
+            "youtube": "https://www.youtube.com/watch?v=cCeDUQDT4v8"
           }
         },
         "m4": {
           "type": "release",
           "settings": {
-            "artist": "DJ Dready",
-            "title": "Culture Dub",
-            "format": "7\" Vinyl"
+            "asset": "music-izachar.jpg",
+            "artist": "Izachar",
+            "title": "'Dready' minimix",
+            "format": "Mix",
+            "preview_url": "https://www.youtube.com/watch?v=B4sBWvnlzyM",
+            "youtube": "https://www.youtube.com/watch?v=B4sBWvnlzyM"
           }
         }
       },
@@ -244,7 +344,8 @@
         "eyebrow": "Dready sounds",
         "heading": "Music",
         "columns": 4,
-        "view_all_text": "All releases"
+        "view_all_text": "Music & Dready TV",
+        "view_all_url": "/pages/music"
       }
     },
     "events": {
@@ -253,45 +354,61 @@
         "e1": {
           "type": "event",
           "settings": {
+            "asset": "dg-camera-24.jpg",
             "title": "Dready Sound System",
-            "day": "18",
-            "month": "OCT",
-            "year": "2026",
-            "time": "10pm – 4am",
-            "venue": "The Night Owl",
             "city": "Birmingham",
-            "lineup": "DJ Dready · Selecta Roots · MC Lion",
-            "status": "On sale",
-            "ticket_text": "Get tickets",
+            "date_tba": true,
+            "year": "",
+            "day": "",
+            "month": "",
+            "time": "",
+            "venue": "",
+            "lineup": "",
+            "text": "Dates and venues drop soon — follow @dreadybrand to hear first.",
+            "status": "Coming soon",
+            "ticket_url": "https://www.instagram.com/dreadybrand/",
+            "ticket_text": "Follow for dates",
             "past": false
           }
         },
         "e2": {
           "type": "event",
           "settings": {
-            "title": "Roots Reggae Sessions",
-            "day": "02",
-            "month": "NOV",
-            "year": "2026",
-            "time": "8pm – 2am",
-            "venue": "Hare & Hounds",
-            "city": "Birmingham",
-            "status": "Low stock",
-            "ticket_text": "Get tickets",
+            "asset": "dg-camera-20.jpg",
+            "title": "Selecta Sessions",
+            "city": "UK",
+            "date_tba": true,
+            "year": "",
+            "day": "",
+            "month": "",
+            "time": "",
+            "venue": "",
+            "lineup": "",
+            "text": "Dates and venues drop soon — follow @dreadybrand to hear first.",
+            "status": "Coming soon",
+            "ticket_url": "https://www.instagram.com/dreadybrand/",
+            "ticket_text": "Follow for dates",
             "past": false
           }
         },
         "e3": {
           "type": "event",
           "settings": {
-            "title": "Dready × Carnival",
-            "day": "24",
-            "month": "AUG",
-            "year": "2026",
-            "time": "All day",
-            "venue": "Notting Hill",
-            "city": "London",
-            "past": true
+            "asset": "dg-camera-05.jpg",
+            "title": "Roots & Culture Night",
+            "city": "UK",
+            "date_tba": true,
+            "year": "",
+            "day": "",
+            "month": "",
+            "time": "",
+            "venue": "",
+            "lineup": "",
+            "text": "Dates and venues drop soon — follow @dreadybrand to hear first.",
+            "status": "Coming soon",
+            "ticket_url": "https://www.instagram.com/dreadybrand/",
+            "ticket_text": "Follow for dates",
+            "past": false
           }
         }
       },
@@ -303,7 +420,8 @@
       "settings": {
         "eyebrow": "Dready live",
         "heading": "Events",
-        "view_all_text": "All events"
+        "view_all_text": "Follow @dreadybrand",
+        "view_all_url": "https://www.instagram.com/dreadybrand/"
       }
     },
     "community": {
@@ -356,13 +474,173 @@
         "button_label": "Send a gift card",
         "dark": false
       }
+    },
+    "categories": {
+      "type": "category-tiles",
+      "blocks": {
+        "c1": {
+          "type": "category",
+          "settings": {
+            "collection": "dready-tees",
+            "label": "Tees"
+          }
+        },
+        "c2": {
+          "type": "category",
+          "settings": {
+            "collection": "premium-hoods",
+            "label": "Hoods"
+          }
+        },
+        "c3": {
+          "type": "category",
+          "settings": {
+            "collection": "dready",
+            "label": "Embroidery"
+          }
+        },
+        "c4": {
+          "type": "category",
+          "settings": {
+            "collection": "sista",
+            "label": "Sista"
+          }
+        },
+        "c5": {
+          "type": "category",
+          "settings": {
+            "collection": "dready-kids",
+            "label": "Junior Dready"
+          }
+        },
+        "c6": {
+          "type": "category",
+          "settings": {
+            "collection": "hats",
+            "label": "Hats"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6"
+      ],
+      "settings": {
+        "eyebrow": "Shop by category",
+        "heading": "Find your piece",
+        "view_all_text": "All collections",
+        "view_all_url": "/collections"
+      }
+    },
+    "story": {
+      "type": "brand-story",
+      "blocks": {
+        "f1": {
+          "type": "fact",
+          "settings": {
+            "value": "1983",
+            "label": "Born in Birmingham"
+          }
+        },
+        "f2": {
+          "type": "fact",
+          "settings": {
+            "value": "90s",
+            "label": "Worn across the UK, France & Italy"
+          }
+        },
+        "f3": {
+          "type": "fact",
+          "settings": {
+            "value": "Peace",
+            "label": "Love & unity — the message since day one"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/in-the-beginning-image-v2.jpg",
+        "image_alt": "Dready character in a Rasta hat in front of a graffiti wall reading Peace",
+        "image_side": "left",
+        "wordmark": "shopify://shop_images/EBDDCE4A-459F-4865-8595-0A1E42F67EA0.png",
+        "eyebrow": "Our roots",
+        "heading": "Born in Birmingham, 1983",
+        "text": "<p>Dready was created by Robert Sidlauskas, a young Birmingham-based Rastafarian who used the power of his pencil to share his beliefs and ideals. His character went on to become the urban 'Mickey Mouse' of the 90s — on bombers, record bags and hoodies, in schoolbooks and on walls.</p><p>Today the message is the same: roots, culture and peace.</p>",
+        "button_label": "Read the story",
+        "button_url": "/blogs/news/dready-returns-with-lookbook-featuring-dj-oneman",
+        "dark": false
+      }
+    },
+    "press": {
+      "type": "press-quotes",
+      "blocks": {
+        "q1": {
+          "type": "quote",
+          "settings": {
+            "quote": "Dready was as ubiquitous as the bowl cut in British schools during the 1990s.",
+            "source": "VICE",
+            "context": "Dready × Vice",
+            "url": "/blogs/news/dready-x-vice"
+          }
+        },
+        "q2": {
+          "type": "quote",
+          "settings": {
+            "quote": "One of the few brands to nail music and fashion in the '90s was Dready from the United Kingdom.",
+            "source": "The Hundreds",
+            "context": "Dready × The Hundreds",
+            "url": "/blogs/news/dready-x-the-hundreds"
+          }
+        },
+        "q3": {
+          "type": "quote",
+          "settings": {
+            "quote": "To me, Dready represents a time and place in Britain where popular culture wasn't so homogenised.",
+            "source": "Rob Ackroyd",
+            "context": "Florence + the Machine, via Urban Vault",
+            "url": "/blogs/news/dready-x-urban-vault"
+          }
+        },
+        "q4": {
+          "type": "quote",
+          "settings": {
+            "quote": "I saw huge potential in this brand and in the 90s I made it a household name by distributing it through the UK, France & Italy.",
+            "source": "Aaron Thalmann",
+            "context": "Weekend Offender",
+            "url": "/blogs/news/dready-x-weekend-offender-collab"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ],
+      "settings": {
+        "eyebrow": "As seen in",
+        "heading": "What they said",
+        "link_label": "Read the story",
+        "dark": false
+      }
     }
   },
   "order": [
     "hero",
+    "categories",
     "featured",
     "tiers",
+    "story",
     "look",
+    "press",
     "dbay",
     "collabs",
     "comic",

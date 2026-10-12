@@ -25,7 +25,8 @@ cat .dev-src/css/c01-announcement.css \
     .dev-src/css/c11-culture-pages.css \
     .dev-src/css/c12-gift-card.css \
     .dev-src/css/c13-gift-shop.css \
-    .dev-src/css/c14-pdp-extras.css > assets/components.css
+    .dev-src/css/c14-pdp-extras.css \
+    .dev-src/css/c15-home.css > assets/components.css
 
 cat .dev-src/js/01-core.js \
     .dev-src/js/02-header-motion.js \

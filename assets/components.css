@@ -999,3 +999,71 @@ textarea.gift-recipient__message { min-height: 96px; }
 .pdp-share__btn:active { background: var(--color-fg); color: var(--color-bg); }
 .pdp-share__tip { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translate(-50%, 4px); padding: 4px 8px; background: var(--color-fg); color: var(--color-bg); font-size: var(--text-xs); font-weight: 600; letter-spacing: var(--tracking-caps); text-transform: uppercase; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out); }
 .pdp-share__btn.is-copied .pdp-share__tip { opacity: 1; transform: translate(-50%, 0); }
+
+/* =====================================================================
+   Homepage completion — category tiles, brand story, press quotes,
+   TBA event chip, comic artwork credit.
+   ===================================================================== */
+
+/* ---------- Shop by category ---------- */
+.cat-tiles__grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--space-3); }
+@media (max-width: 1023px) { .cat-tiles__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: var(--space-5); } }
+@media (max-width: 767px) {
+  .cat-tiles__grid { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 44%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
+  .cat-tiles__grid::-webkit-scrollbar { display: none; }
+  .cat-tiles__grid > li { scroll-snap-align: start; }
+}
+.cat-tile { display: grid; gap: var(--space-3); }
+.cat-tile__media { aspect-ratio: 3 / 4; }
+.cat-tile__media img { transition: transform 700ms var(--ease-out); }
+.cat-tile:hover .cat-tile__media img, .cat-tile:focus-visible .cat-tile__media img { transform: scale(1.05); }
+.cat-tile__info { display: grid; gap: 2px; }
+.cat-tile__name { font-size: var(--text-md); font-weight: 700; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1.1; }
+.cat-tile__meta { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--text-xs); color: var(--color-muted); text-transform: uppercase; letter-spacing: var(--tracking-caps); }
+.cat-tile__meta svg { transition: transform var(--dur) var(--ease-out); }
+.cat-tile:hover .cat-tile__meta svg { transform: translateX(3px); }
+.cat-tile:hover .cat-tile__name { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+
+/* ---------- Brand story ---------- */
+.brand-story { position: relative; background: var(--color-surface); overflow-x: clip; }
+.brand-story.section--dark { background: var(--color-dark-bg); }
+.brand-story__layout { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(var(--space-8), 6vw, var(--space-12)); align-items: center; }
+.brand-story__layout--flip .brand-story__art { order: 2; }
+@media (max-width: 1023px) { .brand-story__layout { grid-template-columns: minmax(0, 1fr); } .brand-story__layout--flip .brand-story__art { order: 0; } }
+.brand-story__art { border: 1px solid var(--color-border); background: var(--color-dark-bg); }
+.brand-story__art img { width: 100%; height: auto; }
+.brand-story__text { display: grid; gap: var(--space-5); justify-items: start; }
+.brand-story__wordmark { width: min(100%, 380px); }
+.brand-story__wordmark img { width: 100%; height: auto; }
+.brand-story__heading { overflow-wrap: anywhere; }
+.brand-story__body { max-width: 54ch; color: var(--color-muted); }
+.section--dark .brand-story__body { color: var(--color-dark-muted); }
+.brand-story__body p + p { margin-top: var(--space-3); }
+.brand-story__facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); width: 100%; margin: var(--space-2) 0 0; border-top: 1px solid var(--color-border-strong); padding-top: var(--space-4); }
+@media (max-width: 599px) { .brand-story__facts { grid-template-columns: minmax(0, 1fr); } }
+.brand-story__fact { display: grid; gap: var(--space-1); }
+.brand-story__fact-value { font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 700; letter-spacing: var(--tracking-tight); line-height: 1; text-transform: uppercase; }
+.brand-story__fact-label { margin: 0; font-size: var(--text-xs); text-transform: uppercase; letter-spacing: var(--tracking-caps); color: var(--color-muted); }
+.brand-story__rule { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: linear-gradient(90deg, var(--color-brand-green) 0 33.33%, var(--color-accent) 33.33% 66.66%, var(--color-brand-red) 66.66%); }
+
+/* ---------- Press quotes ---------- */
+.press__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8) var(--gutter); }
+@media (max-width: 767px) { .press__grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); } }
+.press__item { display: grid; gap: var(--space-4); align-content: start; padding-top: var(--space-5); border-top: 1px solid var(--color-border-strong); }
+.section--dark .press__item { border-color: var(--color-dark-fg); }
+.press__item--lead { grid-column: 1 / -1; }
+.press__figure { margin: 0; display: grid; gap: var(--space-4); }
+.press__mark { font-size: 4rem; line-height: 0.6; font-weight: 700; color: var(--color-accent); height: 0.6em; }
+.press__quote { margin: 0; font-size: clamp(1.25rem, 2.2vw, 1.75rem); font-weight: 500; line-height: 1.25; letter-spacing: -0.015em; max-width: 34ch; }
+.press__item--lead .press__quote { font-size: clamp(1.75rem, 4.2vw, 3.5rem); font-weight: 700; line-height: 1.05; letter-spacing: var(--tracking-tight); text-transform: uppercase; max-width: 22ch; }
+.press__source { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-3); }
+.press__name { font-size: var(--text-sm); font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; }
+.press__context { font-size: var(--text-sm); color: var(--color-muted); }
+.section--dark .press__context { color: var(--color-dark-muted); }
+.press__link { justify-self: start; }
+
+/* ---------- Events: date to be announced ---------- */
+.event__chip--tba .event__day { font-size: var(--text-md); letter-spacing: 0.04em; }
+
+/* ---------- Comic artwork credit ---------- */
+.comic__credit { font-size: var(--text-sm); }

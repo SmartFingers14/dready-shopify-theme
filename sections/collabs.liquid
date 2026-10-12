@@ -30,8 +30,9 @@
         -%}
         <a href="{{ url }}" class="collab" {{ block.shopify_attributes }}>
           <div class="collab__media media media--landscape">
-            {%- if b.image != blank -%}
-              {{ b.image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 33vw, 80vw', widths: '480, 800, 1200', alt: b.title | escape }}
+            {%- if b.image != blank or b.asset != blank -%}
+              {%- assign collab_alt = b.title | escape -%}
+              {% render 'culture-image', image: b.image, asset: b.asset, alt: collab_alt, sizes: '(min-width: 1024px) 33vw, 80vw' %}
             {%- else -%}
               <div class="media--placeholder" data-label="Collab image" style="position:absolute;inset:0">{{ 'collection-' | append: forloop.index | placeholder_svg_tag: 'placeholder-svg' }}</div>
             {%- endif -%}
@@ -68,7 +69,7 @@
         { "type": "text", "id": "title", "label": "Title", "default": "Dready × New Era" },
         { "type": "text", "id": "text", "label": "Short line", "default": "The Walking Dread embroidered cuff beanie." },
         { "type": "text", "id": "status", "label": "Status badge", "default": "Live", "info": "e.g. Live, Sold out, Coming soon" },
-        { "type": "image_picker", "id": "image", "label": "Image (3:2)" },
+        { "type": "image_picker", "id": "image", "label": "Image (3:2)" }, { "type": "text", "id": "asset", "label": "Theme image file", "info": "Used when no image is picked above." },
         { "type": "image_picker", "id": "logo", "label": "Partner logo (optional)" },
         { "type": "collection", "id": "collection", "label": "Collection" },
         { "type": "url", "id": "url", "label": "Link (defaults to collection)" },

@@ -32,6 +32,9 @@
           <div class="release__media media media--square">
             {%- if art != blank -%}
               {{ art | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 25vw, 50vw', widths: '320, 480, 800', alt: title | escape }}
+            {%- elsif b.asset != blank -%}
+              {%- assign art_alt = title | escape -%}
+              {% render 'culture-image', asset: b.asset, alt: art_alt, sizes: '(min-width: 1024px) 25vw, 50vw' %}
             {%- else -%}
               <div class="media--placeholder" data-label="Album art" style="position:absolute;inset:0">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
             {%- endif -%}
@@ -83,6 +86,7 @@
       "settings": [
         { "type": "product", "id": "product", "label": "Shopify product (buyable)", "info": "Vinyl / CD / digital. Leave empty for stream-only." },
         { "type": "image_picker", "id": "image", "label": "Album art (overrides product image)" },
+        { "type": "text", "id": "asset", "label": "Theme image file", "info": "Used when there is no album art or product image." },
         { "type": "text", "id": "artist", "label": "Artist", "default": "DJ Dready" },
         { "type": "text", "id": "title", "label": "Title (defaults to product title)" },
         { "type": "text", "id": "format", "label": "Format badge", "default": "12\" Vinyl" },

@@ -1,0 +1,71 @@
+{%- comment -%}
+  Shop by category — slim portrait tiles (6-up desktop, 3-up tablet, swipe rail on phones).
+  Each tile = a collection: its image (or a picked one), name and piece count.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<section class="section cat-tiles">
+  <div class="page-width">
+    <header class="section-header">
+      <div class="section-header__text">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="h1">{{ s.heading }}</h2>{%- endif -%}
+      </div>
+      {%- if s.view_all_url != blank -%}<a href="{{ s.view_all_url }}" class="link-underline section-header__link">{{ s.view_all_text }}</a>{%- endif -%}
+    </header>
+    <ul class="cat-tiles__grid reveal-stagger" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign c = b.collection
+          assign label = b.label | default: c.title
+          assign label_alt = label | escape
+        -%}
+        {%- if c != blank -%}
+          <li {{ block.shopify_attributes }}>
+            <a href="{{ c.url }}" class="cat-tile">
+              <div class="cat-tile__media media">
+                {%- if b.image != blank -%}
+                  {{ b.image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 16vw, (min-width: 768px) 33vw, 45vw', widths: '300, 500, 700', alt: label_alt }}
+                {%- elsif c.image != blank -%}
+                  {{ c.image | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 16vw, (min-width: 768px) 33vw, 45vw', widths: '300, 500, 700', alt: label_alt }}
+                {%- elsif c.products.first.featured_media != blank -%}
+                  {{ c.products.first.featured_media | image_url: width: 700 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 16vw, (min-width: 768px) 33vw, 45vw', widths: '300, 500, 700', alt: label_alt }}
+                {%- endif -%}
+              </div>
+              <div class="cat-tile__info">
+                <span class="cat-tile__name">{{ label }}</span>
+                <span class="cat-tile__meta">{{ 'sections.collection.pieces' | t: count: c.products_count }} {% render 'icon', name: 'arrow-right', size: 14 %}</span>
+              </div>
+            </a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shop by category",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Shop by category" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Find your piece" },
+    { "type": "text", "id": "view_all_text", "label": "View all text", "default": "All collections" },
+    { "type": "url", "id": "view_all_url", "label": "View all link" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "text", "id": "label", "label": "Label (defaults to collection title)" },
+        { "type": "image_picker", "id": "image", "label": "Image (defaults to collection image)" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [ { "name": "Shop by category", "blocks": [ { "type": "category" }, { "type": "category" }, { "type": "category" }, { "type": "category" } ] } ]
+}
+{% endschema %}

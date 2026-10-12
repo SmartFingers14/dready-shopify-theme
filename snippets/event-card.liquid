@@ -7,14 +7,20 @@
   <div class="event__inner">
     <div class="event__face event__front">
       <div class="event__media media media--poster">
-        {%- if b.flyer != blank -%}
-          {{ b.flyer | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 33vw, 80vw', widths: '400, 600, 900', alt: b.title | escape }}
+        {%- if b.flyer != blank or b.asset != blank -%}
+          {%- assign flyer_alt = b.title | escape -%}
+          {% render 'culture-image', image: b.flyer, asset: b.asset, alt: flyer_alt, sizes: '(min-width: 1024px) 33vw, 80vw' %}
         {%- else -%}
           <div class="media--placeholder" data-label="Event flyer" style="position:absolute;inset:0">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
         {%- endif -%}
-        <div class="event__chip">
-          <span class="event__day">{{ b.day }}</span>
-          <span class="event__month label">{{ b.month }}</span>
+        <div class="event__chip{% if b.date_tba %} event__chip--tba{% endif %}">
+          {%- if b.date_tba -%}
+            <span class="event__day">{{ 'sections.events.tba_short' | t }}</span>
+            <span class="event__month label">{%- if b.year != blank -%}{{ b.year }}{%- else -%}{{ 'sections.events.soon' | t }}{%- endif -%}</span>
+          {%- else -%}
+            <span class="event__day">{{ b.day }}</span>
+            <span class="event__month label">{{ b.month }}</span>
+          {%- endif -%}
         </div>
         {%- if b.past -%}<span class="badge badge--outline event__status">{{ 'sections.events.past' | t }}</span>
         {%- elsif b.status != blank -%}<span class="badge badge--accent event__status">{{ b.status }}</span>{%- endif -%}
@@ -28,7 +34,7 @@
 
     <div class="event__face event__back" id="EventBack-{{ uid }}" data-flip-back>
       <button type="button" class="event__close icon-btn" data-flip-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', name: 'close' %}</button>
-      <p class="eyebrow">{{ b.month }} {{ b.day }}{% if b.year != blank %}, {{ b.year }}{% endif %}</p>
+      <p class="eyebrow">{%- if b.date_tba -%}{{ 'sections.events.tba' | t }}{%- else -%}{{ b.month }} {{ b.day }}{% if b.year != blank %}, {{ b.year }}{% endif %}{%- endif -%}</p>
       <h3 class="h2 event__back-title">{{ b.title }}</h3>
       <dl class="event__details">
         {%- if b.venue != blank -%}<div><dt class="label">{{ 'sections.events.venue' | t }}</dt><dd>{{ b.venue }}{% if b.city != blank %}, {{ b.city }}{% endif %}</dd></div>{%- endif -%}
@@ -38,7 +44,7 @@
       {%- if b.text != blank -%}<p class="event__text muted">{{ b.text }}</p>{%- endif -%}
       <div class="event__actions">
         {%- if b.ticket_url != blank and b.past == false -%}
-          <a href="{{ b.ticket_url }}" target="_blank" rel="noopener" class="btn btn--accent btn--sm">{% render 'icon', name: 'ticket', size: 16 %} {{ b.ticket_text }}</a>
+          <a href="{{ b.ticket_url }}"{% if b.ticket_url contains '://' %} target="_blank" rel="noopener"{% endif %} class="btn btn--accent btn--sm">{% if b.date_tba %}{% render 'icon', name: 'mail', size: 16 %}{% else %}{% render 'icon', name: 'ticket', size: 16 %}{% endif %} {{ b.ticket_text }}</a>
         {%- elsif b.past == false -%}
           <span class="badge badge--outline">{{ 'sections.events.free' | t }}</span>
         {%- endif -%}
