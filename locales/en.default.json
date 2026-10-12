@@ -45,6 +45,7 @@
     "blog": { "read_more": "Read more", "all_posts": "All posts", "comic_strip": "Comic strip", "by": "By {{ author }}", "read_story": "Read the story", "empty": "No stories yet — check back soon." },
     "events": { "upcoming": "Upcoming", "past": "Past event", "tickets": "Get tickets", "details": "Details", "venue": "Venue", "when": "When", "free": "Free entry", "tba": "Date to be announced", "tba_short": "TBA", "soon": "Soon" },
     "music": { "buy": "Buy", "listen": "Listen", "stream": "Stream", "tracklist": "Tracklist", "play_video": "Play video: {{ title }}", "watch_youtube": "Watch on YouTube" },
+    "community": { "pause_wall": "Pause the photo wall", "email_error": "Enter a valid email address.", "sending": "Joining…", "error_generic": "Something went wrong — please try again." },
     "gallery": { "filter": "Filter photos", "all": "All", "open": "Open image: {{ title }}", "viewer": "Image viewer" },
     "shop_the_look": { "shop": "Shop the look", "view": "View product" }
   },

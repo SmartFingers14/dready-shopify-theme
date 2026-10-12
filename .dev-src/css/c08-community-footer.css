@@ -1,17 +1,5 @@
 
 /* ---------- Community ---------- */
-.community__layout { display: grid; grid-template-columns: 2fr 3fr; gap: var(--space-10); align-items: center; }
-.community__layout--noimg { grid-template-columns: 1fr; }
-@media (max-width: 1023px) { .community__layout { grid-template-columns: 1fr; gap: var(--space-6); } }
-.community__content { display: grid; gap: var(--space-5); max-width: 760px; }
-.community__heading { line-height: 0.9; }
-.community__text { max-width: 54ch; }
-.community__perks { display: grid; gap: var(--space-3); }
-.community__perk { display: flex; align-items: center; gap: var(--space-3); font-size: var(--text-sm); font-weight: 500; }
-.community__perk svg { flex-shrink: 0; color: var(--color-accent); }
-.community__form { max-width: 520px; display: grid; gap: var(--space-2); }
-.community__small { font-size: var(--text-xs); }
-.community__social { display: flex; align-items: center; gap: var(--space-4); padding-top: var(--space-2); }
 
 /* ---------- Footer (Daily Paper layout) ---------- */
 .footer { padding-block: var(--section-pad) var(--space-6); }

@@ -1,71 +1,165 @@
 {%- comment -%}
-  Join the community — Daily Paper "UNITE membership" pattern.
-  Big statement, perks list, email capture (Shopify customer form), optional image.
+  Join the family — Daily Paper "UNITE" membership × Nervous culture band.
+  A living wall of real community photos (two counter-drifting rows, pausable, still for
+  reduced motion), a big statement, numbered perks, optional "I'm into" chips that tag the
+  subscriber, and a one-field email form with loading → "Welcome to the family" feedback
+  (AJAX with a plain-POST fallback). Blocks: perk, interest, photo.
 {%- endcomment -%}
-{%- assign s = section.settings -%}
-<section class="section community{% if s.dark %} section--dark{% endif %}">
-  <div class="page-width">
-    <div class="community__layout{% if s.image == blank %} community__layout--noimg{% endif %}">
-      {%- if s.image != blank -%}
-        <div class="community__media media media--portrait reveal">
-          {{ s.image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 40vw, 100vw', widths: '600, 900, 1200', alt: s.heading | escape }}
-        </div>
-      {%- endif -%}
-      <div class="community__content reveal">
-        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
-        <h2 class="community__heading h-hero">{{ s.heading }}</h2>
-        {%- if s.text != blank -%}<p class="community__text body-lg">{{ s.text }}</p>{%- endif -%}
-
-        {%- if section.blocks.size > 0 -%}
-          <ul class="community__perks">
-            {%- for block in section.blocks -%}
-              <li class="community__perk" {{ block.shopify_attributes }}>
-                {% render 'icon', name: block.settings.icon, size: 18 %}
-                <span>{{ block.settings.text }}</span>
-              </li>
+{%- liquid
+  assign s = section.settings
+  assign form_id = 'FamilyForm-' | append: section.id
+  assign photo_count = 0
+  assign interest_count = 0
+  for block in section.blocks
+    if block.type == 'photo'
+      assign photo_count = photo_count | plus: 1
+    elsif block.type == 'interest'
+      assign interest_count = interest_count | plus: 1
+    endif
+  endfor
+  assign half = photo_count | divided_by: 2 | at_least: 1
+-%}
+<section class="section family{% if s.dark %} section--dark{% endif %}" data-family>
+  {%- if photo_count > 1 -%}
+    <div class="family__wall" data-family-wall>
+      {%- for row in (1..2) -%}
+        <div class="family__row family__row--{{ row }}" aria-hidden="true">
+          <div class="family__track">
+            {%- for pass in (1..2) -%}
+              {%- assign n = 0 -%}
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'photo' -%}
+                  {%- assign n = n | plus: 1 -%}
+                  {%- if row == 1 and n > half -%}{%- continue -%}{%- endif -%}
+                  {%- if row == 2 and n <= half -%}{%- continue -%}{%- endif -%}
+                  <div class="family__photo">
+                    {% render 'culture-image', image: block.settings.image, asset: block.settings.asset, alt: '', sizes: '200px' %}
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
             {%- endfor -%}
-          </ul>
-        {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+      <button type="button" class="family__wall-toggle" data-family-pause aria-pressed="false" aria-label="{{ 'sections.community.pause_wall' | t }}">
+        <span class="family__wall-pause">{% render 'icon', name: 'pause', size: 14 %}</span>
+        <span class="family__wall-play">{% render 'icon', name: 'play', size: 14 %}</span>
+      </button>
+      {%- if s.wall_caption != blank -%}<p class="family__wall-caption label">{{ s.wall_caption }}</p>{%- endif -%}
+    </div>
+  {%- endif -%}
 
-        {%- form 'customer', id: 'CommunityForm', class: 'community__form' -%}
-          <input type="hidden" name="contact[tags]" value="newsletter,community">
-          {%- if form.posted_successfully? -%}
-            <p class="form-status form-status--success" role="status" tabindex="-1">{% render 'icon', name: 'check', size: 16 %} {{ 'general.newsletter.success' | t }}</p>
-          {%- else -%}
-            <div class="inline-form">
-              <label for="CommunityEmail" class="visually-hidden">{{ 'general.newsletter.label' | t }}</label>
-              <input id="CommunityEmail" type="email" name="contact[email]" class="field__input" placeholder="{{ 'general.newsletter.label' | t }}" required autocomplete="email" {% if form.errors %}aria-invalid="true" aria-describedby="CommunityEmailError"{% endif %}>
-              <button type="submit" class="btn {% if s.dark %}btn--inverse{% endif %}">{{ s.button_text }}</button>
-            </div>
-            {%- if form.errors -%}<p id="CommunityEmailError" class="field__error" role="alert">{% render 'icon', name: 'alert', size: 14 %} {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>{%- endif -%}
-            {%- if s.small_print != blank -%}<p class="community__small muted">{{ s.small_print }}</p>{%- endif -%}
+  <div class="page-width family__inner">
+    <div class="family__intro reveal">
+      {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+      <h2 class="h-hero family__heading">{{ s.heading }}</h2>
+      <span class="family__stripe" aria-hidden="true"></span>
+      {%- if s.text != blank -%}<p class="body-lg family__text">{{ s.text }}</p>{%- endif -%}
+
+      <ol class="family__perks" role="list">
+        {%- assign p = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'perk' -%}
+            {%- assign p = p | plus: 1 -%}
+            <li class="family__perk" {{ block.shopify_attributes }}>
+              <span class="family__perk-num">{{ p | prepend: '0' | slice: -2, 2 }}</span>
+              <span class="family__perk-icon">{% render 'icon', name: block.settings.icon, size: 20 %}</span>
+              <span class="family__perk-text">
+                {%- if block.settings.title != blank -%}<strong>{{ block.settings.title }}</strong>{%- endif -%}
+                <span>{{ block.settings.text }}</span>
+              </span>
+            </li>
           {%- endif -%}
-        {%- endform -%}
+        {%- endfor -%}
+      </ol>
+    </div>
 
-        {%- if s.show_social -%}
-          <div class="community__social">
-            <span class="eyebrow">{{ 'general.social.follow' | t }}</span>
-            {% render 'social-links', size: 20 %}
+    <div class="family__join reveal">
+      {%- form 'customer', id: form_id, class: 'family__form', data-family-form: '' -%}
+        <input type="hidden" name="contact[tags]" value="{{ s.base_tags | default: 'newsletter,community' }}" data-family-tags data-base="{{ s.base_tags | default: 'newsletter,community' }}">
+        {%- if form.posted_successfully? -%}
+          <div class="family__success is-shown" role="status" tabindex="-1" data-family-success>
+            <span class="family__success-icon" aria-hidden="true">{% render 'icon', name: 'check', size: 28 %}</span>
+            <p class="h2">{{ s.success_heading }}</p>
+            <p class="family__success-text">{{ s.success_text }}</p>
+          </div>
+        {%- else -%}
+          <div class="family__form-body" data-family-body>
+            <p class="family__form-title label">{{ s.form_heading }}</p>
+
+            {%- if interest_count > 0 -%}
+              <fieldset class="family__interests">
+                <legend class="family__legend">{{ s.interests_label }} <span class="muted">({{ 'gift_card.recipient.optional' | t }})</span></legend>
+                <div class="family__chips">
+                  {%- for block in section.blocks -%}
+                    {%- if block.type == 'interest' -%}
+                      {%- assign chip_id = form_id | append: '-i-' | append: forloop.index -%}
+                      {%- assign chip_tag = block.settings.tag | strip -%}
+                      {%- if chip_tag == blank -%}{%- assign chip_tag = block.settings.label | handle | prepend: 'interest-' -%}{%- endif -%}
+                      <label class="family__chip" for="{{ chip_id }}" {{ block.shopify_attributes }}>
+                        <input type="checkbox" id="{{ chip_id }}" value="{{ chip_tag | escape }}" data-family-interest>
+                        <span>{{ block.settings.label }}</span>
+                      </label>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </fieldset>
+            {%- endif -%}
+
+            <div class="family__field">
+              <label class="family__label" for="{{ form_id }}-email">{{ 'general.newsletter.label' | t }}</label>
+              <div class="family__inline">
+                <input id="{{ form_id }}-email" type="email" name="contact[email]" class="field__input family__input" placeholder="you@example.com" required autocomplete="email" aria-describedby="{{ form_id }}-error" {% if form.errors %}aria-invalid="true"{% endif %}>
+                <button type="submit" class="btn btn--accent family__submit" data-family-submit>
+                  <span class="family__submit-label">{{ s.button_text }}</span>
+                  {% render 'icon', name: 'arrow-right', size: 16 %}
+                </button>
+              </div>
+              <p class="field__error family__error" id="{{ form_id }}-error" role="alert" data-family-error{% unless form.errors %} hidden{% endunless %}>
+                {% render 'icon', name: 'alert', size: 14 %}
+                <span data-family-error-text>{%- if form.errors -%}{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}{%- else -%}{{ 'sections.community.email_error' | t }}{%- endif -%}</span>
+              </p>
+            </div>
+            {%- if s.small_print != blank -%}<p class="family__small">{{ s.small_print }}</p>{%- endif -%}
+          </div>
+          <div class="family__success" role="status" tabindex="-1" hidden data-family-success>
+            <span class="family__success-icon" aria-hidden="true">{% render 'icon', name: 'check', size: 28 %}</span>
+            <p class="h2">{{ s.success_heading }}</p>
+            <p class="family__success-text">{{ s.success_text }}</p>
           </div>
         {%- endif -%}
-      </div>
+      {%- endform -%}
+
+      {%- if s.show_social -%}
+        <div class="family__social">
+          <p class="family__social-text">{{ s.social_text }}</p>
+          {% render 'social-links', size: 20 %}
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </section>
 
 {% schema %}
 {
-  "name": "Join the community",
+  "name": "Join the family",
   "tag": "section",
   "settings": [
-    { "type": "image_picker", "id": "image", "label": "Image (optional, 4:5)" },
+    { "type": "image_picker", "id": "image", "label": "Image (unused — add photos as blocks)" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Dready family" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Join the community" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Join the family" },
     { "type": "textarea", "id": "text", "label": "Text", "default": "Early access to drops, event guest lists, collab previews and 10% off your first order." },
+    { "type": "text", "id": "form_heading", "label": "Form heading", "default": "Get on the list" },
+    { "type": "text", "id": "interests_label", "label": "Interests label", "default": "I'm into" },
     { "type": "text", "id": "button_text", "label": "Button text", "default": "Join" },
     { "type": "text", "id": "small_print", "label": "Small print", "default": "No spam. Unsubscribe any time." },
+    { "type": "text", "id": "success_heading", "label": "Success heading", "default": "Welcome to the family" },
+    { "type": "text", "id": "success_text", "label": "Success text", "default": "You're on the list. Check your inbox for your 10% code." },
+    { "type": "text", "id": "base_tags", "label": "Customer tags", "default": "newsletter,community", "info": "Interests are added as interest-… tags." },
+    { "type": "text", "id": "wall_caption", "label": "Photo wall caption", "default": "#DreadyFamily — tag @dreadybrand" },
     { "type": "checkbox", "id": "show_social", "label": "Show social links", "default": true },
-    { "type": "checkbox", "id": "dark", "label": "Dark background", "default": false }
+    { "type": "text", "id": "social_text", "label": "Social line", "default": "Tag @dreadybrand to get on the wall." },
+    { "type": "checkbox", "id": "dark", "label": "Dark background", "default": true }
   ],
   "blocks": [
     {
@@ -73,18 +167,38 @@
       "name": "Perk",
       "settings": [
         { "type": "select", "id": "icon", "label": "Icon", "options": [ { "value": "star", "label": "Star" }, { "value": "tag", "label": "Tag" }, { "value": "ticket", "label": "Ticket" }, { "value": "music", "label": "Music" }, { "value": "eye", "label": "Eye" }, { "value": "check", "label": "Check" } ], "default": "star" },
+        { "type": "text", "id": "title", "label": "Title" },
         { "type": "text", "id": "text", "label": "Text", "default": "Early access to every drop" }
+      ]
+    },
+    {
+      "type": "interest",
+      "name": "Interest chip",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Drops" },
+        { "type": "text", "id": "tag", "label": "Tag (optional)", "info": "Saved on the subscriber, e.g. interest-music. Defaults to the label." }
+      ]
+    },
+    {
+      "type": "photo",
+      "name": "Wall photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "asset", "label": "Theme image file", "info": "Used when no image is picked above." }
       ]
     }
   ],
-  "max_blocks": 4,
+  "max_blocks": 40,
   "presets": [
     {
-      "name": "Join the community",
+      "name": "Join the family",
       "blocks": [
-        { "type": "perk", "settings": { "icon": "star", "text": "Early access to every drop" } },
-        { "type": "perk", "settings": { "icon": "ticket", "text": "Event guest lists & presales" } },
-        { "type": "perk", "settings": { "icon": "tag", "text": "10% off your first order" } }
+        { "type": "perk", "settings": { "icon": "star", "title": "First in line", "text": "Early access to every drop" } },
+        { "type": "perk", "settings": { "icon": "ticket", "title": "On the list", "text": "Event guest lists & presales" } },
+        { "type": "perk", "settings": { "icon": "tag", "title": "10% off", "text": "Your first order" } },
+        { "type": "interest", "settings": { "label": "Drops" } },
+        { "type": "interest", "settings": { "label": "Music" } },
+        { "type": "interest", "settings": { "label": "Events" } }
       ]
     }
   ]
