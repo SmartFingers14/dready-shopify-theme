@@ -49,6 +49,7 @@
     "shop_the_look": { "shop": "Shop the look", "view": "View product" }
   },
   "products": {
+    "share": { "label": "Share", "facebook": "Share on Facebook", "pinterest": "Pin on Pinterest", "x": "Share on X", "copy": "Copy link", "copied": "Link copied", "copied_status": "Product link copied to clipboard", "more": "More sharing options" },
     "product": {
       "add_to_cart": "Add to basket",
       "added_to_cart": "Added to basket",

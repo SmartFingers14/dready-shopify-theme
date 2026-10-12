@@ -33,9 +33,10 @@
       "settings": {
         "show_vendor": false,
         "show_quantity": true,
-        "show_dynamic_checkout": false,
+        "show_dynamic_checkout": true,
         "swatches": true,
-        "made_to_order_text": "Hand-embroidered to order. Please allow 5 working days before dispatch."
+        "made_to_order_text": "Hand-embroidered to order. Please allow 5 working days before dispatch.",
+        "show_share": true
       }
     },
     "recs": {

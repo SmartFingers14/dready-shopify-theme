@@ -24,7 +24,8 @@ cat .dev-src/css/c01-announcement.css \
     .dev-src/css/c10-blog-account.css \
     .dev-src/css/c11-culture-pages.css \
     .dev-src/css/c12-gift-card.css \
-    .dev-src/css/c13-gift-shop.css > assets/components.css
+    .dev-src/css/c13-gift-shop.css \
+    .dev-src/css/c14-pdp-extras.css > assets/components.css
 
 cat .dev-src/js/01-core.js \
     .dev-src/js/02-header-motion.js \
@@ -33,7 +34,8 @@ cat .dev-src/js/01-core.js \
     .dev-src/js/05-cart.js \
     .dev-src/js/06-variants.js \
     .dev-src/js/07-culture.js \
-    .dev-src/js/08-gift.js > assets/global.js
+    .dev-src/js/08-gift.js \
+    .dev-src/js/09-product-share.js > assets/global.js
 
 node --check assets/global.js
 python3 - <<'PY'

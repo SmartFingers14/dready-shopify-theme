@@ -1,0 +1,30 @@
+
+/* =====================================================================
+   Product page extras — pay-later messaging slot, app blocks,
+   express checkout buttons, share row.
+   ===================================================================== */
+.pdp__installments:empty { display: none; }
+.pdp__installments, .pdp__app { font-size: var(--text-sm); color: var(--color-muted); }
+.pdp__installments { margin-top: var(--space-1); }
+.pdp__app { margin-top: var(--space-2); }
+
+/* Express checkout (Buy it now / Shop Pay / Apple Pay) — square, same height as Add to basket */
+.pdp__express { margin-top: var(--space-3); }
+.pdp__express .shopify-payment-button__button { min-height: 48px; border-radius: var(--radius) !important; overflow: hidden; }
+.pdp__express .shopify-payment-button__button--unbranded {
+  background: var(--color-surface); color: var(--color-fg); border: 1px solid var(--color-fg);
+  font-family: var(--font-body); font-size: var(--text-sm); font-weight: 600; text-transform: uppercase; letter-spacing: var(--tracking-caps);
+  transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out);
+}
+.pdp__express .shopify-payment-button__button--unbranded:hover:not([disabled]) { background: var(--color-fg); color: var(--color-bg); }
+.pdp__express .shopify-payment-button__more-options { margin-top: var(--space-2); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: var(--tracking-caps); color: var(--color-muted); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Share row */
+.pdp-share { display: flex; align-items: center; gap: var(--space-3); padding-top: var(--space-4); border-top: 1px solid var(--color-border); }
+.pdp-share__label { color: var(--color-muted); margin-right: auto; }
+.pdp-share__list { display: flex; gap: var(--space-1); }
+.pdp-share__btn { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid transparent; color: var(--color-fg); transition: border-color var(--dur) var(--ease-out), background var(--dur) var(--ease-out), color var(--dur) var(--ease-out); }
+.pdp-share__btn:hover, .pdp-share__btn:focus-visible { border-color: var(--color-fg); }
+.pdp-share__btn:active { background: var(--color-fg); color: var(--color-bg); }
+.pdp-share__tip { position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translate(-50%, 4px); padding: 4px 8px; background: var(--color-fg); color: var(--color-bg); font-size: var(--text-xs); font-weight: 600; letter-spacing: var(--tracking-caps); text-transform: uppercase; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out); }
+.pdp-share__btn.is-copied .pdp-share__tip { opacity: 1; transform: translate(-50%, 0); }

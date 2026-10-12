@@ -1,0 +1,57 @@
+{%- comment -%}
+  Homepage structured data: Organization (logo, social profiles, contact) + WebSite with
+  sitelinks search. Product / Article data is output by their own sections.
+{%- endcomment -%}
+{%- liquid
+  assign logo_url = 'dready-logo.png' | asset_url | prepend: 'https:'
+  if settings.logo != blank
+    assign logo_url = settings.logo | image_url: width: 600 | prepend: 'https:'
+  endif
+  assign same_as = ''
+  for key in (1..7)
+    case key
+      when 1
+        assign u = settings.social_instagram
+      when 2
+        assign u = settings.social_facebook
+      when 3
+        assign u = settings.social_twitter
+      when 4
+        assign u = settings.social_tiktok
+      when 5
+        assign u = settings.social_youtube
+      when 6
+        assign u = settings.social_spotify
+      else
+        assign u = settings.social_bandcamp
+    endcase
+    if u != blank
+      assign same_as = same_as | append: u | append: '|'
+    endif
+  endfor
+  assign same_as = same_as | split: '|'
+-%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    "url": {{ shop.url | json }},
+    "logo": {{ logo_url | json }},
+    "foundingDate": "1983",
+    "sameAs": {{ same_as | json }}
+  }
+</script>
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": {{ shop.name | json }},
+    "url": {{ shop.url | json }},
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {{ shop.url | append: routes.search_url | append: '?q={search_term_string}' | json }},
+      "query-input": "required name=search_term_string"
+    }
+  }
+</script>

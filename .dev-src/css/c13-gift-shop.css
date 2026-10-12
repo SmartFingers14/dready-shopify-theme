@@ -38,7 +38,7 @@
 .field__req { color: var(--color-muted); font-weight: 400; }
 .field__opt { color: var(--color-muted); font-weight: 400; }
 .field__input[aria-invalid="true"] { border-color: var(--color-error); }
-.gift-recipient__message { min-height: 96px; }
+textarea.gift-recipient__message { min-height: 96px; }
 .gift-recipient__count { font-size: var(--text-xs); text-align: right; font-variant-numeric: tabular-nums; }
 .gift-recipient__hint-line { font-size: var(--text-xs); }
 

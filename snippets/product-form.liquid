@@ -18,5 +18,5 @@
       <span>{% if current.available %}{{ 'products.product.add_to_cart' | t }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
     </button>
   </div>
-  {%- if s.show_dynamic_checkout -%}{{ form | payment_button }}{%- endif -%}
+  {%- if s.show_dynamic_checkout and product.gift_card? == false -%}<div class="pdp__express">{{ form | payment_button }}</div>{%- endif -%}
 {%- endform -%}

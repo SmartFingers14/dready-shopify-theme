@@ -1,0 +1,25 @@
+{%- comment -%}
+  Share row for the product page: Facebook, Pinterest, X, copy link, and the device share
+  sheet where supported. Icon buttons are 44px with labels for screen readers.
+  Params: product
+{%- endcomment -%}
+{%- liquid
+  assign share_url = shop.url | append: product.url
+  assign share_url_enc = share_url | url_encode
+  assign share_title_enc = product.title | url_encode
+  assign share_media = ''
+  if product.featured_media != blank
+    assign share_media = product.featured_media | image_url: width: 1200 | prepend: 'https:' | url_encode
+  endif
+-%}
+<div class="pdp-share" data-share data-share-url="{{ share_url }}" data-share-title="{{ product.title | escape }}">
+  <span class="label pdp-share__label">{{ 'products.share.label' | t }}</span>
+  <ul class="pdp-share__list" role="list">
+    <li><a class="pdp-share__btn" href="https://www.facebook.com/sharer/sharer.php?u={{ share_url_enc }}" target="_blank" rel="noopener" aria-label="{{ 'products.share.facebook' | t }}">{% render 'icon', name: 'facebook', size: 18 %}</a></li>
+    <li><a class="pdp-share__btn" href="https://pinterest.com/pin/create/button/?url={{ share_url_enc }}&media={{ share_media }}&description={{ share_title_enc }}" target="_blank" rel="noopener" aria-label="{{ 'products.share.pinterest' | t }}">{% render 'icon', name: 'pinterest', size: 18 %}</a></li>
+    <li><a class="pdp-share__btn" href="https://twitter.com/intent/tweet?url={{ share_url_enc }}&text={{ share_title_enc }}" target="_blank" rel="noopener" aria-label="{{ 'products.share.x' | t }}">{% render 'icon', name: 'twitter', size: 18 %}</a></li>
+    <li><button type="button" class="pdp-share__btn" data-share-copy data-copied-status="{{ 'products.share.copied_status' | t | escape }}" aria-label="{{ 'products.share.copy' | t }}">{% render 'icon', name: 'link', size: 18 %}<span class="pdp-share__tip" aria-hidden="true">{{ 'products.share.copied' | t }}</span></button></li>
+    <li hidden data-share-native-wrap><button type="button" class="pdp-share__btn" data-share-native aria-label="{{ 'products.share.more' | t }}">{% render 'icon', name: 'share', size: 18 %}</button></li>
+  </ul>
+  <span class="visually-hidden" role="status" aria-live="polite" data-share-status></span>
+</div>

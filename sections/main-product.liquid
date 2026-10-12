@@ -57,6 +57,11 @@
           <s class="price__compare" data-product-compare {% unless on_sale %}hidden{% endunless %}>{{ current.compare_at_price | money }}</s>
         </div>
         {%- if cart.taxes_included -%}<p class="pdp__tax muted">{{ 'products.product.include_taxes' | t }}</p>{%- endif -%}
+        {%- comment -%} Pay-later messaging (Clearpay / Afterpay / Klarna) attaches here — point the app's product price selector at #ProductInstallments {%- endcomment -%}
+        <div class="pdp__installments" id="ProductInstallments" data-installments></div>
+        {%- for block in section.blocks -%}
+          {%- if block.type == '@app' -%}<div class="pdp__app">{% render block %}</div>{%- endif -%}
+        {%- endfor -%}
       </div>
 
       {% render 'product-form', product: product, current: current, form_id: form_id, section: section %}
@@ -76,9 +81,29 @@
           {%- endfor -%}
         </ul>
       {%- endif -%}
+
+      {%- if s.show_share -%}{% render 'product-share', product: product %}{%- endif -%}
     </div>
   </div>
 </div>
+
+{%- comment -%} Structured data for Google (Product + BreadcrumbList) {%- endcomment -%}
+{{ product | structured_data }}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": {{ 'general.breadcrumbs.home' | t | json }}, "item": {{ shop.url | json }} }
+      {%- if collection -%}
+      , { "@type": "ListItem", "position": 2, "name": {{ collection.title | json }}, "item": {{ shop.url | append: collection.url | json }} }
+      , { "@type": "ListItem", "position": 3, "name": {{ product.title | json }}, "item": {{ shop.url | append: product.url | json }} }
+      {%- else -%}
+      , { "@type": "ListItem", "position": 2, "name": {{ product.title | json }}, "item": {{ shop.url | append: product.url | json }} }
+      {%- endif -%}
+    ]
+  }
+</script>
 
 {% schema %}
 {
@@ -86,7 +111,8 @@
   "settings": [
     { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": false },
     { "type": "checkbox", "id": "show_quantity", "label": "Show quantity selector", "default": true },
-    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout button", "default": false },
+    { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout button", "info": "Buy it now / Shop Pay / Apple Pay. Hidden automatically on gift cards so recipient details are kept.", "default": true },
+    { "type": "checkbox", "id": "show_share", "label": "Show share links", "default": true },
     { "type": "checkbox", "id": "swatches", "label": "Show colour swatches", "default": true },
     { "type": "page", "id": "size_guide", "label": "Size guide page" },
     { "type": "text", "id": "made_to_order_text", "label": "Made-to-order notice", "default": "Hand-embroidered to order. Please allow 5 working days before dispatch." },
@@ -95,8 +121,9 @@
     { "type": "richtext", "id": "care_text", "label": "Details & care", "default": "<p>Wash cold inside out. Do not tumble dry embroidery.</p>" }
   ],
   "blocks": [
+    { "type": "@app" },
     { "type": "trust", "name": "Trust point", "settings": [ { "type": "select", "id": "icon", "label": "Icon", "options": [ { "value": "truck", "label": "Shipping" }, { "value": "refresh", "label": "Returns" }, { "value": "shield", "label": "Secure" }, { "value": "star", "label": "Quality" } ], "default": "truck" }, { "type": "text", "id": "text", "label": "Text", "default": "Worldwide shipping" } ] }
   ],
-  "max_blocks": 4
+  "max_blocks": 8
 }
 {% endschema %}
