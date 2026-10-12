@@ -1,0 +1,108 @@
+{%- comment -%}
+  About — opening. Kinetic stacked headline (one line per row of the "Heading" box),
+  the artwork in a tilting frame with a spinning "since 1983" badge, quick facts,
+  and a Peace · Love · Unity marquee along the bottom edge.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign lines = s.heading | newline_to_br | split: '<br />'
+  assign marquee_words = s.marquee | split: ','
+-%}
+<section class="about-hero section--dark" data-about-hero>
+  <div class="about-hero__glow" aria-hidden="true"></div>
+  <div class="page-width about-hero__inner">
+    <div class="about-hero__text">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a><span aria-hidden="true">/</span>
+        <span aria-current="page">{{ page.title | default: s.eyebrow }}</span>
+      </nav>
+      {%- if s.eyebrow != blank -%}<p class="eyebrow about-hero__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+      <h1 class="h-hero about-hero__title">
+        {%- for line in lines -%}
+          {%- assign l = line | strip -%}
+          {%- if l != blank -%}<span class="about-hero__line" style="--i: {{ forloop.index0 }}"><span>{{ l }}</span></span>{%- endif -%}
+        {%- endfor -%}
+      </h1>
+      {%- if s.text != blank -%}<p class="body-lg about-hero__lede">{{ s.text }}</p>{%- endif -%}
+      <div class="about-hero__actions">
+        {%- if s.button_label != blank -%}<a href="{{ s.button_url | default: '#' }}" class="btn btn--accent">{{ s.button_label }} {% render 'icon', name: 'chevron-down', size: 16 %}</a>{%- endif -%}
+        {%- if s.button2_label != blank -%}<a href="{{ s.button2_url | default: routes.all_products_collection_url }}" class="btn btn--inverse">{{ s.button2_label }}</a>{%- endif -%}
+      </div>
+    </div>
+
+    <figure class="about-hero__art" data-about-tilt>
+      <div class="about-hero__frame">
+        {%- render 'culture-image', image: s.image, asset: s.asset, alt: s.image_alt, sizes: '(min-width: 1024px) 42vw, 90vw', loading: 'eager', class: 'about-hero__img' -%}
+      </div>
+      {%- if s.badge != blank -%}
+        <div class="about-hero__badge" aria-hidden="true">
+          <svg viewBox="0 0 200 200" class="about-hero__badge-ring">
+            <defs><path id="AboutBadge-{{ section.id }}" d="M100,100 m-76,0 a76,76 0 1,1 152,0 a76,76 0 1,1 -152,0"/></defs>
+            <text><textPath href="#AboutBadge-{{ section.id }}" textLength="470">{{ s.badge | upcase }}</textPath></text>
+          </svg>
+          <img src="{{ 'dready-icon.png' | asset_img_url: '160x' }}" alt="" width="80" height="72" loading="lazy" class="about-hero__badge-icon">
+        </div>
+      {%- endif -%}
+      {%- if s.caption != blank -%}<figcaption class="about-hero__caption">{{ s.caption }}</figcaption>{%- endif -%}
+    </figure>
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="page-width">
+      <ul class="about-hero__facts reveal-stagger" role="list">
+        {%- for block in section.blocks -%}
+          <li class="about-hero__fact" {{ block.shopify_attributes }}>
+            <span class="about-hero__fact-value">{{ block.settings.value }}</span>
+            <span class="about-hero__fact-label">{{ block.settings.label }}</span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+
+  {%- if marquee_words.size > 0 -%}
+    <div class="about-marquee" aria-hidden="true">
+      <div class="about-marquee__track">
+        {%- for r in (1..4) -%}
+          {%- for w in marquee_words -%}<span class="about-marquee__word">{{ w | strip }}</span><span class="about-marquee__dot"></span>{%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "About hero",
+  "tag": "section",
+  "class": "shopify-section--about-hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our roots · Since 1983" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "info": "One line per row — each row animates in on its own.", "default": "One pencil.\nOne message." },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Read the story" },
+    { "type": "text", "id": "button_url", "label": "Button link", "default": "#the-artist", "info": "Use #anchor of a chapter, or a URL." },
+    { "type": "text", "id": "button2_label", "label": "Second button label", "default": "Shop the collection" },
+    { "type": "url", "id": "button2_url", "label": "Second button link" },
+    { "type": "header", "content": "Artwork" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "asset", "label": "Fallback theme image", "info": "Filename in the theme's assets folder, used when no image is picked." },
+    { "type": "text", "id": "image_alt", "label": "Image alt text" },
+    { "type": "text", "id": "caption", "label": "Caption" },
+    { "type": "text", "id": "badge", "label": "Spinning badge text", "default": "Peace • Love • Unity • Family • Since 1983 • " },
+    { "type": "text", "id": "marquee", "label": "Marquee words", "info": "Comma separated", "default": "Peace, Love, Unity, Family" }
+  ],
+  "blocks": [
+    {
+      "type": "fact",
+      "name": "Fact",
+      "settings": [
+        { "type": "text", "id": "value", "label": "Value", "default": "1983" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Born in Birmingham" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [ { "name": "About hero", "blocks": [ { "type": "fact" } ] } ]
+}
+{% endschema %}

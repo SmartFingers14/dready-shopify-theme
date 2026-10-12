@@ -1,0 +1,70 @@
+{%- comment -%}
+  About — timeline. Horizontal, draggable journey through the years with a line that
+  fills as you travel, prev/next buttons (shared scroller) and big outlined years
+  that fill with colour as each moment comes into view.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<section class="section about-timeline{% if s.dark %} section--dark{% endif %}" id="{{ s.anchor | default: 'timeline' | handleize }}" data-about-timeline>
+  <div class="page-width" data-scroller-wrap>
+    <header class="section-header about-timeline__header">
+      <div class="section-header__text">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="h1">{{ s.heading }}</h2>{%- endif -%}
+        {%- if s.text != blank -%}<p class="about-timeline__intro">{{ s.text }}</p>{%- endif -%}
+      </div>
+      <div class="about-timeline__nav">
+        <button type="button" class="about-timeline__btn" data-scroller-prev aria-label="{{ 'accessibility.previous_slide' | t }}">{% render 'icon', name: 'arrow-left', size: 18 %}</button>
+        <button type="button" class="about-timeline__btn" data-scroller-next aria-label="{{ 'accessibility.next_slide' | t }}">{% render 'icon', name: 'arrow-right', size: 18 %}</button>
+      </div>
+    </header>
+    <div class="about-timeline__rail" aria-hidden="true"><span data-timeline-progress></span></div>
+    <ol class="about-timeline__track" data-scroller data-timeline-track tabindex="0" aria-label="{{ s.heading | escape }}">
+      {%- for block in section.blocks -%}
+        {%- assign b = block.settings -%}
+        <li class="about-timeline__item" data-timeline-item {{ block.shopify_attributes }}>
+          <span class="about-timeline__dot" aria-hidden="true"></span>
+          <p class="about-timeline__year">{{ b.year }}</p>
+          {%- if b.image != blank or b.asset != blank -%}
+            <div class="about-timeline__img">{%- render 'culture-image', image: b.image, asset: b.asset, alt: b.title, sizes: '320px' -%}</div>
+          {%- endif -%}
+          <h3 class="about-timeline__title">{{ b.title }}</h3>
+          {%- if b.text != blank -%}<p class="about-timeline__text">{{ b.text }}</p>{%- endif -%}
+        </li>
+      {%- endfor -%}
+      <li class="about-timeline__item about-timeline__item--end" aria-hidden="true">
+        <span class="about-timeline__dot"></span>
+        <p class="about-timeline__year">{{ s.end_label }}</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About timeline",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Anchor id", "default": "timeline" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The journey" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Four decades of good vibes" },
+    { "type": "text", "id": "text", "label": "Intro" },
+    { "type": "text", "id": "end_label", "label": "Final marker", "default": "Next: you" },
+    { "type": "checkbox", "id": "dark", "label": "Dark band", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "moment",
+      "name": "Moment",
+      "settings": [
+        { "type": "text", "id": "year", "label": "Year", "default": "1983" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Moment" },
+        { "type": "textarea", "id": "text", "label": "Text" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "asset", "label": "Fallback theme image" }
+      ]
+    }
+  ],
+  "max_blocks": 14,
+  "presets": [ { "name": "About timeline", "blocks": [ { "type": "moment" }, { "type": "moment" }, { "type": "moment" } ] } ]
+}
+{% endschema %}

@@ -1,0 +1,122 @@
+{%- comment -%}
+  About — story chapter. Sticky artwork (main + overlapping second image with parallax)
+  beside the numbered chapter text, a pull quote, optional name chips and mini facts.
+  Chapters with "Show in chapter nav" build the floating chapter rail (global.js).
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign anchor = s.anchor | default: s.kicker | handleize
+  assign tags = section.blocks | where: 'type', 'tag'
+  assign facts = section.blocks | where: 'type', 'fact'
+  assign has_media = false
+  if s.image != blank or s.asset != blank
+    assign has_media = true
+  endif
+-%}
+<section id="{{ anchor }}" class="section about-chapter about-chapter--{{ s.theme }}{% if s.theme == 'dark' or s.theme == 'green' %} section--dark{% endif %}{% if s.image_side == 'right' %} about-chapter--flip{% endif %}{% unless has_media %} about-chapter--text-only{% endunless %}"
+  data-about-chapter{% if s.show_in_nav %} data-chapter-nav="{{ s.nav_label | default: s.kicker | escape }}" data-chapter-num="{{ s.number | escape }}"{% endif %}>
+  {%- if s.number != blank -%}<span class="about-chapter__ghost" aria-hidden="true">{{ s.number }}</span>{%- endif -%}
+  <div class="page-width about-chapter__inner">
+    {%- if has_media -%}
+      <div class="about-chapter__media">
+        <figure class="about-chapter__figure reveal">
+          <div class="about-chapter__frame about-chapter__frame--{{ s.image_fit }}">
+            {%- render 'culture-image', image: s.image, asset: s.asset, alt: s.image_alt, sizes: '(min-width: 1024px) 45vw, 92vw' -%}
+          </div>
+          {%- if s.image2 != blank or s.asset2 != blank -%}
+            <div class="about-chapter__frame2" data-parallax="0.12">
+              {%- render 'culture-image', image: s.image2, asset: s.asset2, alt: s.image2_alt, sizes: '(min-width: 1024px) 18vw, 40vw' -%}
+            </div>
+          {%- endif -%}
+          {%- if s.caption != blank -%}<figcaption class="about-chapter__caption"><span>{{ s.number }}</span>{{ s.caption }}</figcaption>{%- endif -%}
+        </figure>
+      </div>
+    {%- endif -%}
+
+    <div class="about-chapter__body">
+      <p class="about-chapter__kicker reveal">
+        {%- if s.number != blank -%}<span class="about-chapter__num">{{ s.number }}</span>{%- endif -%}
+        <span>{{ s.kicker }}</span>
+      </p>
+      {%- if s.heading != blank -%}<h2 class="h1 about-chapter__heading reveal">{{ s.heading }}</h2>{%- endif -%}
+      {%- if s.text != blank -%}<div class="rte about-chapter__text reveal">{{ s.text }}</div>{%- endif -%}
+
+      {%- if s.quote != blank -%}
+        <figure class="about-chapter__quote reveal">
+          <span class="about-chapter__quote-mark" aria-hidden="true">&ldquo;</span>
+          <blockquote>{{ s.quote }}</blockquote>
+          {%- if s.quote_source != blank -%}<figcaption>{{ s.quote_source }}</figcaption>{%- endif -%}
+        </figure>
+      {%- endif -%}
+
+      {%- if tags.size > 0 -%}
+        <div class="about-chapter__tags reveal">
+          {%- if s.tags_label != blank -%}<p class="label about-chapter__tags-label">{{ s.tags_label }}</p>{%- endif -%}
+          <ul class="about-chapter__tag-list reveal-stagger" role="list">
+            {%- for block in tags -%}
+              <li class="about-chapter__tag" {{ block.shopify_attributes }}>
+                <strong>{{ block.settings.label }}</strong>
+                {%- if block.settings.text != blank -%}<span>{{ block.settings.text }}</span>{%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- if facts.size > 0 -%}
+        <ul class="about-chapter__facts reveal-stagger" role="list">
+          {%- for block in facts -%}
+            <li {{ block.shopify_attributes }}><span class="about-chapter__fact-value">{{ block.settings.value }}</span><span class="about-chapter__fact-label">{{ block.settings.label }}</span></li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if s.button_label != blank -%}
+        <a href="{{ s.button_url | default: '#' }}" class="btn{% if s.theme == 'dark' or s.theme == 'green' %} btn--accent{% endif %} about-chapter__btn reveal"{% if s.button_new_tab %} target="_blank" rel="noopener"{% endif %}>{{ s.button_label }} {% render 'icon', name: 'arrow-up-right', size: 16 %}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About chapter",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "number", "label": "Chapter number", "default": "01" },
+    { "type": "text", "id": "kicker", "label": "Chapter name", "default": "The artist" },
+    { "type": "text", "id": "anchor", "label": "Anchor id", "info": "Defaults to the chapter name, e.g. #the-artist" },
+    { "type": "checkbox", "id": "show_in_nav", "label": "Show in chapter nav", "default": true },
+    { "type": "text", "id": "nav_label", "label": "Chapter nav label" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Chapter heading" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "textarea", "id": "quote", "label": "Pull quote" },
+    { "type": "text", "id": "quote_source", "label": "Quote source" },
+    { "type": "text", "id": "tags_label", "label": "Name chips label", "default": "Meet the crew" },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "url", "id": "button_url", "label": "Button link" },
+    { "type": "checkbox", "id": "button_new_tab", "label": "Open link in new tab", "default": false },
+    {
+      "type": "select", "id": "theme", "label": "Colour",
+      "options": [ { "value": "light", "label": "Light" }, { "value": "dark", "label": "Dark" }, { "value": "green", "label": "Rasta green" }, { "value": "gold", "label": "Rasta gold" } ],
+      "default": "light"
+    },
+    { "type": "header", "content": "Images" },
+    { "type": "select", "id": "image_side", "label": "Image side", "options": [ { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" } ], "default": "left" },
+    { "type": "select", "id": "image_fit", "label": "Main image shape", "options": [ { "value": "portrait", "label": "Portrait" }, { "value": "square", "label": "Square" }, { "value": "landscape", "label": "Landscape" } ], "default": "portrait" },
+    { "type": "image_picker", "id": "image", "label": "Main image" },
+    { "type": "text", "id": "asset", "label": "Main image — fallback theme file" },
+    { "type": "text", "id": "image_alt", "label": "Main image alt text" },
+    { "type": "image_picker", "id": "image2", "label": "Second image" },
+    { "type": "text", "id": "asset2", "label": "Second image — fallback theme file" },
+    { "type": "text", "id": "image2_alt", "label": "Second image alt text" },
+    { "type": "text", "id": "caption", "label": "Caption" }
+  ],
+  "blocks": [
+    { "type": "tag", "name": "Name chip", "settings": [ { "type": "text", "id": "label", "label": "Name", "default": "Name" }, { "type": "text", "id": "text", "label": "Description" } ] },
+    { "type": "fact", "name": "Fact", "settings": [ { "type": "text", "id": "value", "label": "Value", "default": "1983" }, { "type": "text", "id": "label", "label": "Label", "default": "Label" } ] }
+  ],
+  "max_blocks": 8,
+  "presets": [ { "name": "About chapter" } ]
+}
+{% endschema %}

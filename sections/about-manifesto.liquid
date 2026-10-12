@@ -1,0 +1,27 @@
+{%- comment -%}
+  About — manifesto. One big statement whose words light up as you scroll through it
+  (global.js). Bold words in the text become the coloured key words.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<section class="section about-manifesto{% if s.dark %} section--dark{% endif %}"{% if s.anchor != blank %} id="{{ s.anchor | handleize }}"{% endif %} data-about-manifesto>
+  <div class="page-width about-manifesto__inner">
+    {%- if s.eyebrow != blank -%}<p class="eyebrow about-manifesto__eyebrow"><span class="about-manifesto__stripe" aria-hidden="true"></span>{{ s.eyebrow }}</p>{%- endif -%}
+    <p class="about-manifesto__text" data-manifesto-text>{{ s.text }}</p>
+    {%- if s.signature != blank -%}<p class="about-manifesto__sig">{{ s.signature }}</p>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About manifesto",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Anchor id", "info": "Lets buttons link here, e.g. #manifesto" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "What Dready stands for" },
+    { "type": "inline_richtext", "id": "text", "label": "Statement", "info": "Bold words are highlighted in Rasta colours.", "default": "Dready was never just a cartoon. He was a message: <strong>peace</strong>, <strong>love</strong>, <strong>unity</strong> and <strong>family</strong>." },
+    { "type": "text", "id": "signature", "label": "Signature" },
+    { "type": "checkbox", "id": "dark", "label": "Dark band", "default": false }
+  ],
+  "presets": [ { "name": "About manifesto" } ]
+}
+{% endschema %}
