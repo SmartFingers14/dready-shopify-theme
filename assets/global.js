@@ -476,10 +476,9 @@
       }
       if (submit) { submit.disabled = !v.available; if (submitText) submitText.textContent = v.available ? window.theme.strings.addToCart : window.theme.strings.soldOut; }
       const url = new URL(window.location); url.searchParams.set('variant', v.id); history.replaceState({}, '', url);
-      // swap gallery to variant image
+      // bring the variant's image to the front of the gallery (and its thumbnail to the top)
       if (v.featured_media && v.featured_media.id) {
-        const target = qs(`[data-media-id="${v.featured_media.id}"]`);
-        if (target) target.scrollIntoView({ behavior: prefersReducedMotion.matches ? 'auto' : 'smooth', block: 'nearest', inline: 'start' });
+        document.dispatchEvent(new CustomEvent('gallery:show', { detail: { mediaId: v.featured_media.id } }));
       }
     };
     picker.addEventListener('change', update);
@@ -489,14 +488,28 @@
   /* ---------- Product gallery: thumbnails + dots ---------- */
   qsa('[data-gallery]').forEach(gal => {
     const track = qs('[data-gallery-track]', gal);
-    const thumbs = qsa('[data-gallery-thumb]', gal);
+    const thumbWrap = qs('[data-gallery-thumbs]', gal);
     if (!track) return;
-    const items = qsa('[data-media-id]', track);
-    const setActive = (idx) => thumbs.forEach((t, k) => t.setAttribute('aria-current', k === idx ? 'true' : 'false'));
-    thumbs.forEach((t, k) => t.addEventListener('click', () => { items[k]?.scrollIntoView({ behavior: prefersReducedMotion.matches ? 'auto' : 'smooth', block: 'nearest', inline: 'start' }); setActive(k); }));
+    const item = (id) => qs(`[data-media-id="${id}"]`, track);
+    const thumb = (id) => thumbWrap ? qs(`[data-media-id="${id}"]`, thumbWrap) : null;
+    const setActive = (id) => qsa('[data-gallery-thumb]', gal).forEach(t => t.setAttribute('aria-current', t.dataset.mediaId === String(id) ? 'true' : 'false'));
+    qsa('[data-gallery-thumb]', gal).forEach(t => t.addEventListener('click', () => {
+      item(t.dataset.mediaId)?.scrollIntoView({ behavior: prefersReducedMotion.matches ? 'auto' : 'smooth', block: 'nearest', inline: 'start' });
+      setActive(t.dataset.mediaId);
+    }));
+    document.addEventListener('gallery:show', (e) => {
+      const id = String(e.detail.mediaId);
+      const target = item(id);
+      if (!target || track.firstElementChild === target) return;
+      track.prepend(target);
+      const t = thumb(id); if (t) thumbWrap.prepend(t);
+      setActive(id);
+      // mobile: horizontal snap track — return to the first slide
+      if (track.scrollWidth > track.clientWidth) track.scrollTo({ left: 0, behavior: prefersReducedMotion.matches ? 'auto' : 'smooth' });
+    });
     if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver((en) => en.forEach(x => { if (x.isIntersecting) setActive(items.indexOf(x.target)); }), { root: track, threshold: 0.6 });
-      items.forEach(i => io.observe(i));
+      const io = new IntersectionObserver((en) => en.forEach(x => { if (x.isIntersecting) setActive(x.target.dataset.mediaId); }), { root: track, threshold: 0.6 });
+      qsa('[data-media-id]', track).forEach(i => io.observe(i));
     }
   });
 

@@ -1,30 +1,55 @@
-{%- comment -%} PDP gallery: vertical stack on desktop, horizontal snap on mobile; thumbnails. Params: product, section {%- endcomment -%}
+{%- comment -%}
+  PDP gallery: vertical stack on desktop, horizontal snap on mobile; thumbnails. Params: product, section
+  The selected variant's image is rendered first (Dawn pattern) so the gallery opens on the chosen colour;
+  global.js moves the new variant's image to the front when the colour changes.
+{%- endcomment -%}
+{%- liquid
+  assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media
+  assign featured_id = featured_media.id
+-%}
 <div class="pdp__gallery" data-gallery>
   {%- if product.media.size > 1 -%}
-    <div class="gallery__thumbs" role="tablist" aria-label="{{ 'accessibility.image_of' | t: current: '', total: product.media.size }}">
-      {%- for media in product.media -%}
-        <button type="button" class="gallery__thumb media media--portrait" data-gallery-thumb aria-current="{% if forloop.first %}true{% else %}false{% endif %}" aria-label="{{ 'accessibility.image_of' | t: current: forloop.index, total: product.media.size }}">
-          {{ media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', sizes: '64px', alt: media.alt | escape }}
-        </button>
+    <div class="gallery__thumbs" role="tablist" aria-label="{{ 'accessibility.image_of' | t: current: '', total: product.media.size }}" data-gallery-thumbs>
+      {%- assign n = 0 -%}
+      {%- for pass in (1..2) -%}
+        {%- for media in product.media -%}
+          {%- if pass == 1 and media.id != featured_id -%}{%- continue -%}{%- endif -%}
+          {%- if pass == 2 and media.id == featured_id -%}{%- continue -%}{%- endif -%}
+          {%- assign n = n | plus: 1 -%}
+          <button type="button" class="gallery__thumb media media--portrait" data-gallery-thumb data-media-id="{{ media.id }}" aria-current="{% if n == 1 %}true{% else %}false{% endif %}" aria-label="{{ 'accessibility.image_of' | t: current: n, total: product.media.size }}">
+            {{ media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', sizes: '64px', alt: media.alt | escape }}
+          </button>
+        {%- endfor -%}
       {%- endfor -%}
     </div>
   {%- endif -%}
   <div class="gallery__track" data-gallery-track>
-    {%- for media in product.media -%}
-      <div class="gallery__item media media--portrait" data-media-id="{{ media.id }}">
-        {%- case media.media_type -%}
-          {%- when 'image' -%}
-            {{ media | image_url: width: 1600 | image_tag: loading: forloop.first | default: 'lazy', fetchpriority: forloop.first | default: 'auto', sizes: '(min-width: 1024px) 55vw, 100vw', widths: '480, 750, 1000, 1300, 1600', alt: media.alt | default: product.title | escape }}
-          {%- when 'video' -%}
-            {{ media | video_tag: controls: true, muted: true, loop: true, playsinline: true, preload: 'metadata' }}
-          {%- when 'external_video' -%}
-            {{ media | external_video_tag }}
-          {%- when 'model' -%}
-            {{ media | model_viewer_tag }}
-        {%- endcase -%}
-      </div>
-    {%- else -%}
+    {%- if product.media.size == 0 -%}
       <div class="gallery__item media media--portrait">{{ 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+    {%- endif -%}
+    {%- assign n = 0 -%}
+    {%- for pass in (1..2) -%}
+      {%- for media in product.media -%}
+        {%- if pass == 1 and media.id != featured_id -%}{%- continue -%}{%- endif -%}
+        {%- if pass == 2 and media.id == featured_id -%}{%- continue -%}{%- endif -%}
+        {%- assign n = n | plus: 1 -%}
+        <div class="gallery__item media media--portrait" data-media-id="{{ media.id }}">
+          {%- case media.media_type -%}
+            {%- when 'image' -%}
+              {%- if n == 1 -%}
+                {{ media | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 1024px) 55vw, 100vw', widths: '480, 750, 1000, 1300, 1600', alt: media.alt | default: product.title | escape }}
+              {%- else -%}
+                {{ media | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 55vw, 100vw', widths: '480, 750, 1000, 1300, 1600', alt: media.alt | default: product.title | escape }}
+              {%- endif -%}
+            {%- when 'video' -%}
+              {{ media | video_tag: controls: true, muted: true, loop: true, playsinline: true, preload: 'metadata' }}
+            {%- when 'external_video' -%}
+              {{ media | external_video_tag }}
+            {%- when 'model' -%}
+              {{ media | model_viewer_tag }}
+          {%- endcase -%}
+        </div>
+      {%- endfor -%}
     {%- endfor -%}
   </div>
 </div>
