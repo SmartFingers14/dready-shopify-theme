@@ -448,6 +448,15 @@
         "q04": {
           "type": "quote",
           "settings": {
+            "quote": "I’ve always been around the Dready brand from being a kid.",
+            "source": "DJ Oneman",
+            "context": "South London DJ, Fall 2015 lookbook",
+            "url": "/blogs/news/dready-returns-with-lookbook-featuring-dj-oneman"
+          }
+        },
+        "q05": {
+          "type": "quote",
+          "settings": {
             "quote": "I saw huge potential in this brand and in the 90s I made it a household name by distributing it through the UK, France & Italy.",
             "source": "Aaron Thalmann",
             "context": "Weekend Offender",
@@ -459,7 +468,8 @@
         "q01",
         "q02",
         "q03",
-        "q04"
+        "q04",
+        "q05"
       ],
       "settings": {
         "eyebrow": "In their words",
