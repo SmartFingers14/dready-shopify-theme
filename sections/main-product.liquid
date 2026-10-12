@@ -88,7 +88,9 @@
 </div>
 
 {%- comment -%} Structured data for Google (Product + BreadcrumbList) {%- endcomment -%}
-{{ product | structured_data }}
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
 <script type="application/ld+json">
   {
     "@context": "https://schema.org",

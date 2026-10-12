@@ -27,7 +27,9 @@
     </div>
   </footer>
 </article>
-{{ article | structured_data }}
+<script type="application/ld+json">
+  {{ article | structured_data }}
+</script>
 
 {% schema %}
 {
