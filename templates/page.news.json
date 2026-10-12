@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "hero": {
+      "type": "culture-hero",
+      "settings": {
+        "eyebrow": "Dready culture",
+        "text": "<p>Collabs, drops, mixes and stories from the Dready family.</p>",
+        "dark": false,
+        "accent_rule": true
+      }
+    },
+    "index": {
+      "type": "news-index",
+      "settings": {
+        "blog": "news",
+        "limit": 13,
+        "show_excerpt": true,
+        "lead_label": "Latest",
+        "more_label": "More stories",
+        "all_label": "All stories"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "index"
+  ]
+}

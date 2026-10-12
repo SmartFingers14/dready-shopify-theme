@@ -1,0 +1,35 @@
+{%- comment -%}
+  Image for the culture pages: a Shopify Files image picked in the editor wins;
+  otherwise falls back to a photo shipped in the theme's assets/ folder.
+  Params: image (image_picker), asset (filename), alt, sizes, loading ('lazy'|'eager'),
+          class, mode ('img' default | 'full' → prints the lightbox-size URL only)
+{%- endcomment -%}
+{%- liquid
+  assign loading = loading | default: 'lazy'
+  assign sizes = sizes | default: '100vw'
+-%}
+{%- if image != blank -%}
+  {%- if mode == 'full' -%}
+    {{- image | image_url: width: 2000 -}}
+  {%- elsif loading == 'eager' -%}
+    {{ image | image_url: width: 1600 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: sizes, widths: '480, 750, 1100, 1600', alt: alt, class: class }}
+  {%- else -%}
+    {{ image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: sizes, widths: '480, 750, 1100, 1600', alt: alt, class: class }}
+  {%- endif -%}
+{%- elsif asset != blank -%}
+  {%- capture size %}{% render 'culture-asset-size', file: asset %}{% endcapture -%}
+  {%- assign wh = size | strip | split: 'x' -%}
+  {%- assign w = wh[0] | plus: 0 -%}
+  {%- if mode == 'full' -%}
+    {{- asset | asset_url -}}
+  {%- else -%}
+    {%- capture srcset -%}
+      {%- for step in (1..4) -%}
+        {%- case step -%}{%- when 1 -%}{%- assign sw = 480 -%}{%- when 2 -%}{%- assign sw = 750 -%}{%- when 3 -%}{%- assign sw = 1100 -%}{%- else -%}{%- assign sw = 1600 -%}{%- endcase -%}
+        {%- if sw < w or step == 1 -%}{%- assign key = sw | append: 'x' -%}{{ asset | asset_img_url: key }} {{ sw }}w, {% endif -%}
+      {%- endfor -%}
+      {{- asset | asset_url }} {{ w }}w
+    {%- endcapture -%}
+    <img src="{{ asset | asset_img_url: '750x' }}" srcset="{{ srcset | strip }}" sizes="{{ sizes }}"{% if w > 0 %} width="{{ wh[0] }}" height="{{ wh[1] }}"{% endif %} alt="{{ alt }}" loading="{{ loading }}"{% if loading == 'eager' %} fetchpriority="high"{% endif %} decoding="async"{% if class != blank %} class="{{ class }}"{% endif %}>
+  {%- endif -%}
+{%- endif -%}

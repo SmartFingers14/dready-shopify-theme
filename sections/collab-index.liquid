@@ -1,0 +1,82 @@
+{%- comment -%}
+  Collabs index — editorial ledger of partnerships. Each row: index number, "Dready × Partner"
+  set huge, status chip (Live / Archive), short story and one CTA. Image alternates sides;
+  on hover the artwork scales and the partner name underlines (desktop), all rows stack on mobile.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<section class="section collab-index{% if s.dark %} section--dark{% endif %}">
+  <div class="page-width">
+    <ol class="collab-index__list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign url = b.link_url
+          if url == blank and b.product != blank
+            assign url = b.product.url
+          endif
+          assign name = 'Dready × ' | append: b.partner
+          assign name_alt = name | escape
+          if b.image != blank or b.asset != blank
+            assign has_img = true
+          else
+            assign has_img = false
+          endif
+        -%}
+        <li class="collab-row{% cycle '', ' collab-row--flip' %} reveal" {{ block.shopify_attributes }}>
+          <div class="collab-row__media media media--square{% if b.contain %} media--contain collab-row__media--contain{% endif %}">
+            {%- if has_img -%}
+              {% render 'culture-image', image: b.image, asset: b.asset, alt: name_alt, sizes: '(min-width: 1024px) 40vw, 100vw' %}
+            {%- elsif b.product.featured_media != blank -%}
+              {{ b.product.featured_media | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 40vw, 100vw', widths: '600, 900, 1200', alt: name_alt }}
+            {%- else -%}
+              <div class="media--placeholder" data-label="Collab image" style="position:absolute;inset:0">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+            {%- endif -%}
+          </div>
+          <div class="collab-row__body">
+            <div class="collab-row__top">
+              <span class="collab-row__num label">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+              {%- if b.status != blank and b.status != 'none' -%}<span class="badge {% if b.status == 'Live' %}badge--accent{% else %}badge--outline{% endif %}">{{ b.status }}</span>{%- endif -%}
+              {%- if b.year != blank -%}<span class="collab-row__year label">{{ b.year }}</span>{%- endif -%}
+            </div>
+            <h2 class="collab-row__name">
+              {%- if url != blank -%}<a href="{{ url }}"{% if url contains '://' %} target="_blank" rel="noopener"{% endif %}><span class="collab-row__x">Dready ×</span> {{ b.partner }}</a>{%- else -%}<span class="collab-row__x">Dready ×</span> {{ b.partner }}{%- endif -%}
+            </h2>
+            {%- if b.text != blank -%}<div class="collab-row__text rte">{{ b.text }}</div>{%- endif -%}
+            {%- if url != blank and b.link_label != blank -%}
+              <a href="{{ url }}" class="link-underline collab-row__cta"{% if url contains '://' %} target="_blank" rel="noopener"{% endif %}>{{ b.link_label }}</a>
+            {%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collabs index",
+  "tag": "section",
+  "settings": [
+    { "type": "checkbox", "id": "dark", "label": "Dark band", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "collab",
+      "name": "Collab",
+      "settings": [
+        { "type": "text", "id": "partner", "label": "Partner name", "default": "Partner" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "asset", "label": "Theme image file", "info": "Used when no image is picked above." },
+        { "type": "checkbox", "id": "contain", "label": "Show whole image (no crop)", "default": false },
+        { "type": "select", "id": "status", "label": "Status", "options": [ { "value": "Live", "label": "Live" }, { "value": "Archive", "label": "Archive" }, { "value": "none", "label": "None" } ], "default": "Archive" },
+        { "type": "text", "id": "year", "label": "Year" },
+        { "type": "richtext", "id": "text", "label": "Story" },
+        { "type": "product", "id": "product", "label": "Product (link + image fallback)" },
+        { "type": "url", "id": "link_url", "label": "Link (overrides product)" },
+        { "type": "text", "id": "link_label", "label": "Link label", "default": "Shop the collab" }
+      ]
+    }
+  ],
+  "presets": [ { "name": "Collabs index", "blocks": [ { "type": "collab" }, { "type": "collab" } ] } ]
+}
+{% endschema %}

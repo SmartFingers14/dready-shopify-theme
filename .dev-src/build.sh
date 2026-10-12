@@ -21,14 +21,16 @@ cat .dev-src/css/c01-announcement.css \
     .dev-src/css/c07-culture.css \
     .dev-src/css/c08-community-footer.css \
     .dev-src/css/c09-pages.css \
-    .dev-src/css/c10-blog-account.css > assets/components.css
+    .dev-src/css/c10-blog-account.css \
+    .dev-src/css/c11-culture-pages.css > assets/components.css
 
 cat .dev-src/js/01-core.js \
     .dev-src/js/02-header-motion.js \
     .dev-src/js/03-sliders.js \
     .dev-src/js/04-interactions.js \
     .dev-src/js/05-cart.js \
-    .dev-src/js/06-variants.js > assets/global.js
+    .dev-src/js/06-variants.js \
+    .dev-src/js/07-culture.js > assets/global.js
 
 node --check assets/global.js
 python3 - <<'PY'

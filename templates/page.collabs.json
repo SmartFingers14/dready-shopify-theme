@@ -1,0 +1,88 @@
+{
+  "sections": {
+    "hero": {
+      "type": "culture-hero",
+      "settings": {
+        "eyebrow": "Collaborations",
+        "text": "<p>Since 1983 Dready has spread one message — peace, love &amp; unity. These are the people we've shared it with.</p>",
+        "stat": "4 collaborations",
+        "dark": false,
+        "accent_rule": true
+      }
+    },
+    "index": {
+      "type": "collab-index",
+      "blocks": {
+        "nike": {
+          "type": "collab",
+          "settings": {
+            "partner": "Nike",
+            "asset": "collab-nike.jpg",
+            "status": "Archive",
+            "text": "<p>Air Force 1 Mids in Rasta red, gold and green, finished with Dready branding.</p>"
+          }
+        },
+        "newera": {
+          "type": "collab",
+          "settings": {
+            "partner": "New Era",
+            "asset": "collab-new-era.jpg",
+            "contain": true,
+            "status": "Live",
+            "text": "<p>The Walking Dread embroidered cuff beanie — an exclusive Dready × New Era piece.</p>",
+            "product": "dready-x-new-era-walking-dread-beanie",
+            "link_label": "Shop the beanie"
+          }
+        },
+        "selecta": {
+          "type": "collab",
+          "settings": {
+            "partner": "Tan-Tan & Silvalox",
+            "asset": "music-selecta.jpg",
+            "status": "Live",
+            "text": "<p>Dready Selecta — Volume On! Eleven reggae and dancehall cuts, compiled for Dready.</p>",
+            "link_url": "/pages/music",
+            "link_label": "Listen & buy"
+          }
+        },
+        "hoxton": {
+          "type": "collab",
+          "settings": {
+            "partner": "Johnny Hoxton",
+            "asset": "collab-johnny-hoxton.jpg",
+            "status": "Archive",
+            "text": "<p>Inspired by his father — a master craftsman with 30 years in Hatton Garden — Johnny Hoxton fuses street culture with luxury, making jewellery for the likes of Goldie, Nike, Sweet Toof and Ben Eine.</p>",
+            "link_url": "/blogs/news/dready-x-johnny-hoxton",
+            "link_label": "Read the story"
+          }
+        }
+      },
+      "block_order": [
+        "nike",
+        "newera",
+        "selecta",
+        "hoxton"
+      ],
+      "settings": {
+        "dark": false
+      }
+    },
+    "cta": {
+      "type": "cta-band",
+      "settings": {
+        "style": "dark",
+        "eyebrow": "Work with us",
+        "heading": "Got a collab in mind?",
+        "text": "Brands, artists and crews — get in touch with the team.",
+        "button_label": "victoria@dreadyoriginal.com",
+        "button_url": "mailto:victoria@dreadyoriginal.com",
+        "icon": "mail"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "index",
+    "cta"
+  ]
+}

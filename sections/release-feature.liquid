@@ -1,0 +1,90 @@
+{%- comment -%}
+  Featured release — record-sleeve hero for one album: oversized square artwork, credits,
+  numbered tracklist and a buy button (quick-add a Shopify product) + streaming link.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign p = s.product
+  assign title = s.title
+  if title == blank and p != blank
+    assign title = p.title
+  endif
+  assign tracks = s.tracklist | newline_to_br | split: '<br />'
+  assign title_alt = title | escape
+-%}
+<section class="section release-feature{% if s.dark %} section--dark{% endif %}">
+  <div class="page-width release-feature__layout">
+    <div class="release-feature__sleeve reveal">
+      <div class="release-feature__art media media--square">
+        {%- if s.image != blank or s.asset != blank -%}
+          {% render 'culture-image', image: s.image, asset: s.asset, alt: title_alt, sizes: '(min-width: 1024px) 45vw, 100vw' %}
+        {%- elsif p.featured_media != blank -%}
+          {{ p.featured_media | image_url: width: 1400 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 45vw, 100vw', widths: '600, 900, 1400', alt: title | escape }}
+        {%- else -%}
+          <div class="media--placeholder" data-label="Album art" style="position:absolute;inset:0">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+        {%- endif -%}
+      </div>
+      <div class="release-feature__disc" aria-hidden="true"></div>
+    </div>
+
+    <div class="release-feature__info reveal">
+      {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+      <h2 class="h1 release-feature__title">{{ title }}</h2>
+      {%- if s.artist != blank -%}<p class="release-feature__artist label">{{ s.artist }}</p>{%- endif -%}
+      {%- if s.text != blank -%}<div class="release-feature__text rte">{{ s.text }}</div>{%- endif -%}
+
+      <div class="release-feature__actions">
+        {%- if p != blank -%}
+          {%- if p.available -%}
+            <button type="button" class="btn{% if s.dark %} btn--inverse{% endif %}" data-quick-add="{{ p.selected_or_first_available_variant.id }}">{{ s.buy_label }} · {{ p.price | money }}</button>
+          {%- else -%}
+            <span class="badge badge--soldout">{{ 'products.product.sold_out' | t }}</span>
+          {%- endif -%}
+        {%- endif -%}
+        {%- if s.link_url != blank -%}
+          <a href="{{ s.link_url }}" class="btn btn--outline" target="_blank" rel="noopener">{{ s.link_label }} {% render 'icon', name: 'arrow-up-right', size: 14 %}</a>
+        {%- endif -%}
+      </div>
+
+      {%- if s.tracklist != blank -%}
+        <div class="release-feature__tracks">
+          <p class="eyebrow">{{ 'sections.music.tracklist' | t }} · {{ tracks.size }}</p>
+          <ol class="tracklist">
+            {%- for line in tracks -%}
+              {%- assign parts = line | strip | split: ' — ' -%}
+              {%- if parts[0] != blank -%}
+                <li class="tracklist__item">
+                  <span class="tracklist__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                  <span class="tracklist__title">{{ parts[0] }}</span>
+                  {%- if parts[1] != blank -%}<span class="tracklist__artist">{{ parts[1] }}</span>{%- endif -%}
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ol>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured release",
+  "tag": "section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Shopify product (buyable)" },
+    { "type": "image_picker", "id": "image", "label": "Artwork (overrides product image)" },
+    { "type": "text", "id": "asset", "label": "Theme image file", "info": "Used when no artwork is picked above." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Album" },
+    { "type": "text", "id": "title", "label": "Title (defaults to product title)" },
+    { "type": "text", "id": "artist", "label": "Artist / credits" },
+    { "type": "richtext", "id": "text", "label": "Text" },
+    { "type": "textarea", "id": "tracklist", "label": "Tracklist", "info": "One track per line: Title — Artist" },
+    { "type": "text", "id": "buy_label", "label": "Buy button label", "default": "Buy" },
+    { "type": "text", "id": "link_label", "label": "Streaming link label", "default": "Listen on Amazon Music" },
+    { "type": "url", "id": "link_url", "label": "Streaming link" },
+    { "type": "checkbox", "id": "dark", "label": "Dark band", "default": false }
+  ],
+  "presets": [ { "name": "Featured release" } ]
+}
+{% endschema %}

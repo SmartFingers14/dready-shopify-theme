@@ -1,0 +1,98 @@
+{%- comment -%}
+  Coming soon — dark editorial teaser for an upcoming line (Dr. Dready). Statement + story,
+  numbered teaser cards with a "Coming soon" stamp, and a notify-me email capture that tags
+  subscribers so they can be emailed on launch.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign heading = s.heading | default: page.title
+  assign form_id = 'NotifyForm-' | append: section.id
+-%}
+<section class="section coming-soon section--dark">
+  <div class="page-width">
+    <div class="coming-soon__intro">
+      <div class="coming-soon__title reveal">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        <h1 class="h-hero">{{ heading }}</h1>
+      </div>
+      {%- if s.text != blank -%}<div class="coming-soon__text body-lg rte reveal">{{ s.text }}</div>{%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <ol class="coming-soon__grid reveal-stagger">
+        {%- for block in section.blocks -%}
+          {%- assign b = block.settings -%}
+          <li class="teaser-card" {{ block.shopify_attributes }}>
+            <div class="teaser-card__top">
+              <span class="teaser-card__num label">{{ s.eyebrow }}</span>
+              <span class="badge badge--accent">{{ b.badge }}</span>
+            </div>
+            {%- if b.image != blank -%}
+              <div class="teaser-card__media media media--square">{{ b.image | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 30vw, 100vw', widths: '450, 700, 900', alt: b.title | escape }}</div>
+            {%- else -%}
+              <div class="teaser-card__mark" aria-hidden="true"><span>{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span></div>
+            {%- endif -%}
+            <h2 class="h3 teaser-card__title">{{ b.title }}</h2>
+            {%- if b.text != blank -%}<p class="teaser-card__text muted">{{ b.text }}</p>{%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ol>
+    {%- endif -%}
+
+    <div class="coming-soon__notify reveal">
+      <div class="coming-soon__notify-text">
+        <h2 class="h2">{{ s.notify_heading }}</h2>
+        {%- if s.notify_text != blank -%}<p class="muted">{{ s.notify_text }}</p>{%- endif -%}
+      </div>
+      {%- form 'customer', id: form_id, class: 'coming-soon__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter,{{ s.tag | default: 'coming-soon' | handle }}">
+        {%- if form.posted_successfully? -%}
+          <p class="form-status form-status--success" role="status" tabindex="-1">{% render 'icon', name: 'check', size: 16 %} {{ s.success_text }}</p>
+        {%- else -%}
+          <div class="inline-form">
+            <label for="{{ form_id }}-email" class="visually-hidden">{{ 'general.newsletter.label' | t }}</label>
+            <input id="{{ form_id }}-email" type="email" name="contact[email]" class="field__input" placeholder="{{ 'general.newsletter.label' | t }}" required autocomplete="email" {% if form.errors %}aria-invalid="true" aria-describedby="{{ form_id }}-error"{% endif %}>
+            <button type="submit" class="btn btn--accent">{{ s.button_text }}</button>
+          </div>
+          {%- if form.errors -%}<p id="{{ form_id }}-error" class="field__error" role="alert">{% render 'icon', name: 'alert', size: 14 %} {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>{%- endif -%}
+        {%- endif -%}
+      {%- endform -%}
+      {%- if s.instagram_url != blank -%}
+        <a href="{{ s.instagram_url }}" class="coming-soon__social link-underline" target="_blank" rel="noopener">{% render 'icon', name: 'instagram', size: 16 %} {{ s.instagram_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Coming soon",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Coming soon" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "Leave blank to use the page title." },
+    { "type": "richtext", "id": "text", "label": "Story" },
+    { "type": "text", "id": "notify_heading", "label": "Notify heading", "default": "Be first in line" },
+    { "type": "text", "id": "notify_text", "label": "Notify text" },
+    { "type": "text", "id": "button_text", "label": "Button", "default": "Notify me" },
+    { "type": "text", "id": "success_text", "label": "Success message", "default": "You're on the list — we'll email you at launch." },
+    { "type": "text", "id": "tag", "label": "Customer tag", "default": "dr-dready", "info": "Added to subscribers so you can email them at launch." },
+    { "type": "text", "id": "instagram_label", "label": "Instagram link label", "default": "Updates on Instagram" },
+    { "type": "url", "id": "instagram_url", "label": "Instagram link" }
+  ],
+  "blocks": [
+    {
+      "type": "teaser",
+      "name": "Teaser",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Product" },
+        { "type": "text", "id": "text", "label": "Text" },
+        { "type": "text", "id": "badge", "label": "Badge", "default": "Coming soon" },
+        { "type": "image_picker", "id": "image", "label": "Image (optional)" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [ { "name": "Coming soon", "blocks": [ { "type": "teaser" }, { "type": "teaser" }, { "type": "teaser" } ] } ]
+}
+{% endschema %}

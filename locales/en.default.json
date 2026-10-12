@@ -41,9 +41,10 @@
     "cart": { "title": "Basket", "empty": "Your basket is empty.", "continue_shopping": "Continue shopping", "subtotal": "Subtotal", "taxes_and_shipping_at_checkout": "Shipping & taxes calculated at checkout", "checkout": "Checkout", "view_cart": "View basket", "remove": "Remove", "quantity": "Quantity" },
     "collection": { "filter": "Filter", "sort": "Sort", "clear_all": "Clear all", "apply": "Apply", "results": "{{ count }} products", "empty": "No products match your filters.", "showing": "Showing {{ count }} of {{ total }}" },
     "product": { "size_guide": "Size guide", "choose_size": "Choose a size", "shipping_returns": "Shipping & returns", "description": "Description", "details": "Details & care", "related": "You may also like", "low_stock": "Only {{ count }} left", "made_to_order": "Made to order" },
-    "blog": { "read_more": "Read more", "all_posts": "All posts", "comic_strip": "Comic strip", "by": "By {{ author }}" },
+    "blog": { "read_more": "Read more", "all_posts": "All posts", "comic_strip": "Comic strip", "by": "By {{ author }}", "read_story": "Read the story", "empty": "No stories yet — check back soon." },
     "events": { "upcoming": "Upcoming", "past": "Past event", "tickets": "Get tickets", "details": "Details", "venue": "Venue", "when": "When", "free": "Free entry" },
-    "music": { "buy": "Buy", "listen": "Listen", "stream": "Stream" },
+    "music": { "buy": "Buy", "listen": "Listen", "stream": "Stream", "tracklist": "Tracklist", "play_video": "Play video: {{ title }}", "watch_youtube": "Watch on YouTube" },
+    "gallery": { "filter": "Filter photos", "all": "All", "open": "Open image: {{ title }}", "viewer": "Image viewer" },
     "shop_the_look": { "shop": "Shop the look", "view": "View product" }
   },
   "products": {

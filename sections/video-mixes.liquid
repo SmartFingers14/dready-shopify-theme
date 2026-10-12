@@ -1,0 +1,110 @@
+{%- comment -%}
+  Dready TV — mixes & videos on a dark band. First block is featured large, the rest sit in a
+  two-up grid. Click-to-play: a poster + play button until pressed, then a privacy-enhanced
+  YouTube player loads (no third-party requests or data use before the visitor opts in).
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<section class="section video-mixes{% if s.dark %} section--dark{% endif %}">
+  <div class="page-width">
+    <header class="section-header">
+      <div class="section-header__text">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.heading != blank -%}<h2 class="h1">{{ s.heading }}</h2>{%- endif -%}
+      </div>
+      {%- if s.channel_url != blank -%}
+        <a href="{{ s.channel_url }}" class="link-underline section-header__link" target="_blank" rel="noopener">{{ s.channel_label }}</a>
+      {%- endif -%}
+    </header>
+
+    <div class="video-mixes__grid">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign vid = ''
+          if b.url contains 'youtu.be/'
+            assign vid = b.url | split: 'youtu.be/' | last | split: '?' | first
+          elsif b.url contains 'v='
+            assign vid = b.url | split: 'v=' | last | split: '&' | first
+          elsif b.url contains '/embed/'
+            assign vid = b.url | split: '/embed/' | last | split: '?' | first
+          endif
+          assign title_alt = b.title | escape
+          assign tracks = b.tracklist | newline_to_br | split: '<br />'
+        -%}
+        <article class="video-card{% if forloop.first %} video-card--featured{% endif %} reveal" {{ block.shopify_attributes }}>
+          <div class="video-card__media media media--wide" data-video="{{ vid }}" data-video-title="{{ title_alt }}">
+            {%- if b.image != blank or b.asset != blank -%}
+              {% render 'culture-image', image: b.image, asset: b.asset, alt: title_alt, sizes: '(min-width: 1024px) 60vw, 100vw', class: 'video-card__poster' %}
+            {%- elsif vid != blank -%}
+              <img src="https://i.ytimg.com/vi/{{ vid }}/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/{{ vid }}/hqdefault.jpg'" alt="{{ title_alt }}" width="1280" height="720" loading="lazy" class="video-card__poster">
+            {%- endif -%}
+            {%- if vid != blank -%}
+              <button type="button" class="video-card__play" data-video-play aria-label="{{ 'sections.music.play_video' | t: title: title_alt }}">
+                <span class="video-card__play-icon">{% render 'icon', name: 'play', size: 22 %}</span>
+                {%- if b.duration != blank -%}<span class="video-card__duration label">{{ b.duration }}</span>{%- endif -%}
+              </button>
+            {%- endif -%}
+          </div>
+          <div class="video-card__info">
+            <div class="video-card__head">
+              {%- if b.eyebrow != blank -%}<p class="eyebrow">{{ b.eyebrow }}</p>{%- endif -%}
+              <h3 class="{% if forloop.first %}h2{% else %}h3{% endif %} video-card__title">{{ b.title }}</h3>
+            </div>
+            {%- if b.text != blank -%}<div class="video-card__text rte">{{ b.text }}</div>{%- endif -%}
+            {%- if b.tracklist != blank -%}
+              <details class="video-card__tracks">
+                <summary class="label">{{ 'sections.music.tracklist' | t }} {% render 'icon', name: 'plus', size: 14 %}</summary>
+                <ol class="tracklist tracklist--compact">
+                  {%- for line in tracks -%}
+                    {%- assign parts = line | strip | split: ' — ' -%}
+                    {%- if parts[0] != blank -%}
+                      <li class="tracklist__item"><span class="tracklist__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span><span class="tracklist__title">{{ parts[0] }}</span>{%- if parts[1] != blank -%}<span class="tracklist__artist">{{ parts[1] }}</span>{%- endif -%}</li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ol>
+              </details>
+            {%- endif -%}
+            <div class="video-card__links">
+              {%- if b.url != blank -%}<a href="{{ b.url }}" class="link-underline" target="_blank" rel="noopener">{{ 'sections.music.watch_youtube' | t }}</a>{%- endif -%}
+              {%- if b.link_url != blank -%}<a href="{{ b.link_url }}" class="link-underline" target="_blank" rel="noopener">{{ b.link_label }}</a>{%- endif -%}
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Dready TV (videos)",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Dready TV" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Mixes & sessions" },
+    { "type": "text", "id": "channel_label", "label": "Channel link label", "default": "YouTube channel" },
+    { "type": "url", "id": "channel_url", "label": "Channel link" },
+    { "type": "checkbox", "id": "dark", "label": "Dark band", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        { "type": "url", "id": "url", "label": "YouTube link" },
+        { "type": "image_picker", "id": "image", "label": "Poster (optional)", "info": "Defaults to the YouTube thumbnail." },
+        { "type": "text", "id": "asset", "label": "Theme image file (optional)" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "e.g. Dready Selecta mix · 07 Dec 2022" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "duration", "label": "Duration", "info": "e.g. 46:08" },
+        { "type": "richtext", "id": "text", "label": "Text" },
+        { "type": "textarea", "id": "tracklist", "label": "Tracklist", "info": "One track per line: Title — Artist" },
+        { "type": "text", "id": "link_label", "label": "Extra link label", "default": "Instagram" },
+        { "type": "url", "id": "link_url", "label": "Extra link" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [ { "name": "Dready TV", "blocks": [ { "type": "video" }, { "type": "video" }, { "type": "video" } ] } ]
+}
+{% endschema %}

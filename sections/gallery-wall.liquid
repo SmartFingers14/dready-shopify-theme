@@ -1,0 +1,74 @@
+{%- comment -%}
+  Gallery wall — Portfolio-grid pattern (UI/UX Pro Max): masonry wall + full-screen lightbox.
+  One section per collection (Caught on Camera / Graffiti / Fan Art) because a section holds
+  max 50 photos. global.js joins every gallery wall on the page into one filter bar and one
+  lightbox; the wall whose page matches the current URL opens first. Without JS the walls
+  simply stack with their headings.
+{%- endcomment -%}
+{%- assign s = section.settings -%}
+<section class="section section--tight gallery-wall" id="Gallery-{{ section.id }}" data-gallery-wall data-label="{{ s.label | escape }}" data-count="{{ section.blocks.size }}"{% if s.page != blank and page.handle == s.page.handle %} data-current{% endif %} data-i18n-filter="{{ 'sections.gallery.filter' | t | escape }}" data-i18n-all="{{ 'sections.gallery.all' | t | escape }}" data-i18n-close="{{ 'accessibility.close' | t | escape }}" data-i18n-prev="{{ 'accessibility.previous_slide' | t | escape }}" data-i18n-next="{{ 'accessibility.next_slide' | t | escape }}" data-i18n-viewer="{{ 'sections.gallery.viewer' | t | escape }}">
+  <div class="page-width">
+    {%- if s.show_filters -%}<div class="gallery-wall__bar" data-gallery-filters></div>{%- endif -%}
+    <header class="gallery-wall__head">
+      <h2 class="h2">{{ s.label }}</h2>
+      <span class="gallery-wall__count label">{{ section.blocks.size }}</span>
+    </header>
+    <ul class="gallery-wall__grid" style="--cols: {{ s.columns }};" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign b = block.settings
+          assign alt = b.alt | default: b.caption | default: s.label | escape
+          assign eager = false
+          if section.index == 2 and forloop.index <= 4
+            assign eager = true
+          endif
+        -%}
+        {%- if b.image != blank or b.asset != blank -%}
+          <li class="gallery-tile" {{ block.shopify_attributes }}>
+            <button type="button" class="gallery-tile__btn" data-lightbox-item data-full="{% render 'culture-image', image: b.image, asset: b.asset, mode: 'full' %}" data-caption="{{ b.caption | escape }}" data-alt="{{ alt }}" aria-label="{{ 'sections.gallery.open' | t: title: alt }}">
+              {%- if eager -%}
+                {% render 'culture-image', image: b.image, asset: b.asset, alt: alt, loading: 'eager', sizes: '(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw', class: 'gallery-tile__img' %}
+              {%- else -%}
+                {% render 'culture-image', image: b.image, asset: b.asset, alt: alt, sizes: '(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw', class: 'gallery-tile__img' %}
+              {%- endif -%}
+              <span class="gallery-tile__overlay" aria-hidden="true">
+                <span class="gallery-tile__meta">
+                  <span class="gallery-tile__cat">{{ s.label }}</span>
+                  {%- if b.caption != blank -%}<span class="gallery-tile__caption">{{ b.caption }}</span>{%- endif -%}
+                </span>
+                <span class="gallery-tile__zoom">{% render 'icon', name: 'plus', size: 18 %}</span>
+              </span>
+            </button>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Gallery wall",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Collection name", "default": "Caught on camera" },
+    { "type": "page", "id": "page", "label": "Open this collection first on page", "info": "e.g. the Graffiti page opens on the Graffiti collection." },
+    { "type": "checkbox", "id": "show_filters", "label": "Show the filter bar above this wall", "info": "Turn on for the first gallery wall on the page only.", "default": false },
+    { "type": "range", "id": "columns", "min": 2, "max": 5, "step": 1, "label": "Columns on desktop", "default": 4 }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "asset", "label": "Theme image file", "info": "Used when no image is picked above." },
+        { "type": "text", "id": "alt", "label": "Image description (alt text)" },
+        { "type": "text", "id": "caption", "label": "Caption / credit" }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [ { "name": "Gallery wall", "blocks": [ { "type": "photo" }, { "type": "photo" }, { "type": "photo" } ] } ]
+}
+{% endschema %}

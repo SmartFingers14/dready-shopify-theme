@@ -1,0 +1,53 @@
+{
+  "sections": {
+    "main": {
+      "type": "coming-soon",
+      "blocks": {
+        "t1": {
+          "type": "teaser",
+          "settings": {
+            "title": "CBD Capsules",
+            "text": "Currently in production — keep checking back, they should be arriving soon.",
+            "badge": "Coming soon"
+          }
+        },
+        "t2": {
+          "type": "teaser",
+          "settings": {
+            "title": "CBD Gummies",
+            "text": "Currently in production — keep checking back, they should be arriving soon.",
+            "badge": "Coming soon"
+          }
+        },
+        "t3": {
+          "type": "teaser",
+          "settings": {
+            "title": "CBD Drinks",
+            "text": "Currently in production — keep checking back, they should be arriving soon.",
+            "badge": "Coming soon"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3"
+      ],
+      "settings": {
+        "eyebrow": "Dr. Dready",
+        "heading": "Meet the doc",
+        "text": "<p>A chance meeting with his friends at the Green Pound Gang inspired Dready to return to his roots and don his white coat. Dready has always advocated an Ital life — now he'd like to share these conscious, organic plants and foods from nature with the world.</p>",
+        "notify_heading": "Be first in line",
+        "notify_text": "Leave your email and we'll tell you the moment they land. We'll also announce it on Instagram.",
+        "button_text": "Notify me",
+        "success_text": "You're on the list — we'll email you at launch.",
+        "tag": "dr-dready",
+        "instagram_label": "Updates on Instagram",
+        "instagram_url": "https://www.instagram.com/dreadybrand/"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

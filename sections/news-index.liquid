@@ -1,0 +1,83 @@
+{%- comment -%}
+  News — editorial front page fed live from a blog: latest story as a split lead
+  (image + headline + standfirst), the rest in a numbered three-up grid. New posts appear
+  automatically; nothing to maintain on the page itself.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign b = s.blog
+  if b == blank
+    assign b = blogs.news
+  endif
+-%}
+<section class="section news-index">
+  <div class="page-width">
+    {%- if b != blank and b.articles_count > 0 -%}
+      {%- for article in b.articles limit: s.limit -%}
+        {%- assign a_alt = article.image.alt | default: article.title | escape -%}
+        {%- if forloop.first -%}
+          <article class="news-lead reveal">
+            <a href="{{ article.url }}" class="news-lead__media media media--landscape" tabindex="-1" aria-hidden="true">
+              {%- if article.image -%}
+                {{ article.image | image_url: width: 1800 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 1024px) 58vw, 100vw', widths: '600, 900, 1300, 1800', alt: a_alt }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </a>
+            <div class="news-lead__body">
+              <p class="eyebrow">{{ s.lead_label }} · <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%d %b %Y' }}</time></p>
+              <h2 class="h1 news-lead__title"><a href="{{ article.url }}">{{ article.title }}</a></h2>
+              {%- if s.show_excerpt and article.excerpt_or_content != blank -%}<p class="news-lead__standfirst body-lg">{{ article.excerpt_or_content | strip_html | truncatewords: 40 }}</p>{%- endif -%}
+              <a href="{{ article.url }}" class="btn btn--outline news-lead__cta">{{ 'sections.blog.read_story' | t }} {% render 'icon', name: 'arrow-right', size: 14 %}</a>
+            </div>
+          </article>
+          <div class="news-index__head">
+            <h2 class="label">{{ s.more_label }}</h2>
+            <span class="rule" aria-hidden="true"></span>
+          </div>
+          <ol class="news-grid reveal-stagger">
+        {%- else -%}
+            <li class="news-card">
+              <a href="{{ article.url }}" class="news-card__media media media--landscape" tabindex="-1" aria-hidden="true">
+                {%- if article.image -%}
+                  {{ article.image | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 1024px) 31vw, (min-width: 768px) 48vw, 100vw', widths: '480, 700, 900', alt: a_alt }}
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </a>
+              <div class="news-card__body">
+                <p class="news-card__meta label"><span class="news-card__num">{{ forloop.index | minus: 1 | prepend: '0' | slice: -2, 2 }}</span><time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%d %b %Y' }}</time></p>
+                <h3 class="h3 news-card__title"><a href="{{ article.url }}">{{ article.title }}</a></h3>
+                {%- if s.show_excerpt and article.excerpt_or_content != blank -%}<p class="news-card__excerpt muted">{{ article.excerpt_or_content | strip_html | truncatewords: 22 }}</p>{%- endif -%}
+              </div>
+            </li>
+        {%- endif -%}
+        {%- if forloop.last and forloop.first == false -%}</ol>{%- endif -%}
+        {%- if forloop.last and forloop.first -%}<li hidden></li></ol>{%- endif -%}
+      {%- endfor -%}
+      <div class="news-index__foot">
+        <a href="{{ b.url }}" class="btn">{{ s.all_label }}</a>
+      </div>
+    {%- else -%}
+      <div class="empty-state">
+        <p class="h3">{{ 'sections.blog.empty' | t }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "News index",
+  "tag": "section",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog", "info": "Defaults to News." },
+    { "type": "range", "id": "limit", "min": 4, "max": 25, "step": 3, "label": "Stories shown", "default": 13 },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpts", "default": true },
+    { "type": "text", "id": "lead_label", "label": "Lead story label", "default": "Latest" },
+    { "type": "text", "id": "more_label", "label": "Grid heading", "default": "More stories" },
+    { "type": "text", "id": "all_label", "label": "Archive button", "default": "All stories" }
+  ],
+  "presets": [ { "name": "News index" } ]
+}
+{% endschema %}

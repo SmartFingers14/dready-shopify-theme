@@ -1,0 +1,85 @@
+{
+  "sections": {
+    "hero": {
+      "type": "culture-hero",
+      "settings": {
+        "eyebrow": "Dready sounds",
+        "text": "<p>Roots, reggae, jungle and sound-system culture. We showcase, support and show love to the artists — this is Dready TV.</p>",
+        "stat": "1 album · 3 mixes",
+        "dark": true,
+        "accent_rule": true
+      }
+    },
+    "album": {
+      "type": "release-feature",
+      "settings": {
+        "product": "dready-selecta-volume-on",
+        "asset": "music-selecta.jpg",
+        "eyebrow": "Album · MP3 download · 20 Apr 2023",
+        "artist": "Tan-Tan & Silvalox · Compiled by Anthony Cooper",
+        "text": "<p>The ultimate reggae and dancehall fusion — eleven tracks from Tan-Tan and Silvalox, selected by Dready. Let the rhythm take over.</p>",
+        "tracklist": "Für Elise (Radio Edit) — Tan-Tan\nGot To Come Back — Silvalox\nNight Train — Tan-Tan\nEverything I Own — Tan-Tan\nDisco Style Reggae — Tan-Tan\nTell Me Baby — Silvalox\nRum A Pum Pum — Tan-Tan\nMagic Eyes — Tan-Tan\nLoving Feeling — Silvalox feat. Vic Linton\nPeace And Love — Tan-Tan\nFür Elise (Album Version) — Tan-Tan",
+        "buy_label": "Buy the MP3",
+        "link_label": "Listen on Amazon Music",
+        "link_url": "https://www.amazon.co.uk/Dready-Selecta-Tan-Tan-Silvalox/dp/B0C2D8NVXK",
+        "dark": false
+      }
+    },
+    "tv": {
+      "type": "video-mixes",
+      "blocks": {
+        "reds": {
+          "type": "video",
+          "settings": {
+            "url": "https://youtu.be/Mp28XXp1Gn0",
+            "eyebrow": "New music · 06 Oct 2023",
+            "title": "Dready × Reds",
+            "text": "<p>Reds is an underground veteran of East Anglian sound-system culture — decades deep in the rave scene, and on the mic with members of Wu-Tang and Mobb Deep. On this joint he brings two rising stars from the East of England making their mark as ones to watch.</p>",
+            "link_label": "Reds on Instagram",
+            "link_url": "https://www.instagram.com/reds_soldjasoulz"
+          }
+        },
+        "ash": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.youtube.com/watch?v=cCeDUQDT4v8",
+            "eyebrow": "Dready Roots mix · 31 Dec 2022",
+            "title": "Ash Walker — Dready Roots Mix",
+            "text": "<p>An exclusive New Year roots mix from Ash Walker — the fiercely underground DJ known for deep selections of soul, jazz, reggae, Latin and roots & culture, and co-founder of the all-vinyl Shakedown sound system.</p>",
+            "link_label": "Ash Walker on Instagram",
+            "link_url": "https://www.instagram.com/ashwalkermusic/"
+          }
+        },
+        "izachar": {
+          "type": "video",
+          "settings": {
+            "url": "https://www.youtube.com/watch?v=B4sBWvnlzyM",
+            "eyebrow": "Dready Selecta mix #1 · 07 Dec 2022",
+            "title": "Izachar — 'Dready' minimix",
+            "text": "<p>Our first ever Dready Selecta mix goes to Izachar — producer, DJ and A&amp;R on Congo Natty's label Rekovery Records, making jungle since 2020 with guidance from the legend himself.</p>",
+            "tracklist": "Jungle Souljah (Izachar Remix) [Dub] — Congo Natty\nWu-Tang Style [Rekovery Records] — Izachar\nWhat Goes Around [Exit Records] — Fixate\nTotal XTC [Hospitality Records] — Unglued\nGeneral [Free download] — Conrad Subs",
+            "link_label": "Izachar on Instagram",
+            "link_url": "https://www.instagram.com/izachar.junglist/"
+          }
+        }
+      },
+      "block_order": [
+        "reds",
+        "ash",
+        "izachar"
+      ],
+      "settings": {
+        "eyebrow": "Dready TV",
+        "heading": "Mixes & sessions",
+        "channel_label": "Dready on YouTube",
+        "channel_url": "https://www.youtube.com/@dreadyselecta",
+        "dark": true
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "album",
+    "tv"
+  ]
+}

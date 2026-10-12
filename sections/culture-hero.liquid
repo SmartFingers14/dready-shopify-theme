@@ -1,0 +1,46 @@
+{%- comment -%}
+  Culture page header — oversized condensed title on a dark (Nervous) or light band,
+  short intro and an optional stat line. Title defaults to the page's own title.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign heading = s.heading | default: page.title
+-%}
+<section class="section culture-hero{% if s.dark %} section--dark{% endif %}">
+  <div class="page-width culture-hero__inner">
+    <nav class="breadcrumb culture-hero__crumbs" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a><span aria-hidden="true">/</span>
+      {%- if s.eyebrow != blank -%}<span>{{ s.eyebrow }}</span><span aria-hidden="true">/</span>{%- endif -%}
+      <span aria-current="page">{{ page.title | default: heading }}</span>
+    </nav>
+    <div class="culture-hero__grid">
+      <div class="culture-hero__title reveal">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        <h1 class="h-hero">{{ heading }}</h1>
+      </div>
+      {%- if s.text != blank or s.stat != blank -%}
+        <div class="culture-hero__aside reveal">
+          {%- if s.text != blank -%}<div class="culture-hero__text body-lg">{{ s.text }}</div>{%- endif -%}
+          {%- if s.stat != blank -%}<p class="culture-hero__stat label">{{ s.stat }}</p>{%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- if s.accent_rule -%}<div class="culture-hero__rule" aria-hidden="true"><span></span><span></span><span></span></div>{%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Culture page header",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Dready culture" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "Leave blank to use the page title." },
+    { "type": "richtext", "id": "text", "label": "Intro" },
+    { "type": "text", "id": "stat", "label": "Stat line", "info": "e.g. 69 photos · 3 collections" },
+    { "type": "checkbox", "id": "dark", "label": "Dark band", "default": true },
+    { "type": "checkbox", "id": "accent_rule", "label": "Roots · Culture · Peace colour rule", "default": true }
+  ],
+  "presets": [ { "name": "Culture page header" } ]
+}
+{% endschema %}
