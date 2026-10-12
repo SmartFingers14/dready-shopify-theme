@@ -16,6 +16,7 @@
 
     const update = () => {
       const opts = selected();
+      fieldsets.forEach((fs, idx) => { const out = qs('.variant-picker__selected', fs); if (out && opts[idx]) out.textContent = opts[idx]; });
       // mark availability per option against current selection
       fieldsets.forEach((fs, idx) => qsa('input', fs).forEach(inp => {
         const probe = opts.slice(); probe[idx] = inp.value;
