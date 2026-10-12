@@ -1034,7 +1034,8 @@ textarea.gift-recipient__message { min-height: 96px; }
 .brand-story__art img { width: 100%; height: auto; }
 .brand-story__text { display: grid; gap: var(--space-5); justify-items: start; }
 .brand-story__wordmark { width: min(100%, 380px); }
-.brand-story__wordmark img { width: 100%; height: auto; }
+.brand-story__wordmark img { width: 100%; height: auto; mix-blend-mode: multiply; }
+.section--dark .brand-story__wordmark img { mix-blend-mode: normal; }
 .brand-story__heading { overflow-wrap: anywhere; }
 .brand-story__body { max-width: 54ch; color: var(--color-muted); }
 .section--dark .brand-story__body { color: var(--color-dark-muted); }
