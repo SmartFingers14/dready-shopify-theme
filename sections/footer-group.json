@@ -5,11 +5,42 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "shop": { "type": "menu", "settings": { "heading": "Shop", "menu": "main-menu" } },
-        "dready": { "type": "menu", "settings": { "heading": "Dready", "menu": "footer" } },
-        "help": { "type": "text", "settings": { "heading": "Get help", "text": "<p>Contact us<br>Wholesale enquiries<br>Licensing enquiries<br>Shipping &amp; returns</p>" } }
+        "shop": {
+          "type": "menu",
+          "settings": {
+            "heading": "Shop",
+            "menu": "main-menu"
+          }
+        },
+        "dready": {
+          "type": "menu",
+          "settings": {
+            "heading": "Dready",
+            "menu": "footer"
+          }
+        },
+        "help": {
+          "type": "links",
+          "settings": {
+            "heading": "Get help",
+            "label_1": "Contact us",
+            "url_1": "/pages/contact",
+            "label_2": "Gift cards",
+            "url_2": "/products/dready-gift-card",
+            "label_3": "Shipping & returns",
+            "url_3": "/policies/shipping-policy",
+            "label_4": "Wholesale enquiries",
+            "url_4": "/pages/wholesale-enquiries",
+            "label_5": "Licensing enquiries",
+            "url_5": "/pages/licensing-enquiries"
+          }
+        }
       },
-      "block_order": ["shop", "dready", "help"],
+      "block_order": [
+        "shop",
+        "dready",
+        "help"
+      ],
       "settings": {
         "tagline": "Born in Birmingham, 1983. Music, art & street culture.",
         "show_newsletter": true,
@@ -21,5 +52,7 @@
       }
     }
   },
-  "order": ["footer"]
+  "order": [
+    "footer"
+  ]
 }

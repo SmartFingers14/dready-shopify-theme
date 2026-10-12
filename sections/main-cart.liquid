@@ -6,6 +6,7 @@
       {% render 'icon', name: 'cart', size: 32 %}
       <p class="h3">{{ 'sections.cart.empty' | t }}</p>
       <a href="{{ routes.all_products_collection_url }}" class="btn">{{ 'sections.cart.continue_shopping' | t }}</a>
+      {% render 'gift-card-nudge' %}
     </div>
   {%- else -%}
     <form action="{{ routes.cart_url }}" method="post" class="cart-page__layout">
@@ -44,6 +45,7 @@
         <p class="cart-drawer__tax muted">{{ 'sections.cart.taxes_and_shipping_at_checkout' | t }}</p>
         <button type="submit" name="update" class="btn btn--outline btn--full">Update</button>
         <button type="submit" name="checkout" class="btn btn--full">{{ 'sections.cart.checkout' | t }}</button>
+        {% render 'gift-card-nudge' %}
       </aside>
     </form>
   {%- endif -%}

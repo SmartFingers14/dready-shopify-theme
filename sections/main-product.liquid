@@ -27,7 +27,21 @@
   </nav>
 
   <div class="pdp__layout">
-    {% render 'product-gallery', product: product, section: section %}
+    {%- if product.gift_card? -%}
+      <div class="pdp__gallery pdp__gallery--gift">
+        <div class="pdp-gift__stage">
+          {%- assign gift_value = current.price | money -%}
+          {% render 'gift-card-visual', value: gift_value, live: true %}
+        </div>
+        <ul class="pdp-gift__facts">
+          <li>{% render 'icon', name: 'mail', size: 16 %} {{ 'gift_card.fact_email' | t }}</li>
+          <li>{% render 'icon', name: 'calendar', size: 16 %} {{ 'gift_card.fact_schedule' | t }}</li>
+          <li>{% render 'icon', name: 'tag', size: 16 %} {{ 'gift_card.fact_spend' | t }}</li>
+        </ul>
+      </div>
+    {%- else -%}
+      {% render 'product-gallery', product: product, section: section %}
+    {%- endif -%}
 
     <div class="pdp__panel">
       <div class="pdp__info">
@@ -53,7 +67,7 @@
 
       {% render 'product-accordions', product: product, section: section %}
 
-      {%- if section.blocks.size > 0 -%}
+      {%- if section.blocks.size > 0 and product.gift_card? == false -%}
         <ul class="pdp__trust">
           {%- for block in section.blocks -%}
             {%- if block.type == 'trust' -%}

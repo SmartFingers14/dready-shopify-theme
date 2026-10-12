@@ -1,0 +1,27 @@
+{%- comment -%}
+  "Buying for someone?" nudge for the basket. Hidden when the basket already holds a gift card.
+  Uses Theme settings → Cart → Gift card product (falls back to the Dready Gift Card).
+{%- endcomment -%}
+{%- liquid
+  assign gp = settings.gift_card_product
+  if gp == blank
+    assign gp = all_products['dready-gift-card']
+  endif
+  assign has_gift = false
+  for item in cart.items
+    if item.product.gift_card?
+      assign has_gift = true
+    endif
+  endfor
+-%}
+{%- if settings.show_gift_nudge and gp != blank and gp.available and has_gift == false -%}
+  {%- assign gp_from = gp.price_min | money_without_trailing_zeros -%}
+  <a href="{{ gp.url }}" class="gift-nudge">
+    <span class="gift-nudge__mark" aria-hidden="true"></span>
+    <span class="gift-nudge__text">
+      <span class="gift-nudge__title">{{ 'gift_card.nudge_title' | t }}</span>
+      <span class="gift-nudge__sub">{{ 'gift_card.nudge_sub' | t: from: gp_from }}</span>
+    </span>
+    {% render 'icon', name: 'arrow-right', size: 16 %}
+  </a>
+{%- endif -%}

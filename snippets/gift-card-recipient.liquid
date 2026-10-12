@@ -1,0 +1,40 @@
+{%- comment -%}
+  "Send as a gift" — Shopify's native gift card recipient fields. When ticked, Shopify emails
+  the card to the recipient (optionally on a chosen date) with the message. Fields stay
+  disabled (not submitted) until the box is ticked. Params: form_id
+{%- endcomment -%}
+{%- assign rid = form_id | append: '-recipient' -%}
+<div class="gift-recipient" data-gift-recipient>
+  <label class="gift-recipient__toggle" for="{{ rid }}-toggle">
+    <input type="checkbox" id="{{ rid }}-toggle" name="properties[__shopify_send_gift_card_to_recipient]" value="on" aria-controls="{{ rid }}-fields" aria-expanded="false" data-gift-toggle>
+    <span class="gift-recipient__box" aria-hidden="true">{% render 'icon', name: 'check', size: 14 %}</span>
+    <span class="gift-recipient__text">
+      <span class="gift-recipient__title">{{ 'gift_card.recipient.toggle' | t }}</span>
+      <span class="gift-recipient__hint">{{ 'gift_card.recipient.toggle_hint' | t }}</span>
+    </span>
+  </label>
+
+  <fieldset class="gift-recipient__fields" id="{{ rid }}-fields" data-gift-fields hidden disabled>
+    <legend class="visually-hidden">{{ 'gift_card.recipient.legend' | t }}</legend>
+    <div class="field">
+      <label class="field__label" for="{{ rid }}-email">{{ 'gift_card.recipient.email' | t }} <span class="field__req">({{ 'gift_card.recipient.required' | t }})</span></label>
+      <input class="field__input" type="email" id="{{ rid }}-email" name="properties[Recipient email]" autocomplete="off" required aria-describedby="{{ rid }}-email-error" data-gift-email>
+      <p class="field__error" id="{{ rid }}-email-error" role="alert" hidden data-gift-email-error>{% render 'icon', name: 'alert', size: 14 %} <span>{{ 'gift_card.recipient.email_error' | t }}</span></p>
+    </div>
+    <div class="field">
+      <label class="field__label" for="{{ rid }}-name">{{ 'gift_card.recipient.name' | t }} <span class="field__opt">({{ 'gift_card.recipient.optional' | t }})</span></label>
+      <input class="field__input" type="text" id="{{ rid }}-name" name="properties[Recipient name]" autocomplete="off" maxlength="100">
+    </div>
+    <div class="field">
+      <label class="field__label" for="{{ rid }}-message">{{ 'gift_card.recipient.message' | t }} <span class="field__opt">({{ 'gift_card.recipient.optional' | t }})</span></label>
+      <textarea class="field__input gift-recipient__message" id="{{ rid }}-message" name="properties[Message]" maxlength="200" rows="3" aria-describedby="{{ rid }}-count" data-gift-message></textarea>
+      <p class="gift-recipient__count muted" id="{{ rid }}-count" aria-live="polite"><span data-gift-count>0</span>/200</p>
+    </div>
+    <div class="field">
+      <label class="field__label" for="{{ rid }}-date">{{ 'gift_card.recipient.send_on' | t }} <span class="field__opt">({{ 'gift_card.recipient.optional' | t }})</span></label>
+      <input class="field__input" type="date" id="{{ rid }}-date" name="properties[Send on]" pattern="\d{4}-\d{2}-\d{2}" aria-describedby="{{ rid }}-date-hint" data-gift-date>
+      <p class="muted gift-recipient__hint-line" id="{{ rid }}-date-hint">{{ 'gift_card.recipient.send_on_hint' | t }}</p>
+    </div>
+    <input type="hidden" name="properties[__shopify_offset]" value="" data-gift-offset>
+  </fieldset>
+</div>

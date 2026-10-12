@@ -1,0 +1,53 @@
+{%- comment -%}
+  Gift card promo — slim premium band: statement + amounts as quick-pick chips beside the
+  Dready card object. Every chip deep-links to the gift card with that amount preselected.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign p = s.product
+  if p == blank
+    assign p = all_products['dready-gift-card']
+  endif
+-%}
+{%- if p != blank and p.available -%}
+  {%- assign from_price = p.price_min | money -%}
+  <section class="section gift-promo{% if s.dark %} section--dark{% endif %}">
+    <div class="page-width gift-promo__layout">
+      <div class="gift-promo__text reveal">
+        {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        <h2 class="h-hero gift-promo__heading">{{ s.heading }}</h2>
+        {%- if s.text != blank -%}<p class="body-lg gift-promo__sub">{{ s.text | replace: '[from]', from_price }}</p>{%- endif -%}
+        {%- if p.variants.size > 1 -%}
+          <ul class="gift-promo__amounts" aria-label="{{ 'gift_card.amounts' | t }}">
+            {%- for v in p.variants -%}
+              {%- if v.available -%}<li><a href="{{ v.url }}" class="gift-promo__chip">{{ v.price | money_without_trailing_zeros }}</a></li>{%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        <a href="{{ p.url }}" class="btn{% if s.dark %} btn--inverse{% endif %} gift-promo__cta">{{ s.button_label }} {% render 'icon', name: 'arrow-right', size: 14 %}</a>
+      </div>
+      <a href="{{ p.url }}" class="gift-promo__visual reveal" tabindex="-1" aria-hidden="true">
+        {%- assign top_value = p.price_max | money -%}
+        {% render 'gift-card-visual', value: top_value, class: 'gift-promo__card' %}
+        {%- assign low_value = p.price_min | money -%}
+        {% render 'gift-card-visual', value: low_value, class: 'gift-promo__card gift-promo__card--back' %}
+      </a>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Gift card promo",
+  "tag": "section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Gift card product", "info": "Defaults to the Dready Gift Card." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Gift cards" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Give Dready" },
+    { "type": "text", "id": "text", "label": "Text", "default": "From [from] — emailed straight to them, today or on the day you choose.", "info": "[from] shows the lowest gift card amount." },
+    { "type": "text", "id": "button_label", "label": "Button", "default": "Send a gift card" },
+    { "type": "checkbox", "id": "dark", "label": "Dark band", "default": false }
+  ],
+  "presets": [ { "name": "Gift card promo" } ]
+}
+{% endschema %}

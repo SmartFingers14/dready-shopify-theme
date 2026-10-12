@@ -33,6 +33,7 @@
       }
       if (idInput) idInput.value = v.id;
       if (priceEl) priceEl.textContent = formatMoney(v.price);
+      qsa('[data-gift-value]').forEach(el => { el.textContent = formatMoney(v.price); });
       if (compareEl) {
         const onSale = v.compare_at_price && v.compare_at_price > v.price;
         compareEl.hidden = !onSale;

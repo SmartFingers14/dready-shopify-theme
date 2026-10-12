@@ -12,7 +12,9 @@
     "social_instagram": "https://www.instagram.com/dreadybrand/",
     "social_facebook": "https://www.facebook.com/profile.php?id=100083340129198",
     "social_twitter": "https://twitter.com/dreadybrand",
-    "social_youtube": "https://www.youtube.com/@dreadyselecta"
+    "social_youtube": "https://www.youtube.com/@dreadyselecta",
+    "show_gift_nudge": true,
+    "gift_card_product": "dready-gift-card"
   },
   "presets": {
     "Default": {
@@ -28,7 +30,8 @@
       "social_instagram": "https://www.instagram.com/dreadybrand/",
       "social_facebook": "https://www.facebook.com/profile.php?id=100083340129198",
       "social_twitter": "https://twitter.com/dreadybrand",
-      "social_youtube": "https://www.youtube.com/@dreadyselecta"
+      "social_youtube": "https://www.youtube.com/@dreadyselecta",
+      "show_gift_nudge": true
     }
   }
 }

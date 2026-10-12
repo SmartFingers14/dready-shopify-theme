@@ -13,6 +13,7 @@
         {% render 'icon', name: 'cart', size: 32 %}
         <p class="h3">{{ 'sections.cart.empty' | t }}</p>
         <a href="{{ routes.all_products_collection_url }}" class="btn" data-drawer-close>{{ 'sections.cart.continue_shopping' | t }}</a>
+        {% render 'gift-card-nudge' %}
       </div>
     {%- else -%}
       <ul class="cart-lines">
@@ -51,6 +52,7 @@
           </li>
         {%- endfor -%}
       </ul>
+      {% render 'gift-card-nudge' %}
     {%- endif -%}
   </div>
 

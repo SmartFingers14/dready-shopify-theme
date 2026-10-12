@@ -6,13 +6,19 @@
       <div class="accordion__content rte">{{ product.description }}</div>
     </details>
   {%- endif -%}
-  {%- if section.settings.care_text != blank -%}
+  {%- if product.gift_card? -%}
+    <details class="accordion__item" open>
+      <summary class="accordion__summary">{{ 'gift_card.how_title' | t }} {% render 'icon', name: 'plus', size: 16 %}</summary>
+      <div class="accordion__content rte"><p>{{ 'gift_card.pdp_how' | t }}</p></div>
+    </details>
+  {%- endif -%}
+  {%- if section.settings.care_text != blank and product.gift_card? == false -%}
     <details class="accordion__item">
       <summary class="accordion__summary">{{ 'sections.product.details' | t }} {% render 'icon', name: 'plus', size: 16 %}</summary>
       <div class="accordion__content rte">{{ section.settings.care_text }}</div>
     </details>
   {%- endif -%}
-  {%- if section.settings.shipping_text != blank -%}
+  {%- if section.settings.shipping_text != blank and product.gift_card? == false -%}
     <details class="accordion__item">
       <summary class="accordion__summary">{{ 'sections.product.shipping_returns' | t }} {% render 'icon', name: 'plus', size: 16 %}</summary>
       <div class="accordion__content rte">{{ section.settings.shipping_text }}</div>

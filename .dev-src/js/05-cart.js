@@ -75,6 +75,7 @@
   qsa('form[data-product-form]').forEach(form => {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (typeof form.checkValidity === 'function' && !form.checkValidity()) { form.reportValidity(); return; }
       const submit = qs('[type="submit"]', form);
       const idInput = qs('[name="id"]', form);
       const qtyInput = qs('[name="quantity"]', form);
@@ -83,7 +84,13 @@
       if (errorEl) errorEl.hidden = true;
       submit?.classList.add('btn--loading'); submit?.setAttribute('aria-busy', 'true');
       try {
-        await Cart.add(idInput.value, parseInt((qtyInput && qtyInput.value) || '1', 10));
+        // line-item properties (e.g. gift card recipient); disabled fields are skipped by FormData
+        const properties = {};
+        new FormData(form).forEach((value, key) => {
+          const m = key.match(/^properties\[(.+)\]$/);
+          if (m && value !== '') properties[m[1]] = value;
+        });
+        await Cart.add(idInput.value, parseInt((qtyInput && qtyInput.value) || '1', 10), Object.keys(properties).length ? properties : undefined);
         if (useDrawer()) Drawers.open('CartDrawer', submit); else window.location.href = window.theme.routes.cart;
       } catch (err) {
         if (errorEl) { errorEl.hidden = false; errorEl.textContent = err.message; } else toast(err.message);

@@ -37,6 +37,17 @@
                 {%- for link in block.settings.menu.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
               </ul>
             </details>
+          {%- elsif block.type == 'links' -%}
+            <details class="footer__col" {{ block.shopify_attributes }}>
+              <summary class="footer__col-title label">{{ block.settings.heading }} {% render 'icon', name: 'plus', size: 14, class: 'footer__col-icon' %}</summary>
+              <ul class="footer__links">
+                {%- for i in (1..6) -%}
+                  {%- assign l_label = 'label_' | append: i -%}
+                  {%- assign l_url = 'url_' | append: i -%}
+                  {%- if block.settings[l_label] != blank and block.settings[l_url] != blank -%}<li><a href="{{ block.settings[l_url] }}">{{ block.settings[l_label] }}</a></li>{%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </details>
           {%- elsif block.type == 'text' -%}
             <div class="footer__col footer__col--text" {{ block.shopify_attributes }}>
               <p class="label footer__col-title">{{ block.settings.heading }}</p>
@@ -81,6 +92,7 @@
   ],
   "blocks": [
     { "type": "menu", "name": "Link column", "settings": [ { "type": "text", "id": "heading", "label": "Heading" }, { "type": "link_list", "id": "menu", "label": "Menu" } ] },
+    { "type": "links", "name": "Custom links", "settings": [ { "type": "text", "id": "heading", "label": "Heading", "default": "Links" }, { "type": "text", "id": "label_1", "label": "Link 1 label" }, { "type": "url", "id": "url_1", "label": "Link 1 URL" }, { "type": "text", "id": "label_2", "label": "Link 2 label" }, { "type": "url", "id": "url_2", "label": "Link 2 URL" }, { "type": "text", "id": "label_3", "label": "Link 3 label" }, { "type": "url", "id": "url_3", "label": "Link 3 URL" }, { "type": "text", "id": "label_4", "label": "Link 4 label" }, { "type": "url", "id": "url_4", "label": "Link 4 URL" }, { "type": "text", "id": "label_5", "label": "Link 5 label" }, { "type": "url", "id": "url_5", "label": "Link 5 URL" }, { "type": "text", "id": "label_6", "label": "Link 6 label" }, { "type": "url", "id": "url_6", "label": "Link 6 URL" } ] },
     { "type": "text", "name": "Text column", "settings": [ { "type": "text", "id": "heading", "label": "Heading", "default": "Contact" }, { "type": "richtext", "id": "text", "label": "Text", "default": "<p>info@dreadyoriginal.com</p>" } ] }
   ],
   "max_blocks": 5

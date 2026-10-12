@@ -3,6 +3,7 @@
 {%- form 'product', product, id: form_id, class: 'pdp__form', data-product-form: '' -%}
   <input type="hidden" name="id" value="{{ current.id }}">
   {% render 'variant-picker', product: product, form_id: form_id, section: section %}
+  {%- if product.gift_card? -%}{% render 'gift-card-recipient', form_id: form_id %}{%- endif -%}
   <p class="field__error" data-form-error hidden tabindex="-1" role="alert"></p>
 
   <div class="pdp__buy">

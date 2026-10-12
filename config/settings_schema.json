@@ -103,7 +103,9 @@
         "id": "cart_note",
         "label": "Cart drawer note",
         "default": "Embroidered items are made to order — please allow 5 working days."
-      }
+      },
+      { "type": "checkbox", "id": "show_gift_nudge", "label": "Show 'Buying for someone?' gift card link in the basket", "default": true },
+      { "type": "product", "id": "gift_card_product", "label": "Gift card product", "info": "Defaults to the Dready Gift Card." }
     ]
   },
   {

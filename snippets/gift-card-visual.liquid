@@ -1,0 +1,21 @@
+{%- comment -%}
+  The Dready gift card as an object: black card, Dready badge, value, Roots/Culture/Peace stripe.
+  Shared by the gift card page, the gift card product page and the homepage promo.
+  Params: value (formatted money), last4 (optional), off (true = expired/disabled look),
+          live (true = value updates with the variant picker), class (extra classes)
+{%- endcomment -%}
+<div class="gc-card{% if off %} gc-card--off{% endif %}{% if class %} {{ class }}{% endif %}" aria-hidden="true">
+  <div class="gc-card__top">
+    <span class="gc-card__mark-wrap"><img src="{{ 'dready-icon.png' | asset_url }}" alt="" class="gc-card__mark" width="40" height="40" loading="lazy"></span>
+    <span class="gc-card__brand">Dready Original</span>
+  </div>
+  <span class="gc-card__title">{{ 'gift_card.card_title' | t }}</span>
+  <div class="gc-card__bottom">
+    <div>
+      <span class="gc-card__label">{{ 'gift_card.card_label' | t }}</span>
+      <span class="gc-card__num">&bull;&bull;&bull;&bull; {{ last4 | default: 'DRDY' | upcase }}</span>
+    </div>
+    <div class="gc-card__value"{% if live %} data-gift-value{% endif %}>{{ value }}</div>
+  </div>
+  <span class="gc-card__stripe"></span>
+</div>

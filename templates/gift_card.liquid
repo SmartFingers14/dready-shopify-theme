@@ -75,21 +75,11 @@
           </div>
 
           <div class="gc__card-wrap">
-            <div class="gc-card{% unless is_live %} gc-card--off{% endunless %}" aria-hidden="true">
-              <div class="gc-card__top">
-                <span class="gc-card__mark-wrap"><img src="{{ 'dready-icon.png' | asset_url }}" alt="" class="gc-card__mark" width="44" height="44"></span>
-                <span class="gc-card__brand">Dready Original</span>
-              </div>
-              <span></span>
-              <div class="gc-card__bottom">
-                <div>
-                  <span class="gc-card__label">{{ 'gift_card.card_label' | t }}</span>
-                  <span class="gc-card__num">&bull;&bull;&bull;&bull; {{ gift_card.last_four_characters | upcase }}</span>
-                </div>
-                <div class="gc-card__value">{{ initial }}</div>
-              </div>
-              <span class="gc-card__stripe"></span>
-            </div>
+            {%- if is_live -%}
+              {% render 'gift-card-visual', value: initial, last4: gift_card.last_four_characters %}
+            {%- else -%}
+              {% render 'gift-card-visual', value: initial, last4: gift_card.last_four_characters, off: true %}
+            {%- endif -%}
           </div>
         </div>
       </section>
