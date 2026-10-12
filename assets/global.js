@@ -918,16 +918,44 @@
   if (!body) return;
   const content = body.querySelector('.shopify-policy__body .rte') || body.querySelector('.shopify-policy__body') || body;
 
-  /* 1. Paragraphs that are just a bold line ("SECTION 1 - ONLINE STORE TERMS") become real headings */
-  content.querySelectorAll('p').forEach(p => {
-    const strong = p.querySelector('strong, b');
-    const text = p.textContent.trim();
-    if (!strong || !text || text.length > 90) return;
-    if (strong.textContent.trim() !== text) return;
-    const h = document.createElement('h2');
-    h.textContent = text.replace(/^SECTION\s+(\d+)\s*[-–—]\s*/i, '$1 · ').replace(/\s+/g, ' ');
-    p.replaceWith(h);
+  /* 1. Shopify policies are often one long run of text + <br>s with bold titles.
+        Rebuild them into real paragraphs, and lone bold lines into headings. */
+  const BLOCK = /^(H[1-6]|UL|OL|TABLE|DIV|BLOCKQUOTE|HR|FIGURE)$/;
+  const isBlank = (n) => n.nodeType === 3 ? !n.textContent.trim() : (n.nodeType === 1 && n.tagName !== 'BR' && !n.textContent.trim() && !n.querySelector('img'));
+  const out = document.createDocumentFragment();
+  let lines = [[]];
+  const flush = () => {
+    let para = null;
+    const endPara = () => { if (para) out.appendChild(para); para = null; };
+    lines.forEach(line => {
+      const real = line.filter(n => !isBlank(n));
+      if (!real.length) { endPara(); return; }
+      const only = real.length === 1 && real[0].nodeType === 1 && /^(STRONG|B)$/.test(real[0].tagName) ? real[0] : null;
+      const text = only ? only.textContent.trim().replace(/\s+/g, ' ') : '';
+      if (only && text.length <= 90 && !/[.:,]$/.test(text)) {
+        endPara();
+        const h = document.createElement('h2');
+        h.textContent = text.replace(/^SECTION\s+(\d+)\s*[-–—]\s*/i, '$1 · ');
+        out.appendChild(h);
+        return;
+      }
+      if (para) para.appendChild(document.createElement('br')); else para = document.createElement('p');
+      line.forEach(n => para.appendChild(n));
+    });
+    endPara();
+    lines = [[]];
+  };
+  const eat = (nodes) => nodes.forEach(n => {
+    if (n.nodeType === 1 && n.tagName === 'BR') lines.push([]);
+    else lines[lines.length - 1].push(n);
   });
+  Array.from(content.childNodes).forEach(n => {
+    if (n.nodeType === 1 && BLOCK.test(n.tagName)) { flush(); out.appendChild(n); }
+    else if (n.nodeType === 1 && n.tagName === 'P') { flush(); eat(Array.from(n.childNodes)); flush(); }
+    else if (n.nodeType === 1 || n.nodeType === 3) eat([n]);
+  });
+  flush();
+  content.replaceChildren(out);
 
   /* 2. Table of contents from h2 */
   const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
