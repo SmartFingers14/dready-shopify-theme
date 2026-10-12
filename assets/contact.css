@@ -20,7 +20,7 @@
 .ct-hero__pulse::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--color-brand-green); animation: ct-pulse 2s ease-out infinite; }
 @keyframes ct-pulse { from { transform: scale(1); opacity: 0.8; } to { transform: scale(3.2); opacity: 0; } }
 .ct-hero__title { display: grid; gap: var(--space-3); line-height: 0.9; }
-.ct-hero__greet { display: block; overflow: hidden; padding-bottom: 0.06em; font-size: clamp(3.25rem, 9.5vw, 9rem); color: var(--color-accent); }
+.ct-hero__greet { display: block; overflow: hidden; padding-bottom: 0.06em; font-size: clamp(3rem, 7.6vw, 7.25rem); color: var(--color-accent); white-space: nowrap; }
 .ct-hero__word { display: inline-block; transition: transform 380ms var(--ease-out), opacity 380ms var(--ease-out); animation: ct-word-in 900ms var(--ease-out) 150ms both; }
 .ct-hero__word.is-out { transform: translateY(-55%); opacity: 0; }
 .ct-hero__word.is-in { transform: translateY(55%); opacity: 0; transition: none; }
@@ -199,7 +199,7 @@
   .ct-faq__intro { position: static; }
 }
 @media (max-width: 599px) {
-  .ct-hero__greet { font-size: clamp(3rem, 16vw, 4.5rem); }
+  .ct-hero__greet { font-size: clamp(2.5rem, 12.5vw, 4.25rem); }
   .ct-hero__stack { max-width: 340px; }
   .ct-hero__photo { padding: 7px 7px 28px; }
   .ct-door { padding: var(--space-3); gap: var(--space-2); }
