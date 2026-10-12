@@ -1,0 +1,34 @@
+{
+  "current": {
+    "logo_height": 44,
+    "color_accent": "#f8c010",
+    "page_width": 1600,
+    "card_hover_swap": true,
+    "card_quick_add": true,
+    "card_show_vendor": false,
+    "cart_type": "drawer",
+    "cart_note": "Embroidered items are made to order — please allow 5 working days.",
+    "seo_home_title": "Dready Original: Sustainable Streetwear & Lifestyle Brand",
+    "social_instagram": "https://www.instagram.com/dreadybrand/",
+    "social_facebook": "https://www.facebook.com/profile.php?id=100083340129198",
+    "social_twitter": "https://twitter.com/dreadybrand",
+    "social_youtube": "https://www.youtube.com/@dreadyselecta"
+  },
+  "presets": {
+    "Default": {
+      "logo_height": 44,
+      "color_accent": "#f8c010",
+      "page_width": 1600,
+      "card_hover_swap": true,
+      "card_quick_add": true,
+      "card_show_vendor": false,
+      "cart_type": "drawer",
+      "cart_note": "Embroidered items are made to order — please allow 5 working days.",
+      "seo_home_title": "Dready Original: Sustainable Streetwear & Lifestyle Brand",
+      "social_instagram": "https://www.instagram.com/dreadybrand/",
+      "social_facebook": "https://www.facebook.com/profile.php?id=100083340129198",
+      "social_twitter": "https://twitter.com/dreadybrand",
+      "social_youtube": "https://www.youtube.com/@dreadyselecta"
+    }
+  }
+}

@@ -1,7 +1,6 @@
 # Shopify CLI
 .shopify/
 shopify.theme.toml
-config/settings_data.json
 
 # Local dev-only material (not part of the theme)
 .dev-assets/
