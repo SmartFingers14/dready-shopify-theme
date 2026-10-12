@@ -229,7 +229,7 @@
   .about-hero__fact { padding-right: var(--space-2); }
   .about-hero__fact + .about-hero__fact { padding-left: var(--space-3); }
   .about-hero__fact:nth-child(3) { padding-left: 0; }
-  .about-hero__caption { padding-left: 0; padding-top: var(--space-10); }
+  .about-hero__caption { padding-left: 116px; margin-top: var(--space-5); min-height: 64px; }
   .about-chapter__frame2 { width: 42%; right: -2%; bottom: -12%; border-width: 4px; }
   .about-chapter--flip .about-chapter__frame2 { left: -2%; }
   .about-chapter__caption { max-width: 54%; }

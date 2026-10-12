@@ -13,7 +13,7 @@
         "cta_text": "Shop the drop",
         "cta_url": "/collections/new-26-drop",
         "cta2_text": "Our roots",
-        "cta2_url": "/blogs/news"
+        "cta2_url": "/pages/history-about-us?view=about"
       }
     },
     "featured": {
@@ -802,7 +802,7 @@
         "heading": "Born in Birmingham, 1983",
         "text": "<p>Dready was created by Robert Sidlauskas, a young Birmingham-based Rastafarian who used the power of his pencil to share his beliefs and ideals. His character went on to become the urban 'Mickey Mouse' of the 90s — on bombers, record bags and hoodies, in schoolbooks and on walls.</p><p>Today the message is the same: roots, culture and peace.</p>",
         "button_label": "Read the story",
-        "button_url": "/blogs/news/dready-returns-with-lookbook-featuring-dj-oneman",
+        "button_url": "/pages/history-about-us?view=about",
         "dark": false
       }
     },
