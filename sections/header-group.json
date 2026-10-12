@@ -5,7 +5,7 @@
     "announcement": {
       "type": "announcement-bar",
       "blocks": {
-        "msg1": { "type": "message", "settings": { "text": "EU customers: we pay all taxes on orders under €150", "link": "" } },
+        "msg1": { "type": "message", "settings": { "text": "EU customers: we pay all taxes on orders under €150 — over €150, taxes are payable on delivery", "link": "" } },
         "msg2": { "type": "message", "settings": { "text": "Embroidered pieces are made to order — allow 5 working days", "link": "" } },
         "msg3": { "type": "message", "settings": { "text": "Born in Birmingham, 1983 — music, art & street culture", "link": "" } }
       },
