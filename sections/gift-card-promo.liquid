@@ -4,9 +4,9 @@
 {%- endcomment -%}
 {%- liquid
   assign s = section.settings
-  assign p = s.product
-  if p == blank
-    assign p = all_products['dready-gift-card']
+  assign p = all_products['dready-gift-card']
+  if s.product.id != blank
+    assign p = s.product
   endif
 -%}
 {%- if p != blank and p.available -%}
