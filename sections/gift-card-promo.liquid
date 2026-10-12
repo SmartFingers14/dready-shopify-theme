@@ -10,7 +10,7 @@
   endif
 -%}
 {%- if p != blank and p.available -%}
-  {%- assign from_price = p.price_min | money -%}
+  {%- assign from_price = p.price_min | money_without_trailing_zeros -%}
   <section class="section gift-promo{% if s.dark %} section--dark{% endif %}">
     <div class="page-width gift-promo__layout">
       <div class="gift-promo__text reveal">

@@ -14,7 +14,7 @@
     endif
   endfor
 -%}
-{%- if settings.show_gift_nudge and gp != blank and gp.available and has_gift == false -%}
+{%- if settings.show_gift_nudge != false and gp != blank and gp.available and has_gift == false -%}
   {%- assign gp_from = gp.price_min | money_without_trailing_zeros -%}
   <a href="{{ gp.url }}" class="gift-nudge">
     <span class="gift-nudge__mark" aria-hidden="true"></span>

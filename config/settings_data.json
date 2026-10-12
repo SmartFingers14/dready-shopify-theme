@@ -1,20 +1,20 @@
 {
   "current": {
-    "logo_height": 44,
-    "color_accent": "#f8c010",
-    "page_width": 1600,
     "card_hover_swap": true,
     "card_quick_add": true,
     "card_show_vendor": false,
-    "cart_type": "drawer",
     "cart_note": "Embroidered items are made to order — please allow 5 working days.",
+    "cart_type": "drawer",
+    "color_accent": "#f8c010",
+    "gift_card_product": "dready-gift-card",
+    "logo_height": 44,
+    "page_width": 1600,
     "seo_home_title": "Dready Original: Sustainable Streetwear & Lifestyle Brand",
-    "social_instagram": "https://www.instagram.com/dreadybrand/",
-    "social_facebook": "https://www.facebook.com/profile.php?id=100083340129198",
-    "social_twitter": "https://twitter.com/dreadybrand",
-    "social_youtube": "https://www.youtube.com/@dreadyselecta",
     "show_gift_nudge": true,
-    "gift_card_product": "dready-gift-card"
+    "social_facebook": "https://www.facebook.com/profile.php?id=100083340129198",
+    "social_instagram": "https://www.instagram.com/dreadybrand/",
+    "social_twitter": "https://twitter.com/dreadybrand",
+    "social_youtube": "https://www.youtube.com/@dreadyselecta"
   },
   "presets": {
     "Default": {
