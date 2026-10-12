@@ -973,7 +973,9 @@
     heads.forEach(h => {
       const li = document.createElement('li');
       const a = document.createElement('a');
-      a.href = '#' + h.id; a.className = 'policy-toc__link'; a.textContent = h.textContent;
+      const t = h.textContent.trim();
+      a.href = '#' + h.id; a.className = 'policy-toc__link';
+      a.textContent = /[a-z]/.test(t) ? t : t.charAt(0) + t.slice(1).toLowerCase();
       li.appendChild(a); toc.appendChild(li);
     });
     tocWrap.hidden = false;
