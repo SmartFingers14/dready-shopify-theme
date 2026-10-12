@@ -27,7 +27,8 @@ cat .dev-src/css/c01-announcement.css \
     .dev-src/css/c13-gift-shop.css \
     .dev-src/css/c14-pdp-extras.css \
     .dev-src/css/c15-home.css \
-    .dev-src/css/c16-community.css > assets/components.css
+    .dev-src/css/c16-community.css \
+    .dev-src/css/c17-policies.css > assets/components.css
 
 cat .dev-src/js/01-core.js \
     .dev-src/js/02-header-motion.js \
@@ -38,7 +39,8 @@ cat .dev-src/js/01-core.js \
     .dev-src/js/07-culture.js \
     .dev-src/js/08-gift.js \
     .dev-src/js/09-product-share.js \
-    .dev-src/js/10-family.js > assets/global.js
+    .dev-src/js/10-family.js \
+    .dev-src/js/11-policy.js > assets/global.js
 
 node --check assets/global.js
 python3 - <<'PY'

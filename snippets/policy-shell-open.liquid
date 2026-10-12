@@ -1,0 +1,82 @@
+{%- comment -%}
+  Policy pages (Shopify renders the policy body itself) — this opens the designed shell around it:
+  dark hero with title, read time and last-updated, a reading-progress bar, and a sticky side
+  panel with every policy + an auto-built "On this page" table of contents (global.js).
+  Closed by policy-shell-close.
+{%- endcomment -%}
+{%- liquid
+  assign handle = request.path | split: '/' | last
+  assign fallback = ''
+  case handle
+    when 'refund-policy'
+      assign facts = settings.policy_refund_facts
+      assign fallback = '30 days to request a return on unworn items with tags|Sale & discounted items: 14 days, exchange only|Every piece is made to order — made-to-order returns only if agreed with us|EU customers: 14-day cooling-off period'
+      assign lede = 'Changed your mind? Here’s exactly how returns and exchanges work.'
+    when 'shipping-policy'
+      assign facts = settings.policy_shipping_facts
+      assign fallback = 'Please allow five working days — every piece is made to order|Made with love and good energy in the UK, by well-paid adults|EU customers: we pay all taxes on orders under €150'
+      assign lede = 'From our hands to your door — how long it takes and why.'
+    when 'privacy-policy'
+      assign facts = settings.policy_privacy_facts
+      assign lede = 'What we collect, why we collect it, and the choices you have.'
+    when 'terms-of-service'
+      assign facts = settings.policy_terms_facts
+      assign lede = 'The ground rules for using the Dready Original store.'
+    else
+      assign facts = ''
+      assign lede = 'The small print — kept straight and simple.'
+  endcase
+  if facts != blank
+    assign fact_lines = facts | newline_to_br | split: '<br />'
+  else
+    assign fact_lines = fallback | split: '|'
+  endif
+-%}
+<div class="policy-progress" aria-hidden="true"><span data-policy-progress></span></div>
+<section class="policy-hero section--dark">
+  <div class="page-width policy-hero__inner">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a><span aria-hidden="true">/</span>
+      <span>{{ 'policies.label' | t }}</span><span aria-hidden="true">/</span>
+      <span aria-current="page">{{ page_title }}</span>
+    </nav>
+    <p class="eyebrow">{{ 'policies.eyebrow' | t }}</p>
+    <h1 class="h-hero policy-hero__title">{{ page_title }}</h1>
+    <p class="body-lg policy-hero__lede">{{ lede }}</p>
+    <ul class="policy-hero__meta" role="list">
+      <li data-policy-readtime hidden>{% render 'icon', name: 'eye', size: 14 %} <span></span></li>
+      <li data-policy-updated hidden>{% render 'icon', name: 'calendar', size: 14 %} <span></span></li>
+      <li><button type="button" class="policy-hero__print" onclick="window.print()">{% render 'icon', name: 'external', size: 14 %} {{ 'policies.print' | t }}</button></li>
+    </ul>
+  </div>
+  <span class="policy-hero__rule" aria-hidden="true"></span>
+</section>
+
+<div class="page-width policy-layout" data-policy>
+  <aside class="policy-aside" aria-label="{{ 'policies.label' | t }}">
+    <div class="policy-aside__inner">
+      <p class="label policy-aside__title">{{ 'policies.label' | t }}</p>
+      <ul class="policy-aside__list" role="list">
+        {%- for pol in shop.policies -%}
+          <li><a href="{{ pol.url }}" class="policy-aside__link"{% if pol.url contains handle %} aria-current="page"{% endif %}>{{ pol.title }}</a></li>
+        {%- endfor -%}
+      </ul>
+      <details class="policy-toc" data-policy-toc-wrap hidden open>
+        <summary class="label policy-toc__title">{{ 'policies.on_this_page' | t }} {% render 'icon', name: 'plus', size: 14 %}</summary>
+        <ol class="policy-toc__list" data-policy-toc role="list"></ol>
+      </details>
+    </div>
+  </aside>
+  <div class="policy-main">
+    {%- if fact_lines.size > 0 and fact_lines.first != blank -%}
+      <div class="policy-glance">
+        <p class="label policy-glance__title">{% render 'icon', name: 'check', size: 14 %} {{ 'policies.at_a_glance' | t }}</p>
+        <ul class="policy-glance__list" role="list">
+          {%- for line in fact_lines -%}
+            {%- assign l = line | strip -%}
+            {%- if l != blank -%}<li>{{ l }}</li>{%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+    <div class="policy-body" data-policy-body>

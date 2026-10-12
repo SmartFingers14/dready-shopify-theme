@@ -1,0 +1,21 @@
+{%- comment -%} Closes the policy shell opened by policy-shell-open, then the help band. {%- endcomment -%}
+    </div>
+    <a href="#MainContent" class="link-underline policy-top">{% render 'icon', name: 'arrow-up-right', size: 14 %} {{ 'policies.back_to_top' | t }}</a>
+  </div>
+</div>
+<section class="section policy-help section--dark">
+  <div class="page-width policy-help__inner">
+    <div class="policy-help__text">
+      <p class="eyebrow">{{ 'policies.help_eyebrow' | t }}</p>
+      <h2 class="h1">{{ 'policies.help_heading' | t }}</h2>
+      <p class="body-lg policy-help__lede">{{ 'policies.help_text' | t }}</p>
+    </div>
+    <ul class="policy-help__ways" role="list">
+      <li><a class="policy-help__way" href="mailto:{{ settings.policy_help_email | default: 'victoria@dreadyoriginal.com' }}"><span class="policy-help__icon">{% render 'icon', name: 'mail', size: 20 %}</span><span><strong>{{ 'policies.help_email' | t }}</strong><span>{{ settings.policy_help_email | default: 'victoria@dreadyoriginal.com' }}</span></span>{% render 'icon', name: 'arrow-right', size: 16 %}</a></li>
+      <li><a class="policy-help__way" href="/pages/contact"><span class="policy-help__icon">{% render 'icon', name: 'user', size: 20 %}</span><span><strong>{{ 'policies.help_form' | t }}</strong><span>{{ 'policies.help_form_sub' | t }}</span></span>{% render 'icon', name: 'arrow-right', size: 16 %}</a></li>
+      {%- if settings.social_instagram != blank -%}
+        <li><a class="policy-help__way" href="{{ settings.social_instagram }}" target="_blank" rel="noopener"><span class="policy-help__icon">{% render 'icon', name: 'instagram', size: 20 %}</span><span><strong>{{ 'policies.help_dm' | t }}</strong><span>@dreadybrand</span></span>{% render 'icon', name: 'arrow-right', size: 16 %}</a></li>
+      {%- endif -%}
+    </ul>
+  </div>
+</section>

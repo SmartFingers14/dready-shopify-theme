@@ -58,7 +58,9 @@
   {% sections 'header-group' %}
 
   <main id="MainContent" class="main-content" role="main" tabindex="-1">
+    {%- if request.page_type == 'policy' -%}{% render 'policy-shell-open' %}{%- endif -%}
     {{ content_for_layout }}
+    {%- if request.page_type == 'policy' -%}{% render 'policy-shell-close' %}{%- endif -%}
   </main>
 
   {% sections 'footer-group' %}

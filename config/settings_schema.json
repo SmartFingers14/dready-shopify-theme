@@ -109,6 +109,17 @@
     ]
   },
   {
+    "name": "Policies",
+    "settings": [
+      { "type": "paragraph", "content": "'At a glance' summaries shown above each policy. One point per line. Leave empty to use the built-in summary (Refund, Shipping) or hide it." },
+      { "type": "textarea", "id": "policy_refund_facts", "label": "Refund policy — at a glance" },
+      { "type": "textarea", "id": "policy_shipping_facts", "label": "Shipping policy — at a glance" },
+      { "type": "textarea", "id": "policy_privacy_facts", "label": "Privacy policy — at a glance" },
+      { "type": "textarea", "id": "policy_terms_facts", "label": "Terms of service — at a glance" },
+      { "type": "text", "id": "policy_help_email", "label": "Help email", "default": "victoria@dreadyoriginal.com" }
+    ]
+  },
+  {
     "name": "SEO",
     "settings": [
       { "type": "text", "id": "seo_home_title", "label": "Homepage title", "info": "Shown in Google and the browser tab on the homepage. Leave blank to use the title from Online Store → Preferences.", "default": "Dready Original: Sustainable Streetwear & Lifestyle Brand" }
