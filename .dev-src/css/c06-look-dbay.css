@@ -4,7 +4,8 @@
 .shop-look__layout--flip .shop-look__scene { order: 2; }
 @media (max-width: 1023px) { .shop-look__layout { grid-template-columns: 1fr; gap: var(--space-6); } .shop-look__layout--flip .shop-look__scene { order: 0; } }
 .shop-look__scene { position: sticky; top: calc(var(--header-height) + var(--space-4)); overflow: visible; }
-@media (max-width: 1023px) { .shop-look__scene { position: static; } }
+/* un-stick on small screens but stay the positioning context for the hotspot pins */
+@media (max-width: 1023px) { .shop-look__scene { position: relative; top: auto; } }
 .hotspot { position: absolute; transform: translate(-50%, -50%); width: 44px; height: 44px; display: grid; place-items: center; z-index: 2; }
 .hotspot__dot { position: relative; width: 28px; height: 28px; border-radius: 50%; background: #fff; color: var(--color-fg); display: grid; place-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.25); transition: transform var(--dur) var(--ease-out), background var(--dur), color var(--dur); }
 .hotspot__dot::before { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.7); animation: pulse 2s ease-out infinite; }
@@ -16,6 +17,11 @@
 .hotspot-pop--left { transform: translate(calc(-100% - 16px), 16px); }
 .hotspot-pop--up { transform: translate(16px, calc(-100% - 16px)); }
 .hotspot-pop--up.hotspot-pop--left { transform: translate(calc(-100% - 16px), calc(-100% - 16px)); }
+/* phones: centre the popover in the image so it never runs off-screen */
+@media (max-width: 767px) {
+  .hotspot-pop, .hotspot-pop--left { left: 50% !important; width: min(240px, calc(100% - 2 * var(--space-4))); transform: translate(-50%, 24px); }
+  .hotspot-pop--up, .hotspot-pop--up.hotspot-pop--left { transform: translate(-50%, calc(-100% - 24px)); }
+}
 .hotspot-pop__inner { display: flex; gap: var(--space-3); padding: var(--space-3); background: var(--color-surface); color: var(--color-fg); box-shadow: 0 8px 30px rgba(0,0,0,0.18); }
 .hotspot-pop__media { width: 72px; flex-shrink: 0; }
 .hotspot-pop__info { display: grid; gap: var(--space-1); font-size: var(--text-sm); align-content: start; }
