@@ -1,45 +1,348 @@
-{%- comment -%} Contact page with accessible form (labels, inline errors, error summary). {%- endcomment -%}
-<div class="page-width contact">
-  <div class="contact__layout">
-    <div class="contact__intro">
-      <header class="page-header">
-        <p class="eyebrow">{{ section.settings.eyebrow }}</p>
-        <h1 class="h1">{{ page.title }}</h1>
-        {%- if page.content != blank -%}<div class="rte">{{ page.content }}</div>{%- endif -%}
-      </header>
-      {%- if section.blocks.size > 0 -%}
-        <dl class="contact__channels">
-          {%- for block in section.blocks -%}
-            <div {{ block.shopify_attributes }}><dt class="label">{{ block.settings.title }}</dt><dd>{%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}">{{ block.settings.text }}</a>{%- else -%}{{ block.settings.text }}{%- endif -%}</dd></div>
-          {%- endfor -%}
-        </dl>
-      {%- endif -%}
-    </div>
+{%- comment -%}
+  Contact — "come in, the kettle's on".
+  Dark welcome hero (rotating greeting, live UK clock, fanned family photos), then the form:
+  pick-a-door topic tiles + a form card where Dready's speech bubble reacts as you write
+  (global.js). Success swaps in a stamped "received" card. Then direct routes (email with
+  copy, phone, Instagram, postcard address) and quick answers from the real policies.
+  Topic / order number / "how did you hear" go to the store inbox as extra contact fields.
+{%- endcomment -%}
+{%- liquid
+  assign s = section.settings
+  assign topics = section.blocks | where: 'type', 'topic'
+  assign channels = section.blocks | where: 'type', 'channel'
+  assign faqs = section.blocks | where: 'type', 'faq'
+  assign photos = section.blocks | where: 'type', 'photo'
+  assign greetings = s.greetings | split: '|'
+  assign hear_options = s.hear_options | split: ','
+  assign phone_digits = s.phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-'
+  assign first_email = channels.first.settings.text
+-%}
+<div class="ct" data-contact>
 
-    {%- form 'contact', class: 'contact__form' -%}
-      {%- if form.posted_successfully? -%}
-        <p class="form-status form-status--success" role="status" tabindex="-1">{% render 'icon', name: 'check', size: 16 %} {{ 'templates.contact.form.post_success' | t }}</p>
-      {%- elsif form.errors -%}
-        <div class="form-status form-status--error" role="alert" tabindex="-1" id="ContactErrors">
-          <strong>{{ 'templates.contact.form.error_heading' | t }}</strong>
-          <ul>{%- for field in form.errors -%}<li><a href="#Contact-{{ field }}">{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</a></li>{%- endfor -%}</ul>
+  {%- comment -%} ---------- Welcome ---------- {%- endcomment -%}
+  <section class="ct-hero section--dark">
+    <div class="ct-hero__glow" aria-hidden="true"></div>
+    <div class="page-width ct-hero__inner">
+      <div class="ct-hero__text">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="{{ routes.root_url }}">{{ 'general.breadcrumbs.home' | t }}</a><span aria-hidden="true">/</span>
+          <span aria-current="page">{{ page.title }}</span>
+        </nav>
+        <p class="ct-hero__status">
+          <span class="ct-hero__pulse" aria-hidden="true"></span>
+          <span data-ct-clock data-place="{{ s.place | escape }}">{{ s.eyebrow }}</span>
+        </p>
+        <h1 class="h-hero ct-hero__title">
+          <span class="ct-hero__greet" data-ct-greet data-words="{{ s.greetings | escape }}"><span class="ct-hero__word">{{ greetings.first | strip }}</span></span>
+          <span class="ct-hero__line2">{{ s.heading }}</span>
+        </h1>
+        {%- if s.text != blank -%}<p class="body-lg ct-hero__lede">{{ s.text }}</p>{%- endif -%}
+        <div class="ct-hero__actions">
+          <a href="#ct-form" class="btn btn--accent">{% render 'icon', name: 'message', size: 18 %} {{ s.hero_button }}</a>
+          {%- if first_email != blank -%}<a href="mailto:{{ first_email }}" class="ct-hero__quick">{% render 'icon', name: 'mail', size: 18 %}<span class="visually-hidden">Email {{ first_email }}</span></a>{%- endif -%}
+          {%- if s.phone != blank -%}<a href="tel:{{ phone_digits }}" class="ct-hero__quick">{% render 'icon', name: 'phone', size: 18 %}<span class="visually-hidden">Call {{ s.phone }}</span></a>{%- endif -%}
+          {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" class="ct-hero__quick" target="_blank" rel="noopener">{% render 'icon', name: 'instagram', size: 18 %}<span class="visually-hidden">Instagram</span></a>{%- endif -%}
+        </div>
+      </div>
+
+      {%- if photos.size > 0 -%}
+        <div class="ct-hero__stack" aria-hidden="true">
+          {%- for block in photos limit: 3 -%}
+            <figure class="ct-hero__photo ct-hero__photo--{{ forloop.index }}" {{ block.shopify_attributes }}>
+              {%- render 'culture-image', image: block.settings.image, asset: block.settings.asset, alt: '', sizes: '(min-width: 1024px) 22vw, 50vw', loading: 'eager' -%}
+            </figure>
+          {%- endfor -%}
+          {%- if s.sticker != blank -%}
+            <span class="ct-hero__sticker"><img src="{{ 'dready-icon.png' | asset_img_url: '120x' }}" alt="" width="40" height="36">{{ s.sticker }}</span>
+          {%- endif -%}
         </div>
       {%- endif -%}
-      <div class="contact__row">
-        <div class="field"><label class="field__label" for="Contact-name">{{ 'templates.contact.form.name' | t }}</label><input id="Contact-name" class="field__input" type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}"></div>
-        <div class="field"><label class="field__label" for="Contact-email">{{ 'templates.contact.form.email' | t }} *</label><input id="Contact-email" class="field__input" type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}" {% if form.errors contains 'email' %}aria-invalid="true" aria-describedby="Contact-email-error"{% endif %}>{%- if form.errors contains 'email' -%}<p id="Contact-email-error" class="field__error">{% render 'icon', name: 'alert', size: 14 %} {{ form.errors.messages.email }}</p>{%- endif -%}</div>
+    </div>
+  </section>
+
+  {%- comment -%} ---------- Form ---------- {%- endcomment -%}
+  <section class="section ct-main" id="ct-form">
+    <div class="page-width">
+      {%- form 'contact', id: 'contact_form', class: 'ct-form' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="ct-done" role="status" tabindex="-1" data-ct-done>
+            <span class="ct-done__stamp" aria-hidden="true"><span>{{ s.stamp_text }}</span></span>
+            <img class="ct-done__dready" src="{{ 'dready-logo.png' | asset_img_url: '400x' }}" alt="" width="200" height="200" loading="eager">
+            <p class="eyebrow">{{ s.success_eyebrow }}</p>
+            <h2 class="h1 ct-done__title">{{ s.success_heading }}</h2>
+            <p class="body-lg ct-done__text">{{ s.success_text }}</p>
+            <span class="ct-done__stripe" aria-hidden="true"></span>
+            <div class="ct-done__links">
+              <a href="{{ routes.all_products_collection_url }}" class="btn">{{ s.success_shop }} {% render 'icon', name: 'arrow-right', size: 16 %}</a>
+              <a href="/pages/history-about-us?view=about" class="btn btn--outline">{{ s.success_story }}</a>
+            </div>
+          </div>
+        {%- else -%}
+          <div class="ct-form__grid">
+            <div class="ct-form__doors">
+              <p class="ct-step"><span>01</span>{{ s.step1 }}</p>
+              <h2 class="h1 ct-form__heading">{{ s.form_heading }}</h2>
+              {%- if topics.size > 0 -%}
+                <fieldset class="ct-doors">
+                  <legend class="visually-hidden">{{ s.step1 }}</legend>
+                  {%- for block in topics -%}
+                    {%- assign b = block.settings -%}
+                    <label class="ct-door" {{ block.shopify_attributes }}>
+                      <input type="radio" name="contact[Topic]" value="{{ b.title | escape }}" class="ct-door__input"
+                        data-bubble="{{ b.bubble | escape }}" data-email="{{ b.email | escape }}" data-placeholder="{{ b.placeholder | escape }}"{% if b.show_order %} data-order{% endif %}>
+                      <span class="ct-door__icon">{% render 'icon', name: b.icon, size: 22 %}</span>
+                      <span class="ct-door__text"><strong>{{ b.title }}</strong><span>{{ b.text }}</span></span>
+                      <span class="ct-door__tick" aria-hidden="true">{% render 'icon', name: 'check', size: 14 %}</span>
+                    </label>
+                  {%- endfor -%}
+                </fieldset>
+              {%- endif -%}
+              <p class="ct-route" data-ct-route hidden>{% render 'icon', name: 'mail', size: 16 %} <span>{{ s.route_prefix }} <a href="#" data-ct-route-link></a></span></p>
+            </div>
+
+            <div class="ct-card">
+              <div class="ct-card__head">
+                <span class="ct-card__dready"><img src="{{ 'dready-icon.png' | asset_img_url: '160x' }}" alt="" width="64" height="58" loading="lazy"></span>
+                <p class="ct-bubble" data-ct-bubble data-default="{{ s.bubble_default | escape }}" aria-hidden="true">{{ s.bubble_default }}</p>
+              </div>
+              <p class="ct-step"><span>02</span>{{ s.step2 }}</p>
+
+              {%- if form.errors -%}
+                <div class="form-status form-status--error ct-errors" role="alert" tabindex="-1" id="ContactErrors">
+                  <strong>{{ 'templates.contact.form.error_heading' | t }}</strong>
+                  <ul>{%- for field in form.errors -%}<li><a href="#Contact-{{ field }}">{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</a></li>{%- endfor -%}</ul>
+                </div>
+              {%- endif -%}
+
+              <div class="ct-fields">
+                <div class="ct-field">
+                  <label for="Contact-name">{{ 'templates.contact.form.name' | t }}</label>
+                  <input id="Contact-name" type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}" data-ct-name>
+                </div>
+                <div class="ct-field">
+                  <label for="Contact-email">{{ 'templates.contact.form.email' | t }} <span aria-hidden="true">*</span></label>
+                  <input id="Contact-email" type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}" data-ct-email{% if form.errors contains 'email' %} aria-invalid="true" aria-describedby="Contact-email-error"{% endif %}>
+                  {%- if form.errors contains 'email' -%}<p id="Contact-email-error" class="field__error">{% render 'icon', name: 'alert', size: 14 %} {{ form.errors.messages.email }}</p>{%- endif -%}
+                </div>
+                <div class="ct-field">
+                  <label for="Contact-phone">{{ 'templates.contact.form.phone' | t }} <span class="ct-optional">{{ s.optional_label }}</span></label>
+                  <input id="Contact-phone" type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}">
+                </div>
+                <div class="ct-field" data-ct-order hidden>
+                  <label for="Contact-order">{{ s.order_label }} <span class="ct-optional">{{ s.optional_label }}</span></label>
+                  <input id="Contact-order" type="text" name="contact[Order number]" inputmode="text" placeholder="#1001">
+                </div>
+                <div class="ct-field ct-field--full">
+                  <label for="Contact-body">{{ 'templates.contact.form.comment' | t }} <span aria-hidden="true">*</span></label>
+                  <textarea id="Contact-body" name="contact[body]" required rows="6" maxlength="3000" placeholder="{{ s.message_placeholder | escape }}" data-ct-body data-placeholder="{{ s.message_placeholder | escape }}">{{ form.body }}</textarea>
+                  <span class="ct-count" aria-hidden="true"><span data-ct-count>0</span> / 3000</span>
+                </div>
+                {%- if hear_options.size > 0 -%}
+                  <div class="ct-field ct-field--full">
+                    <span class="ct-label" id="Contact-hear-label">{{ s.hear_label }} <span class="ct-optional">{{ s.optional_label }}</span></span>
+                    <div class="ct-chips" role="radiogroup" aria-labelledby="Contact-hear-label">
+                      {%- for opt in hear_options -%}
+                        {%- assign o = opt | strip -%}
+                        <label class="ct-chip"><input type="radio" name="contact[How did you hear about us]" value="{{ o | escape }}"><span>{{ o }}</span></label>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                {%- endif -%}
+              </div>
+
+              <div class="ct-send">
+                <button type="submit" class="btn btn--accent ct-send__btn" data-ct-submit>
+                  <span>{{ s.button }}</span>{% render 'icon', name: 'send', size: 18 %}
+                </button>
+                <p class="ct-send__note">{% render 'icon', name: 'lock', size: 14 %} {{ s.small_print }}</p>
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </section>
+
+  {%- comment -%} ---------- Direct routes ---------- {%- endcomment -%}
+  <section class="section ct-ways section--dark">
+    <div class="page-width">
+      <header class="section-header">
+        <div class="section-header__text">
+          <p class="eyebrow">{{ s.ways_eyebrow }}</p>
+          <h2 class="h1">{{ s.ways_heading }}</h2>
+        </div>
+      </header>
+      <div class="ct-ways__grid">
+        {%- if channels.size > 0 -%}
+          <div class="ct-way ct-way--email">
+            <span class="ct-way__icon">{% render 'icon', name: 'mail', size: 22 %}</span>
+            <h3 class="ct-way__title">{{ s.email_title }}</h3>
+            <ul class="ct-depts" role="list">
+              {%- for block in channels -%}
+                {%- assign b = block.settings -%}
+                <li class="ct-dept" {{ block.shopify_attributes }}>
+                  <span class="ct-dept__name">{{ b.title }}</span>
+                  <span class="ct-dept__row">
+                    <a href="{% if b.link != blank %}{{ b.link }}{% else %}mailto:{{ b.text }}{% endif %}" class="ct-dept__email">{{ b.text }}</a>
+                    <button type="button" class="ct-copy" data-ct-copy="{{ b.text | escape }}" aria-label="Copy {{ b.text | escape }}">{% render 'icon', name: 'copy', size: 16 %}<span class="ct-copy__tip" aria-hidden="true">{{ s.copied_label }}</span></button>
+                  </span>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+
+        <div class="ct-ways__col">
+          {%- if s.phone != blank -%}
+            <a href="tel:{{ phone_digits }}" class="ct-way ct-way--link">
+              <span class="ct-way__icon">{% render 'icon', name: 'phone', size: 22 %}</span>
+              <span class="ct-way__body"><span class="ct-way__title">{{ s.phone_title }}</span><span class="ct-way__big">{{ s.phone }}</span>{%- if s.phone_note != blank -%}<span class="ct-way__note">{{ s.phone_note }}</span>{%- endif -%}</span>
+              {% render 'icon', name: 'arrow-up-right', size: 20 %}
+            </a>
+          {%- endif -%}
+          {%- if settings.social_instagram != blank -%}
+            <a href="{{ settings.social_instagram }}" class="ct-way ct-way--link" target="_blank" rel="noopener">
+              <span class="ct-way__icon">{% render 'icon', name: 'instagram', size: 22 %}</span>
+              <span class="ct-way__body"><span class="ct-way__title">{{ s.dm_title }}</span><span class="ct-way__big">{{ s.instagram_handle }}</span>{%- if s.dm_note != blank -%}<span class="ct-way__note">{{ s.dm_note }}</span>{%- endif -%}</span>
+              {% render 'icon', name: 'arrow-up-right', size: 20 %}
+            </a>
+          {%- endif -%}
+        </div>
+
+        {%- if s.address != blank -%}
+          <a href="{{ s.map_url | default: '#' }}" class="ct-postcard" target="_blank" rel="noopener" data-ct-tilt>
+            <span class="ct-postcard__inner">
+              <span class="ct-postcard__left">
+                <span class="ct-postcard__label">{{ s.post_title }}</span>
+                <span class="ct-postcard__msg">{{ s.post_message }}</span>
+                <span class="ct-postcard__sig">— {{ s.post_sign }}</span>
+              </span>
+              <span class="ct-postcard__right">
+                <span class="ct-postcard__stamp"><img src="{{ 'dready-icon.png' | asset_img_url: '160x' }}" alt="" width="64" height="58" loading="lazy"><span>1983</span></span>
+                <span class="ct-postcard__mark" aria-hidden="true"><span>{{ s.postmark }}</span></span>
+                <span class="ct-postcard__addr">{{ s.address | newline_to_br }}</span>
+                <span class="ct-postcard__map">{% render 'icon', name: 'pin', size: 14 %} {{ s.map_label }}</span>
+              </span>
+            </span>
+          </a>
+        {%- endif -%}
       </div>
-      <div class="field"><label class="field__label" for="Contact-phone">{{ 'templates.contact.form.phone' | t }}</label><input id="Contact-phone" class="field__input" type="tel" name="contact[phone]" autocomplete="tel" value="{{ form.phone }}"></div>
-      <div class="field"><label class="field__label" for="Contact-body">{{ 'templates.contact.form.comment' | t }} *</label><textarea id="Contact-body" class="field__input" name="contact[body]" required>{{ form.body }}</textarea></div>
-      <button type="submit" class="btn">{{ 'templates.contact.form.send' | t }} {% render 'icon', name: 'arrow-right', size: 16 %}</button>
-    {%- endform -%}
-  </div>
+    </div>
+  </section>
+
+  {%- comment -%} ---------- Quick answers ---------- {%- endcomment -%}
+  {%- if faqs.size > 0 -%}
+    <section class="section ct-faq">
+      <div class="page-width ct-faq__inner">
+        <div class="ct-faq__intro">
+          <p class="eyebrow">{{ s.faq_eyebrow }}</p>
+          <h2 class="h1">{{ s.faq_heading }}</h2>
+          {%- if s.faq_text != blank -%}<p class="ct-faq__text">{{ s.faq_text }}</p>{%- endif -%}
+        </div>
+        <div class="ct-faq__list">
+          {%- for block in faqs -%}
+            <details class="ct-q" {{ block.shopify_attributes }}{% if forloop.first %} open{% endif %}>
+              <summary><span class="ct-q__num">{{ forloop.index | prepend: '0' }}</span><span class="ct-q__title">{{ block.settings.question }}</span><span class="ct-q__icon" aria-hidden="true">{% render 'icon', name: 'plus', size: 18 %}</span></summary>
+              <div class="rte ct-q__answer">{{ block.settings.answer }}</div>
+            </details>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
 </div>
+
 {% schema %}
 {
   "name": "Contact",
-  "settings": [ { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Get in touch" } ],
-  "blocks": [ { "type": "channel", "name": "Contact channel", "settings": [ { "type": "text", "id": "title", "label": "Title", "default": "Wholesale" }, { "type": "text", "id": "text", "label": "Text", "default": "wholesale@dreadyoriginal.com" }, { "type": "url", "id": "link", "label": "Link" } ] } ],
-  "max_blocks": 5
+  "settings": [
+    { "type": "header", "content": "Welcome" },
+    { "type": "text", "id": "eyebrow", "label": "Status line (before the clock loads)", "default": "Get in touch" },
+    { "type": "text", "id": "place", "label": "Clock place name", "default": "Exeter" },
+    { "type": "text", "id": "greetings", "label": "Rotating greetings", "info": "Separate with |", "default": "Wah gwaan.|Hello.|Bonjour.|Ciao.|Bless up." },
+    { "type": "text", "id": "heading", "label": "Heading second line", "default": "Come in, the kettle's on." },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "text", "id": "hero_button", "label": "Button label", "default": "Write to us" },
+    { "type": "text", "id": "sticker", "label": "Photo sticker", "default": "You're family" },
+    { "type": "header", "content": "Form" },
+    { "type": "text", "id": "step1", "label": "Step 1 label", "default": "Pick a door" },
+    { "type": "text", "id": "form_heading", "label": "Form heading", "default": "What's on your mind?" },
+    { "type": "text", "id": "route_prefix", "label": "Topic email prefix", "default": "Prefer email? This one goes straight to" },
+    { "type": "text", "id": "step2", "label": "Step 2 label", "default": "Tell us everything" },
+    { "type": "text", "id": "bubble_default", "label": "Dready's opening line", "default": "Wah gwaan! Pick a door and tell me everything." },
+    { "type": "text", "id": "message_placeholder", "label": "Message placeholder", "default": "Start wherever you like…" },
+    { "type": "text", "id": "order_label", "label": "Order number label", "default": "Order number" },
+    { "type": "text", "id": "optional_label", "label": "Optional label", "default": "optional" },
+    { "type": "text", "id": "hear_label", "label": "How did you hear — label", "default": "How did you find us?" },
+    { "type": "text", "id": "hear_options", "label": "How did you hear — options", "info": "Comma separated", "default": "Instagram / Facebook, Web search, Print ad, From a friend" },
+    { "type": "text", "id": "button", "label": "Send button", "default": "Send it" },
+    { "type": "text", "id": "small_print", "label": "Small print", "default": "We only use your details to reply. No spam, ever." },
+    { "type": "header", "content": "After sending" },
+    { "type": "text", "id": "stamp_text", "label": "Stamp", "default": "Received" },
+    { "type": "text", "id": "success_eyebrow", "label": "Eyebrow", "default": "Message received" },
+    { "type": "text", "id": "success_heading", "label": "Heading", "default": "Bless up — it's with us." },
+    { "type": "textarea", "id": "success_text", "label": "Text", "default": "A real person from the Dready family will read it and reply to the email you gave us." },
+    { "type": "text", "id": "success_shop", "label": "Shop button", "default": "Keep browsing" },
+    { "type": "text", "id": "success_story", "label": "Story button", "default": "Read our story" },
+    { "type": "header", "content": "Direct routes" },
+    { "type": "text", "id": "ways_eyebrow", "label": "Eyebrow", "default": "Rather go direct?" },
+    { "type": "text", "id": "ways_heading", "label": "Heading", "default": "Every way to reach us" },
+    { "type": "text", "id": "email_title", "label": "Email title", "default": "Email the right person" },
+    { "type": "text", "id": "copied_label", "label": "Copied tooltip", "default": "Copied" },
+    { "type": "text", "id": "phone_title", "label": "Phone title", "default": "Give us a call" },
+    { "type": "text", "id": "phone", "label": "Phone number" },
+    { "type": "text", "id": "phone_note", "label": "Phone note" },
+    { "type": "text", "id": "dm_title", "label": "Instagram title", "default": "Slide into the DMs" },
+    { "type": "text", "id": "instagram_handle", "label": "Instagram handle", "default": "@dreadybrand" },
+    { "type": "text", "id": "dm_note", "label": "Instagram note" },
+    { "type": "text", "id": "post_title", "label": "Postcard title", "default": "Write to us" },
+    { "type": "textarea", "id": "post_message", "label": "Postcard message" },
+    { "type": "text", "id": "post_sign", "label": "Postcard sign-off", "default": "The Dready family" },
+    { "type": "text", "id": "postmark", "label": "Postmark", "default": "Exeter · UK" },
+    { "type": "textarea", "id": "address", "label": "Address" },
+    { "type": "url", "id": "map_url", "label": "Map link" },
+    { "type": "text", "id": "map_label", "label": "Map link label", "default": "Open in Maps" },
+    { "type": "header", "content": "Quick answers" },
+    { "type": "text", "id": "faq_eyebrow", "label": "Eyebrow", "default": "Before you write" },
+    { "type": "text", "id": "faq_heading", "label": "Heading", "default": "Quick answers" },
+    { "type": "text", "id": "faq_text", "label": "Text" }
+  ],
+  "blocks": [
+    {
+      "type": "topic", "name": "Topic door",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [ { "value": "package", "label": "Parcel" }, { "value": "refresh", "label": "Return" }, { "value": "tag", "label": "Tag" }, { "value": "star", "label": "Star" }, { "value": "eye", "label": "Eye" }, { "value": "heart", "label": "Heart" }, { "value": "music", "label": "Music" }, { "value": "ticket", "label": "Ticket" } ], "default": "heart" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Just saying hi" },
+        { "type": "text", "id": "text", "label": "Short line" },
+        { "type": "text", "id": "bubble", "label": "Dready's reaction" },
+        { "type": "text", "id": "placeholder", "label": "Message placeholder" },
+        { "type": "text", "id": "email", "label": "Direct email for this topic" },
+        { "type": "checkbox", "id": "show_order", "label": "Ask for an order number", "default": false }
+      ]
+    },
+    {
+      "type": "channel", "name": "Email contact",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Department", "default": "General" },
+        { "type": "text", "id": "text", "label": "Email", "default": "info@dreadyoriginal.com" },
+        { "type": "url", "id": "link", "label": "Link (optional)" }
+      ]
+    },
+    {
+      "type": "faq", "name": "Quick answer",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Question" },
+        { "type": "richtext", "id": "answer", "label": "Answer" }
+      ]
+    },
+    {
+      "type": "photo", "name": "Welcome photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "asset", "label": "Fallback theme image" }
+      ]
+    }
+  ],
+  "max_blocks": 24
 }
 {% endschema %}

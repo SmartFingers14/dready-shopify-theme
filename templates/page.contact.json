@@ -3,42 +3,452 @@
     "main": {
       "type": "main-contact",
       "blocks": {
-        "c1": {
-          "type": "channel",
+        "photo01": {
+          "type": "photo",
           "settings": {
-            "title": "General",
-            "text": "info@dreadyoriginal.com",
-            "link": "mailto:info@dreadyoriginal.com"
+            "asset": "dg-camera-11.jpg"
           }
         },
-        "c2": {
-          "type": "channel",
+        "photo02": {
+          "type": "photo",
           "settings": {
+            "asset": "dg-camera-16.jpg"
+          }
+        },
+        "photo03": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-25.jpg"
+          }
+        },
+        "topic04": {
+          "type": "topic",
+          "settings": {
+            "icon": "package",
+            "title": "Orders & delivery",
+            "text": "Where is my parcel? Something not right?",
+            "bubble": "Got your order number? Pop it in below.",
+            "placeholder": "Your order number and what’s up…",
+            "email": "info@dreadyoriginal.com",
+            "show_order": true
+          }
+        },
+        "topic05": {
+          "type": "topic",
+          "settings": {
+            "icon": "refresh",
+            "title": "Returns & exchanges",
+            "text": "Size swap or change of heart",
+            "bubble": "No stress — unworn pieces with tags have 30 days.",
+            "placeholder": "Which piece, and would you like a swap or a refund?",
+            "show_order": true
+          }
+        },
+        "topic06": {
+          "type": "topic",
+          "settings": {
+            "icon": "tag",
             "title": "Wholesale",
-            "text": "wholesale@dreadyoriginal.com",
-            "link": "mailto:wholesale@dreadyoriginal.com"
+            "text": "Stock Dready in your shop",
+            "bubble": "Tell us about your shop — where, what, who.",
+            "placeholder": "Your shop, where you are and what you’re looking for…",
+            "email": "victoria@dreadyoriginal.com"
           }
         },
-        "c3": {
+        "topic07": {
+          "type": "topic",
+          "settings": {
+            "icon": "star",
+            "title": "Collabs",
+            "text": "Got an idea that fits the vibe?",
+            "bubble": "Ideas welcome. The bigger the vibe, the better.",
+            "placeholder": "Who you are and the idea you’d love to make together…",
+            "email": "victoria@dreadyoriginal.com"
+          }
+        },
+        "topic08": {
+          "type": "topic",
+          "settings": {
+            "icon": "eye",
+            "title": "Licensing",
+            "text": "Using Dready art or the character",
+            "bubble": "Licensing goes to Robert — tell us what you have in mind.",
+            "placeholder": "What you’d like to license and where it will be used…",
+            "email": "robert@dreadyoriginal.com"
+          }
+        },
+        "topic09": {
+          "type": "topic",
+          "settings": {
+            "icon": "heart",
+            "title": "Just saying hi",
+            "text": "Memories, love, a school-bag story",
+            "bubble": "Big up yourself! Say what’s on your mind.",
+            "placeholder": "Your first Dready piece, a memory, a shout-out…"
+          }
+        },
+        "channel10": {
           "type": "channel",
           "settings": {
-            "title": "Licensing & collabs",
-            "text": "collabs@dreadyoriginal.com",
-            "link": "mailto:collabs@dreadyoriginal.com"
+            "title": "General & orders",
+            "text": "info@dreadyoriginal.com"
+          }
+        },
+        "channel11": {
+          "type": "channel",
+          "settings": {
+            "title": "Wholesale & collabs",
+            "text": "victoria@dreadyoriginal.com"
+          }
+        },
+        "channel12": {
+          "type": "channel",
+          "settings": {
+            "title": "Licensing",
+            "text": "robert@dreadyoriginal.com"
+          }
+        },
+        "faq13": {
+          "type": "faq",
+          "settings": {
+            "question": "When will my order arrive?",
+            "answer": "<p>Every piece is made to order, just for you — please allow five working days for us to make it and send it out. All the details are in our <a href=\"/policies/shipping-policy\" title=\"Shipping policy\">shipping policy</a>.</p>"
+          }
+        },
+        "faq14": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I return or exchange something?",
+            "answer": "<p>Yes. You have 30 days to request a return on unworn items with their tags, in the original packaging. Sale and discounted items have 14 days and are exchange only. Read the full <a href=\"/policies/refund-policy\" title=\"Refund policy\">refund policy</a>.</p>"
+          }
+        },
+        "faq15": {
+          "type": "faq",
+          "settings": {
+            "question": "Do you ship to Europe?",
+            "answer": "<p>Yes. On EU orders under €150 we pay all the taxes for you; over €150, taxes are payable on delivery. EU customers also get a 14-day cooling-off period.</p>"
+          }
+        },
+        "faq16": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I stock Dready or work with you?",
+            "answer": "<p>We’d love to hear from you. Pick <strong>Wholesale</strong> or <strong>Collabs</strong> above, or email Victoria directly at <a href=\"mailto:victoria@dreadyoriginal.com\" title=\"Email Victoria\">victoria@dreadyoriginal.com</a>.</p>"
+          }
+        },
+        "faq17": {
+          "type": "faq",
+          "settings": {
+            "question": "How do I get 10% off my first order?",
+            "answer": "<p>Join the family at the bottom of this page and your 10% welcome code lands in your inbox.</p>"
           }
         }
       },
       "block_order": [
-        "c1",
-        "c2",
-        "c3"
+        "photo01",
+        "photo02",
+        "photo03",
+        "topic04",
+        "topic05",
+        "topic06",
+        "topic07",
+        "topic08",
+        "topic09",
+        "channel10",
+        "channel11",
+        "channel12",
+        "faq13",
+        "faq14",
+        "faq15",
+        "faq16",
+        "faq17"
       ],
       "settings": {
-        "eyebrow": "Get in touch"
+        "eyebrow": "Get in touch",
+        "place": "Exeter",
+        "greetings": "Wah gwaan.|Hello.|Bonjour.|Ciao.|Bless up.",
+        "heading": "Come in, the kettle’s on.",
+        "text": "We’re a small family team. Every message lands with a real person — no bots, no ticket numbers, just the Dready family.",
+        "hero_button": "Write to us",
+        "sticker": "You’re family",
+        "phone": "01392 247 977",
+        "dm_note": "Tag us, DM us, show us your fit.",
+        "post_message": "Old school? We love it. Send us a letter, a drawing, or the story of your very first Dready piece.",
+        "address": "Dready Original\nQueensgate House\n48 Queen Street\nExeter EX4 3SR",
+        "map_url": "https://www.google.com/maps/search/?api=1&query=Queensgate+House+48+Queen+Street+Exeter+EX4+3SR",
+        "faq_text": "Most questions are answered right here — and if not, we’re one message away."
+      }
+    },
+    "community": {
+      "type": "community",
+      "blocks": {
+        "p1": {
+          "type": "perk",
+          "settings": {
+            "icon": "star",
+            "title": "First in line",
+            "text": "Early access to every drop"
+          }
+        },
+        "p2": {
+          "type": "perk",
+          "settings": {
+            "icon": "ticket",
+            "title": "On the list",
+            "text": "Event guest lists & presales"
+          }
+        },
+        "p3": {
+          "type": "perk",
+          "settings": {
+            "icon": "tag",
+            "title": "10% off",
+            "text": "Your first order"
+          }
+        },
+        "i1": {
+          "type": "interest",
+          "settings": {
+            "label": "Drops"
+          }
+        },
+        "i2": {
+          "type": "interest",
+          "settings": {
+            "label": "Music"
+          }
+        },
+        "i3": {
+          "type": "interest",
+          "settings": {
+            "label": "Events"
+          }
+        },
+        "i4": {
+          "type": "interest",
+          "settings": {
+            "label": "Sista"
+          }
+        },
+        "i5": {
+          "type": "interest",
+          "settings": {
+            "label": "Junior Dready"
+          }
+        },
+        "w01": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-01.jpg"
+          }
+        },
+        "w02": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-02.jpg"
+          }
+        },
+        "w03": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-03.jpg"
+          }
+        },
+        "w04": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-04.jpg"
+          }
+        },
+        "w05": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-05.jpg"
+          }
+        },
+        "w06": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-06.jpg"
+          }
+        },
+        "w07": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-07.jpg"
+          }
+        },
+        "w08": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-08.jpg"
+          }
+        },
+        "w09": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-09.jpg"
+          }
+        },
+        "w10": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-10.jpg"
+          }
+        },
+        "w11": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-11.jpg"
+          }
+        },
+        "w12": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-12.jpg"
+          }
+        },
+        "w13": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-13.jpg"
+          }
+        },
+        "w14": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-14.jpg"
+          }
+        },
+        "w15": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-15.jpg"
+          }
+        },
+        "w16": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-16.jpg"
+          }
+        },
+        "w17": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-17.jpg"
+          }
+        },
+        "w18": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-18.jpg"
+          }
+        },
+        "w19": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-19.jpg"
+          }
+        },
+        "w20": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-20.jpg"
+          }
+        },
+        "w21": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-21.jpg"
+          }
+        },
+        "w22": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-22.jpg"
+          }
+        },
+        "w23": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-23.jpg"
+          }
+        },
+        "w24": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-24.jpg"
+          }
+        },
+        "w25": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-25.jpg"
+          }
+        },
+        "w26": {
+          "type": "photo",
+          "settings": {
+            "asset": "dg-camera-26.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "i1",
+        "i2",
+        "i3",
+        "i4",
+        "i5",
+        "w01",
+        "w02",
+        "w03",
+        "w04",
+        "w05",
+        "w06",
+        "w07",
+        "w08",
+        "w09",
+        "w10",
+        "w11",
+        "w12",
+        "w13",
+        "w14",
+        "w15",
+        "w16",
+        "w17",
+        "w18",
+        "w19",
+        "w20",
+        "w21",
+        "w22",
+        "w23",
+        "w24",
+        "w25",
+        "w26"
+      ],
+      "settings": {
+        "eyebrow": "While you are here",
+        "heading": "Join the family",
+        "text": "Early access to drops, event guest lists, collab previews and 10% off your first order.",
+        "form_heading": "Get on the list",
+        "interests_label": "I'm into",
+        "button_text": "Join",
+        "small_print": "No spam. Unsubscribe any time.",
+        "success_heading": "Welcome to the family",
+        "success_text": "You're on the list. Check your inbox for your 10% code.",
+        "base_tags": "newsletter,community",
+        "wall_caption": "#DreadyFamily — tag @dreadybrand",
+        "show_social": true,
+        "social_text": "Tag @dreadybrand to get on the wall.",
+        "dark": true
       }
     }
   },
   "order": [
-    "main"
+    "main",
+    "community"
   ]
 }

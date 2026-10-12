@@ -46,10 +46,14 @@
   {{ 'base.css' | asset_url | stylesheet_tag }}
   {{ 'components.css' | asset_url | stylesheet_tag }}
   {%- if request.page_type == 'policy' %}{{ 'policies.css' | asset_url | stylesheet_tag }}{% endif -%}
-  {%- if template.suffix == 'about' %}{{ 'about.css' | asset_url | stylesheet_tag }}{% endif %}
+  {%- if template.suffix == 'about' %}{{ 'about.css' | asset_url | stylesheet_tag }}{% endif -%}
+  {%- if template.suffix == 'contact' %}{{ 'contact.css' | asset_url | stylesheet_tag }}{% endif %}
 
   <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
   <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+  {%- if request.page_type == 'policy' %}<script src="{{ 'policy.js' | asset_url }}" defer="defer"></script>{% endif -%}
+  {%- if template.suffix == 'about' %}<script src="{{ 'about.js' | asset_url }}" defer="defer"></script>{% endif -%}
+  {%- if template.suffix == 'contact' %}<script src="{{ 'contact.js' | asset_url }}" defer="defer"></script>{% endif %}
 
   {{ content_for_header }}
 </head>

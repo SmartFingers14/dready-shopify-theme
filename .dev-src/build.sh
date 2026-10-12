@@ -32,6 +32,7 @@ cat .dev-src/css/c01-announcement.css \
 # Page-specific styles, loaded only where needed (layout/theme.liquid)
 cp .dev-src/css/c17-policies.css assets/policies.css
 cp .dev-src/css/c18-about.css assets/about.css
+cp .dev-src/css/c19-contact.css assets/contact.css
 
 cat .dev-src/js/01-core.js \
     .dev-src/js/02-header-motion.js \
@@ -42,13 +43,17 @@ cat .dev-src/js/01-core.js \
     .dev-src/js/07-culture.js \
     .dev-src/js/08-gift.js \
     .dev-src/js/09-product-share.js \
-    .dev-src/js/10-family.js \
-    .dev-src/js/11-policy.js \
-    .dev-src/js/12-about.js > assets/global.js
+    .dev-src/js/10-family.js > assets/global.js
+
+# Page-specific scripts, loaded only where needed (layout/theme.liquid)
+cp .dev-src/js/11-policy.js assets/policy.js
+cp .dev-src/js/12-about.js assets/about.js
+cp .dev-src/js/13-contact.js assets/contact.js
+for f in assets/policy.js assets/about.js assets/contact.js; do node --check "$f"; done
 
 node --check assets/global.js
 python3 - <<'PY'
-for f in ('assets/base.css', 'assets/components.css', 'assets/policies.css', 'assets/about.css'):
+for f in ('assets/base.css', 'assets/components.css', 'assets/policies.css', 'assets/about.css', 'assets/contact.css'):
     s = open(f).read()
     assert s.count('{') == s.count('}'), f'brace mismatch in {f}'
     print(f'OK {f}: {s.count(chr(10))} lines')
