@@ -5,7 +5,7 @@
       "settings": {
         "eyebrow": "Collaborations",
         "text": "<p>Since 1983 Dready has spread one message — peace, love &amp; unity. These are the people we've shared it with.</p>",
-        "stat": "4 collaborations",
+        "stat": "3 collaborations",
         "dark": false,
         "accent_rule": true
       }
@@ -13,15 +13,6 @@
     "index": {
       "type": "collab-index",
       "blocks": {
-        "nike": {
-          "type": "collab",
-          "settings": {
-            "partner": "Nike",
-            "asset": "collab-nike.jpg",
-            "status": "Archive",
-            "text": "<p>Air Force 1 Mids in Rasta red, gold and green, finished with Dready branding.</p>"
-          }
-        },
         "newera": {
           "type": "collab",
           "settings": {
@@ -51,14 +42,13 @@
             "partner": "Johnny Hoxton",
             "asset": "collab-johnny-hoxton.jpg",
             "status": "Archive",
-            "text": "<p>Inspired by his father — a master craftsman with 30 years in Hatton Garden — Johnny Hoxton fuses street culture with luxury, making jewellery for the likes of Goldie, Nike, Sweet Toof and Ben Eine.</p>",
+            "text": "<p>Inspired by his father — a master craftsman with 30 years in Hatton Garden — Johnny Hoxton fuses street culture with luxury, making jewellery for the likes of Goldie, Sweet Toof and Ben Eine.</p>",
             "link_url": "/blogs/news/dready-x-johnny-hoxton",
             "link_label": "Read the story"
           }
         }
       },
       "block_order": [
-        "nike",
         "newera",
         "selecta",
         "hoxton"

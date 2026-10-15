@@ -338,18 +338,6 @@
             "cta": "Shop the beanie"
           }
         },
-        "c2": {
-          "type": "collab",
-          "settings": {
-            "title": "Dready × Nike",
-            "text": "Air Force 1 Mids in Rasta red, gold and green.",
-            "status": "Archive",
-            "asset": "collab-nike.jpg",
-            "collection": "",
-            "url": "/pages/collabs",
-            "cta": "View collab"
-          }
-        },
         "c3": {
           "type": "collab",
           "settings": {
@@ -377,7 +365,6 @@
       },
       "block_order": [
         "c1",
-        "c2",
         "c3",
         "c4"
       ],
