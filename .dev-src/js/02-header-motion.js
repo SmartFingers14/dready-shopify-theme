@@ -74,6 +74,10 @@
         opener?.focus();
       }
     });
+    // The header bar sits above the overlay while the menu is open; a tap on it closes the menu like the overlay does
+    qs('[data-header]')?.addEventListener('click', (e) => {
+      if (menu.classList.contains('is-open')) { e.preventDefault(); qs('[data-overlay]')?.click(); }
+    });
     // Closing the drawer returns it to the top level next time
     menu.addEventListener('drawer:close', () => {
       setTimeout(() => {

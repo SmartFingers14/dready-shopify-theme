@@ -135,6 +135,10 @@
 .mega-menu.is-open .mega-promo { transition-delay: calc(120ms + var(--i, 1) * 60ms); }
 
 /* ---------- Mobile menu drawer ---------- */
+/* The drawer renders inside the sticky header section, whose stacking context sat below the
+   page overlay (so taps hit the overlay). Lift the section while the menu is open and dim the bar. */
+.shopify-section-header:has(.menu-drawer.is-open) { z-index: var(--z-drawer); }
+.shopify-section-header:has(.menu-drawer.is-open) .header::before { content: ''; position: absolute; inset: 0; z-index: 2; background: rgba(0, 0, 0, 0.45); }
 .menu-drawer__header { position: relative; }
 .menu-drawer__header::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: linear-gradient(90deg, var(--color-brand-green) 0 33.33%, var(--color-accent) 33.33% 66.66%, var(--color-brand-red) 66.66%); }
 .menu-drawer__body { position: relative; padding: 0; overflow: hidden; display: flex; }
