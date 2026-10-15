@@ -2,7 +2,7 @@
   Mega menu panel for one top-level link.
   Daily Paper split panel (links left, image tiles right, help strip below) with
   Nervous-style big display links for single-level items and the Rasta stripe on top.
-  Children with their own links become numbered columns; long lists flow into two columns.
+  Children with their own links become columns; long lists flow into two columns.
   Params: link (linklist item), section (header section, for tile blocks), index
 {%- endcomment -%}
 {%- liquid
@@ -14,7 +14,6 @@
   endfor
 
   assign leaf_count = 0
-  assign group_count = 0
   assign leaves_first = false
   for child in link.links
     if child.links.size == 0
@@ -22,18 +21,8 @@
       if forloop.first
         assign leaves_first = true
       endif
-    else
-      assign group_count = group_count | plus: 1
     endif
   endfor
-
-  if leaves_first
-    assign leaf_num = 1
-    assign group_offset = 1
-  else
-    assign leaf_num = group_count | plus: 1
-    assign group_offset = 0
-  endif
 
   assign has_url = true
   if link.url == '#' or link.url == blank
@@ -47,7 +36,7 @@
         {%- capture leaves_html -%}
           {%- if leaf_count > 0 -%}
             <div class="mega-menu__col mega-menu__col--feature">
-              <p class="mega-menu__eyebrow"><span class="mega-menu__num">{{ leaf_num | prepend: '0' | slice: -2, 2 }}</span>{{ link.title }}</p>
+              <p class="mega-menu__eyebrow">{{ link.title }}</p>
               <ul class="mega-menu__big">
                 {%- assign n = 0 -%}
                 {%- for child in link.links -%}
@@ -63,12 +52,10 @@
 
         {%- if leaves_first -%}{{ leaves_html }}{%- endif -%}
 
-        {%- assign g = group_offset -%}
         {%- for child in link.links -%}
           {%- if child.links.size > 0 -%}
-            {%- assign g = g | plus: 1 -%}
             <div class="mega-menu__col{% if child.links.size > 10 %} mega-menu__col--wide{% endif %}">
-              <a href="{{ child.url }}" class="mega-menu__title"><span class="mega-menu__num">{{ g | prepend: '0' | slice: -2, 2 }}</span>{{ child.title }}</a>
+              <a href="{{ child.url }}" class="mega-menu__title">{{ child.title }}</a>
               <ul class="mega-menu__list">
                 {%- for grandchild in child.links -%}
                   <li><a href="{{ grandchild.url }}" class="mega-menu__link{% if grandchild.active %} is-active{% endif %}"{% if grandchild.active %} aria-current="page"{% endif %}>{{ grandchild.title }}</a></li>

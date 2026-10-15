@@ -84,10 +84,8 @@
 .mega-menu__col { min-width: 150px; }
 .mega-menu__col--wide .mega-menu__list { columns: 2; column-gap: var(--space-8); }
 .mega-menu__col--feature { flex: 1 1 260px; }
-.mega-menu__num { display: inline-grid; place-items: center; min-width: 26px; height: 20px; padding-inline: 4px; margin-right: var(--space-2); border: 1px solid currentColor; font-size: 10px; font-weight: 600; letter-spacing: 0; font-variant-numeric: tabular-nums; }
 .mega-menu__title, .mega-menu__eyebrow { display: flex; align-items: center; margin-bottom: var(--space-4); font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: var(--tracking-caps); }
 .mega-menu__eyebrow { color: var(--color-muted); }
-.mega-menu__eyebrow .mega-menu__num { color: var(--color-fg); }
 .mega-menu__title:hover { text-decoration: underline; text-underline-offset: 4px; }
 .mega-menu__list li { break-inside: avoid; }
 .mega-menu__link { display: inline-block; padding-block: 5px; font-size: var(--text-sm); color: var(--color-muted); transition: color var(--dur-fast), transform var(--dur) var(--ease-out); }
@@ -153,7 +151,6 @@
 .menu-drawer__link--top:hover svg, .menu-drawer__link--top:focus-visible svg { transform: translateX(4px); }
 .menu-drawer__link--top.is-active { text-decoration: none; }
 .menu-drawer__link--top.is-active .menu-drawer__text { text-decoration: underline; text-decoration-thickness: 3px; text-decoration-color: var(--color-accent); text-underline-offset: 6px; }
-.menu-drawer__num { display: inline-grid; place-items: center; flex-shrink: 0; min-width: 26px; height: 20px; padding-inline: 4px; border: 1px solid currentColor; font-size: 10px; font-weight: 600; letter-spacing: 0; color: var(--color-muted); font-variant-numeric: tabular-nums; }
 .menu-drawer__link--all { font-size: var(--text-sm); font-weight: 700; letter-spacing: var(--tracking-caps); background: var(--color-surface-2); }
 
 /* Top-level links slide in one after another as the drawer opens */
@@ -478,27 +475,12 @@
 .footer__brand { display: grid; gap: var(--space-6); align-content: start; }
 .footer__eyebrow { font-size: var(--text-xs); font-weight: 600; letter-spacing: var(--tracking-caps); text-transform: uppercase; color: var(--color-accent); }
 .footer__statement { max-width: 18ch; font-size: clamp(1.75rem, 3.2vw, 2.75rem); font-weight: 700; line-height: 1.02; letter-spacing: var(--tracking-tight); text-transform: uppercase; text-wrap: balance; }
-.footer__newsletter { max-width: 480px; }
-.footer__form { display: grid; gap: var(--space-2); }
-.footer__form-label { font-size: var(--text-sm); font-weight: 700; letter-spacing: var(--tracking-caps); text-transform: uppercase; }
-.footer__form-help { font-size: var(--text-sm); color: var(--color-dark-muted); }
-.footer__field { display: flex; margin-top: var(--space-2); border-bottom: 2px solid var(--color-dark-fg); transition: border-color var(--dur) var(--ease-out); }
-.footer__field:focus-within { border-color: var(--color-accent); }
-.footer__input { flex: 1; min-width: 0; min-height: 52px; padding: 0; border: 0; background: transparent; color: var(--color-dark-fg); font-size: var(--text-base); outline: none; }
-.footer__input::placeholder { color: var(--color-dark-muted); }
-.footer__submit { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 52px; padding-inline: var(--space-4); background: var(--color-dark-fg); color: var(--color-dark-bg); font-size: var(--text-xs); font-weight: 700; letter-spacing: var(--tracking-caps); text-transform: uppercase; transition: background var(--dur-fast), color var(--dur-fast); }
-.footer__submit svg { transition: transform var(--dur) var(--ease-out); }
-.footer__submit:hover, .footer__submit:focus-visible { background: var(--color-accent); color: #09090b; }
-.footer__submit:hover svg, .footer__submit:focus-visible svg { transform: translateX(3px); }
-.footer__form.is-busy .footer__submit { opacity: 0.6; pointer-events: none; }
-.footer__form-success { display: inline-flex; align-items: center; gap: var(--space-2); }
 
 /* Numbered link columns (same 01/02 boxes as the mega menu) */
 .footer__nav { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-8) var(--space-6); align-content: start; }
-.footer__num { display: inline-grid; place-items: center; min-width: 26px; height: 20px; padding-inline: 4px; border: 1px solid currentColor; font-size: 10px; font-weight: 600; letter-spacing: 0; font-variant-numeric: tabular-nums; color: var(--color-dark-muted); }
 .footer__col-title { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-4); font-size: var(--text-xs); font-weight: 700; letter-spacing: var(--tracking-caps); text-transform: uppercase; list-style: none; }
 .footer__col-title::-webkit-details-marker { display: none; }
-.footer__col-title > span:not(.footer__num) { flex: 1; }
+.footer__col-title > span { flex: 1; }
 .footer__col-icon { display: none; }
 .footer__links { display: grid; gap: var(--space-1); }
 .footer__links a { display: inline-flex; align-items: center; min-height: 32px; font-size: var(--text-base); color: var(--color-dark-muted); background-image: linear-gradient(90deg, var(--color-brand-green) 0 33.33%, var(--color-accent) 33.33% 66.66%, var(--color-brand-red) 66.66%); background-size: 0% 2px; background-repeat: no-repeat; background-position: 0 calc(100% - 4px); transition: color var(--dur-fast), background-size var(--dur-slow) var(--ease-out); }

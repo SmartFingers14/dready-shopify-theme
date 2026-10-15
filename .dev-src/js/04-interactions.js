@@ -62,7 +62,7 @@
     try { await navigator.clipboard.writeText(btn.getAttribute('data-copy')); toast(btn.dataset.copiedLabel || 'Copied'); } catch (_) {}
   });
 
-  /* ---------- Footer: columns open on desktop, accordion on phones; back to top; sign-up busy state ---------- */
+  /* ---------- Footer: columns open on desktop, accordion on phones; back to top ---------- */
   qsa('[data-footer]').forEach(footer => {
     const cols = qsa('details.footer__col', footer);
     const phone = window.matchMedia('(max-width: 767px)');
@@ -73,6 +73,4 @@
       window.scrollTo({ top: 0, behavior: prefersReducedMotion.matches ? 'auto' : 'smooth' });
       qs('a[href], button', document.body)?.focus({ preventScroll: true });
     });
-    const form = qs('[data-footer-form]', footer);
-    form?.addEventListener('submit', () => { form.classList.add('is-busy'); qs('button[type="submit"]', form)?.setAttribute('aria-busy', 'true'); });
   });

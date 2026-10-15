@@ -1,6 +1,6 @@
 {%- comment -%}
   Mobile menu drawer — nested sliding panels (Daily Paper mobile pattern) with
-  Nervous-style big numbered links, the Rasta stripe and image tiles per section.
+  Nervous-style big links, the Rasta stripe and image tiles per section.
   Params: menu (linklist), section (header section)
 {%- endcomment -%}
 <div id="MenuDrawer" class="drawer drawer--left menu-drawer" role="dialog" aria-modal="true" aria-label="{{ 'sections.header.menu' | t }}" aria-hidden="true" data-mobile-menu>
@@ -16,11 +16,11 @@
           <li class="menu-drawer__item" style="--i: {{ forloop.index }}">
             {%- if link.links.size > 0 -%}
               <button type="button" class="menu-drawer__link menu-drawer__link--top{% if link.child_active %} is-active{% endif %}" data-submenu-open="{{ forloop.index }}" aria-expanded="false" aria-controls="MenuPanel-{{ forloop.index }}">
-                <span class="menu-drawer__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span><span class="menu-drawer__text">{{ link.title }}</span>{% render 'icon', name: 'chevron-right', size: 20 %}
+                <span class="menu-drawer__text">{{ link.title }}</span>{% render 'icon', name: 'chevron-right', size: 20 %}
               </button>
             {%- else -%}
               <a href="{{ link.url }}" class="menu-drawer__link menu-drawer__link--top{% if link.active %} is-active{% endif %}"{% if link.active %} aria-current="page"{% endif %}>
-                <span class="menu-drawer__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span><span class="menu-drawer__text">{{ link.title }}</span>{% render 'icon', name: 'arrow-right', size: 20 %}
+                <span class="menu-drawer__text">{{ link.title }}</span>{% render 'icon', name: 'arrow-right', size: 20 %}
               </a>
             {%- endif -%}
           </li>
