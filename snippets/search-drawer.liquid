@@ -10,21 +10,25 @@
       <div class="search-drawer__field">
         {% render 'icon', name: 'search', size: 20 %}
         <input id="SearchDrawerInput" type="search" name="q" class="search-drawer__input" placeholder="{{ 'general.search.placeholder' | t }}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-autofocus>
+        <input type="hidden" name="type" value="product">
         <input type="hidden" name="options[prefix]" value="last">
         <button type="submit" class="visually-hidden">{{ 'general.search.search' | t }}</button>
       </div>
     </form>
     <div class="visually-hidden" role="status" aria-live="polite" data-predictive-status></div>
     <div class="search-drawer__results" data-predictive-results hidden></div>
-    {%- if linklists['search-trending'].links.size > 0 -%}
-      <div class="search-drawer__trending">
-        <p class="eyebrow">{{ 'general.search.trending' | t }}</p>
-        <ul>
-          {%- for link in linklists['search-trending'].links -%}
-            <li><a href="{{ link.url }}" class="search-drawer__trend">{{ link.title }} {% render 'icon', name: 'arrow-up-right', size: 14 %}</a></li>
-          {%- endfor -%}
-        </ul>
-      </div>
-    {%- endif -%}
+    <div class="search-drawer__idle" data-predictive-idle>
+      {%- if linklists['search-trending'].links.size > 0 -%}
+        <div class="search-drawer__trending">
+          <p class="eyebrow">{{ 'general.search.trending' | t }}</p>
+          <ul>
+            {%- for link in linklists['search-trending'].links -%}
+              <li><a href="{{ link.url }}" class="search-drawer__trend">{{ link.title }} {% render 'icon', name: 'arrow-up-right', size: 14 %}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+      {% render 'popular-categories', heading: true, compact: true %}
+    </div>
   </div>
 </div>

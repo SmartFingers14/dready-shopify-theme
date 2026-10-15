@@ -3,7 +3,7 @@
     "meta": { "tags": "Tagged \"{{ tags }}\"", "page": "Page {{ page }}" },
     "404": { "title": "Page not found", "subtext": "The page you're looking for has moved or doesn't exist.", "link": "Continue shopping" },
     "password_page": { "login_form_heading": "Enter store using password", "login_form_password_label": "Password", "login_form_submit": "Enter", "coming_soon": "Coming soon", "signup_label": "Be the first to know when we open." },
-    "search": { "search": "Search", "placeholder": "Search Dready", "results_for": "{{ count }} results for \"{{ terms }}\"", "no_results": "No results for \"{{ terms }}\"", "suggestions": "Suggestions", "products": "Products", "pages": "Pages", "articles": "Articles", "view_all": "View all results", "trending": "Trending" },
+    "search": { "search": "Search", "placeholder": "Search Dready", "results_for": "{{ count }} results for \"{{ terms }}\"", "no_results": "No results for \"{{ terms }}\"", "suggestions": "Suggestions", "products": "Products", "pages": "Pages", "articles": "Articles", "view_all": "View all results", "trending": "Trending", "popular": "Popular categories", "from": "From" },
     "newsletter": { "label": "Email address", "button": "Join", "success": "You're in. Welcome to the community." },
     "social": { "follow": "Follow us" },
     "pagination": { "previous": "Previous", "next": "Next", "page": "Page {{ number }}" },
@@ -41,7 +41,7 @@
     "header": { "menu": "Menu", "account": "Account", "log_in": "Log in", "search": "Search", "cart": "Basket", "shop_all": "Shop all", "explore": "Explore", "help": "Help", "shipping": "Shipping", "returns": "Returns", "contact": "Contact", "gift_cards": "Gift cards" },
     "footer": { "newsletter_heading": "Join the community", "newsletter_text": "Drops, events, collabs and member-only offers. Straight to your inbox.", "region": "Region", "language": "Language", "payment": "Payment methods", "menu": "Footer", "back_to_top": "Back to top", "say_hello": "Say hello", "follow": "Follow", "sign_up": "Sign up", "legal": "Legal" },
     "cart": { "title": "Basket", "empty": "Your basket is empty.", "continue_shopping": "Continue shopping", "subtotal": "Subtotal", "taxes_and_shipping_at_checkout": "Shipping & taxes calculated at checkout", "checkout": "Checkout", "view_cart": "View basket", "remove": "Remove", "quantity": "Quantity" },
-    "collection": { "pieces": "{{ count }} pieces", "filter": "Filter", "sort": "Sort", "clear_all": "Clear all", "apply": "Apply", "results": "{{ count }} products", "empty": "No products match your filters.", "showing": "Showing {{ count }} of {{ total }}" },
+    "collection": { "pieces": "{{ count }} pieces", "filter": "Filter", "sort": "Sort", "clear_all": "Clear all", "apply": "Apply", "results": "{{ count }} products", "empty": "No products match your filters.", "active_filters": "Active filters", "remove_filter": "Remove filter {{ label }}", "showing": "Showing {{ count }} of {{ total }}" },
     "product": { "size_guide": "Size guide", "choose_size": "Choose a size", "shipping_returns": "Shipping & returns", "description": "Description", "details": "Details & care", "related": "You may also like", "low_stock": "Only {{ count }} left", "made_to_order": "Made to order" },
     "blog": { "read_more": "Read more", "all_posts": "All posts", "comic_strip": "Comic strip", "by": "By {{ author }}", "read_story": "Read the story", "empty": "No stories yet — check back soon." },
     "events": { "upcoming": "Upcoming", "past": "Past event", "tickets": "Get tickets", "details": "Details", "venue": "Venue", "when": "When", "free": "Free entry", "tba": "Date to be announced", "tba_short": "TBA", "soon": "Soon" },
@@ -86,6 +86,6 @@
   },
   "templates": {
     "contact": { "form": { "name": "Name", "email": "Email", "phone": "Phone", "comment": "Message", "send": "Send", "post_success": "Thanks for getting in touch. We'll come back to you soon.", "error_heading": "Please correct the following:" } },
-    "search": { "title": "Search", "no_results": "Nothing found for \"{{ terms }}\". Try another search.", "results_with_count": { "one": "{{ count }} result for \"{{ terms }}\"", "other": "{{ count }} results for \"{{ terms }}\"" } }
+    "search": { "title": "Search", "search_stories": "Search stories & pages instead", "search_products": "Show products only", "no_results": "Nothing found for \"{{ terms }}\". Try another search.", "results_with_count": { "one": "{{ count }} result for \"{{ terms }}\"", "other": "{{ count }} results for \"{{ terms }}\"" } }
   }
 }

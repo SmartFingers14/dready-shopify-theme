@@ -1,8 +1,18 @@
 {%- comment -%} Rendered via Section Rendering API from the search drawer. {%- endcomment -%}
 {%- if predictive_search.performed -%}
   {%- assign has_results = false -%}
-  {%- if predictive_search.resources.products.size > 0 or predictive_search.resources.articles.size > 0 or predictive_search.resources.pages.size > 0 -%}{%- assign has_results = true -%}{%- endif -%}
+  {%- if predictive_search.resources.products.size > 0 or predictive_search.resources.collections.size > 0 or predictive_search.resources.articles.size > 0 or predictive_search.resources.pages.size > 0 -%}{%- assign has_results = true -%}{%- endif -%}
   {%- if has_results -%}
+    {%- if predictive_search.resources.queries.size > 0 or predictive_search.resources.collections.size > 0 -%}
+      <ul class="ps-chips" aria-label="{{ 'general.search.suggestions' | t }}">
+        {%- for query in predictive_search.resources.queries -%}
+          <li><a href="{{ query.url }}" class="ps-chip">{% render 'icon', name: 'search', size: 12 %}<span>{{ query.styled_text }}</span></a></li>
+        {%- endfor -%}
+        {%- for collection in predictive_search.resources.collections -%}
+          <li><a href="{{ collection.url }}" class="ps-chip ps-chip--collection"><span>{{ collection.title | escape }}</span>{% render 'icon', name: 'arrow-up-right', size: 12 %}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
     {%- if predictive_search.resources.products.size > 0 -%}
       <p class="eyebrow">{{ 'general.search.products' | t }}</p>
       <ul class="ps-products">
@@ -14,7 +24,7 @@
               </span>
               <span class="ps-product__info">
                 <span class="ps-product__title">{{ product.title }}</span>
-                <span class="price"><span class="price__current">{{ product.price | money }}</span></span>
+                <span class="price">{% if product.price_varies %}<span class="muted">{{ 'general.search.from' | t }}</span> {% endif %}<span class="price__current">{{ product.price | money }}</span>{% if product.compare_at_price > product.price %} <s class="price__compare">{{ product.compare_at_price | money }}</s>{% endif %}</span>
               </span>
             </a>
           </li>
@@ -28,9 +38,10 @@
         {%- for page in predictive_search.resources.pages -%}<li><a href="{{ page.url }}">{{ page.title }}</a></li>{%- endfor -%}
       </ul>
     {%- endif -%}
-    <a href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}" class="btn btn--outline btn--full ps-all">{{ 'general.search.view_all' | t }}</a>
+    <a href="{{ routes.search_url }}?q={{ predictive_search.terms | url_encode }}&type=product&options%5Bprefix%5D=last" class="btn btn--outline btn--full ps-all">{{ 'general.search.view_all' | t }}</a>
   {%- else -%}
-    <p class="muted">{{ 'general.search.no_results' | t: terms: predictive_search.terms }}</p>
+    <p class="muted ps-empty">{{ 'general.search.no_results' | t: terms: predictive_search.terms }}</p>
+    {% render 'popular-categories', heading: true, compact: true %}
   {%- endif -%}
 {%- endif -%}
 

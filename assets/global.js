@@ -563,24 +563,28 @@
     const input = qs('input[type="search"]', wrap);
     const results = qs('[data-predictive-results]', wrap);
     const status = qs('[data-predictive-status]', wrap);
+    const idle = qs('[data-predictive-idle]', wrap);
     if (!input || !results) return;
+    const showIdle = (on) => { if (idle) idle.hidden = !on; };
     let t, ctrl;
     input.addEventListener('input', () => {
       clearTimeout(t);
       const q = input.value.trim();
-      if (q.length < 2) { results.innerHTML = ''; results.hidden = true; return; }
+      if (q.length < 2) { ctrl?.abort(); results.innerHTML = ''; results.hidden = true; wrap.classList.remove('is-loading'); showIdle(true); return; }
+      wrap.classList.add('is-loading');
       t = setTimeout(async () => {
         ctrl?.abort(); ctrl = new AbortController();
         try {
-          const url = `${window.theme.routes.predictiveSearch}?q=${encodeURIComponent(q)}&resources[type]=product,article,page&resources[limit]=6&section_id=predictive-search`;
+          const url = `${window.theme.routes.predictiveSearch}?q=${encodeURIComponent(q)}&resources[type]=query,collection,product,article,page&resources[limit]=6&resources[limit_scope]=each&resources[options][prefix]=last&section_id=predictive-search`;
           const res = await fetch(url, { signal: ctrl.signal });
           const html = await res.text();
           const tmp = document.createElement('div'); tmp.innerHTML = html;
           const inner = qs('#shopify-section-predictive-search', tmp);
           results.innerHTML = inner ? inner.innerHTML : html;
           results.hidden = false;
-          if (status) status.textContent = results.querySelectorAll('a').length + ' results';
-        } catch (_) {}
+          showIdle(false);
+          if (status) status.textContent = results.querySelectorAll('.ps-product').length + ' products';
+        } catch (_) {} finally { wrap.classList.remove('is-loading'); }
       }, 250);
     });
   });

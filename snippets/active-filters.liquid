@@ -1,0 +1,36 @@
+{%- comment -%}
+  Removable chips for the filters in use, plus "Clear all". Params: results (collection or search), clear_url
+{%- endcomment -%}
+{%- liquid
+  assign active_count = 0
+  for filter in results.filters
+    if filter.type == 'price_range'
+      if filter.min_value.value != nil or filter.max_value.value != nil
+        assign active_count = active_count | plus: 1
+      endif
+    else
+      assign active_count = active_count | plus: filter.active_values.size
+    endif
+  endfor
+-%}
+{%- if active_count > 0 -%}
+  <div class="active-filters" aria-label="{{ 'sections.collection.active_filters' | t }}">
+    {%- for filter in results.filters -%}
+      {%- if filter.type == 'price_range' -%}
+        {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+          <a href="{{ filter.url_to_remove }}" class="active-filter" aria-label="{{ 'sections.collection.remove_filter' | t: label: filter.label }}">
+            <span>{{ filter.min_value.value | default: 0 | money }}&ndash;{{ filter.max_value.value | default: filter.range_max | money }}</span>{% render 'icon', name: 'close', size: 12 %}
+          </a>
+        {%- endif -%}
+      {%- else -%}
+        {%- for value in filter.active_values -%}
+          {%- capture chip_label -%}{{ filter.label }}: {{ value.label }}{%- endcapture -%}
+          <a href="{{ value.url_to_remove }}" class="active-filter" aria-label="{{ 'sections.collection.remove_filter' | t: label: chip_label }}">
+            <span>{{ value.label }}</span>{% render 'icon', name: 'close', size: 12 %}
+          </a>
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endfor -%}
+    <a href="{{ clear_url }}" class="active-filters__clear">{{ 'sections.collection.clear_all' | t }}</a>
+  </div>
+{%- endif -%}

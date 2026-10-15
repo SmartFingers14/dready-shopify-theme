@@ -33,6 +33,7 @@ cat .dev-src/css/c01-announcement.css \
 cp .dev-src/css/c17-policies.css assets/policies.css
 cp .dev-src/css/c18-about.css assets/about.css
 cp .dev-src/css/c19-contact.css assets/contact.css
+cp .dev-src/css/c20-listing.css assets/listing.css
 
 cat .dev-src/js/01-core.js \
     .dev-src/js/02-header-motion.js \
@@ -53,7 +54,7 @@ for f in assets/policy.js assets/about.js assets/contact.js; do node --check "$f
 
 node --check assets/global.js
 python3 - <<'PY'
-for f in ('assets/base.css', 'assets/components.css', 'assets/policies.css', 'assets/about.css', 'assets/contact.css'):
+for f in ('assets/base.css', 'assets/components.css', 'assets/policies.css', 'assets/about.css', 'assets/contact.css', 'assets/listing.css'):
     s = open(f).read()
     assert s.count('{') == s.count('}'), f'brace mismatch in {f}'
     print(f'OK {f}: {s.count(chr(10))} lines')

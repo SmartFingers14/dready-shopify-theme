@@ -1,0 +1,24 @@
+{%- comment -%}
+  Popular categories (same six as the homepage tiles) — shown in the empty search drawer
+  and when a search finds nothing. Params: heading (bool), compact (bool, drawer layout)
+{%- endcomment -%}
+{%- assign handles = 'dready-tees|premium-hoods|record-bags|sista|dready-kids|hats' | split: '|' -%}
+<div class="popular-cats{% if compact %} popular-cats--compact{% endif %}">
+  {%- if heading -%}<p class="eyebrow">{{ 'general.search.popular' | t }}</p>{%- endif -%}
+  <ul class="popular-cats__list">
+    {%- for handle in handles -%}
+      {%- assign c = collections[handle] -%}
+      {%- if c and c.products_count > 0 -%}
+        {%- assign c_image = c.featured_image | default: c.products.first.featured_media.preview_image -%}
+        <li>
+          <a href="{{ c.url }}" class="popular-cat">
+            <span class="popular-cat__media media media--square">
+              {%- if c_image -%}{{ c_image | image_url: width: 240 | image_tag: loading: 'lazy', sizes: '120px', alt: '' }}{%- endif -%}
+            </span>
+            <span class="popular-cat__title">{{ c.title }}</span>
+          </a>
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+</div>

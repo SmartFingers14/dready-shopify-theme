@@ -1,3 +1,36 @@
+{%- comment -%}
+  Search results. Products first (type=product from the search forms), with a switch to
+  stories & pages; filters, sort and active-filter chips like collections; popular
+  categories when nothing matches.
+{%- endcomment -%}
+{%- liquid
+  assign search_type = search.types | join: ','
+  if search_type == blank
+    assign search_type = 'product'
+  endif
+  assign products_only = false
+  if search_type == 'product'
+    assign products_only = true
+  endif
+  capture clear_url
+    echo routes.search_url
+    echo '?q='
+    echo search.terms | url_encode
+    echo '&type='
+    echo search_type
+    echo '&options%5Bprefix%5D=last'
+  endcapture
+  assign active_count = 0
+  for filter in search.filters
+    if filter.type == 'price_range'
+      if filter.min_value.value != nil or filter.max_value.value != nil
+        assign active_count = active_count | plus: 1
+      endif
+    else
+      assign active_count = active_count | plus: filter.active_values.size
+    endif
+  endfor
+-%}
 <div class="page-width search-page">
   <header class="page-header">
     <h1 class="h1">{{ 'templates.search.title' | t }}</h1>
@@ -5,33 +38,83 @@
       <label for="SearchPageInput" class="visually-hidden">{{ 'general.search.search' | t }}</label>
       <div class="search-drawer__field">
         {% render 'icon', name: 'search', size: 22 %}
-        <input id="SearchPageInput" type="search" name="q" class="search-drawer__input" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}">
+        <input id="SearchPageInput" type="search" name="q" class="search-drawer__input" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <input type="hidden" name="type" value="product">
         <input type="hidden" name="options[prefix]" value="last">
         <button type="submit" class="btn btn--sm">{{ 'general.search.search' | t }}</button>
       </div>
     </form>
     {%- if search.performed -%}
-      <p class="muted" role="status">{%- if search.results_count == 0 -%}{{ 'templates.search.no_results' | t: terms: search.terms }}{%- else -%}{{ 'templates.search.results_with_count' | t: count: search.results_count, terms: search.terms }}{%- endif -%}</p>
+      <div class="search-page__meta">
+        <p class="muted" role="status">{%- if search.results_count == 0 -%}{{ 'templates.search.no_results' | t: terms: search.terms }}{%- else -%}{{ 'templates.search.results_with_count' | t: count: search.results_count, terms: search.terms }}{%- endif -%}</p>
+        {%- if products_only -%}
+          <a href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=article,page&options%5Bprefix%5D=last" class="link-underline search-page__switch">{{ 'templates.search.search_stories' | t }}</a>
+        {%- else -%}
+          <a href="{{ routes.search_url }}?q={{ search.terms | url_encode }}&type=product&options%5Bprefix%5D=last" class="link-underline search-page__switch">{{ 'templates.search.search_products' | t }}</a>
+        {%- endif -%}
+      </div>
     {%- endif -%}
   </header>
-  {%- if search.performed and search.results_count > 0 -%}
-    {%- paginate search.results by 24 -%}
-      <div class="grid grid--4 reveal-stagger">
-        {%- for item in search.results -%}
-          {%- if item.object_type == 'product' -%}
-            {% render 'product-card', product: item, lazy: true %}
-          {%- else -%}
-            <article class="post">
-              <a href="{{ item.url }}" class="post__media media media--landscape">{%- if item.image -%}{{ item.image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '25vw', alt: item.title | escape }}{%- else -%}{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}</a>
-              <div class="post__info"><p class="eyebrow">{{ item.object_type }}</p><h2 class="h3"><a href="{{ item.url }}">{{ item.title }}</a></h2></div>
-            </article>
+
+  {%- if search.performed -%}
+    {%- if search.filters.size > 0 or search.sort_options.size > 0 -%}
+      <div class="collection__toolbar">
+        <p class="collection__count muted">{{ 'sections.collection.results' | t: count: search.results_count }}</p>
+        <div class="collection__tools">
+          {%- if search.filters.size > 0 -%}
+            <button type="button" class="btn btn--outline btn--sm" data-drawer-open="FilterDrawer" aria-controls="FilterDrawer" aria-expanded="false">{% render 'icon', name: 'filter', size: 16 %} {{ 'sections.collection.filter' | t }}{% if active_count > 0 %} <span class="filter-count">{{ active_count }}</span>{% endif %}</button>
           {%- endif -%}
-        {%- endfor -%}
+          {%- if search.sort_options.size > 0 -%}
+            <form method="get" class="collection__sort" data-localization-form>
+              <label for="SortBy" class="visually-hidden">{{ 'sections.collection.sort' | t }}</label>
+              <input type="hidden" name="q" value="{{ search.terms | escape }}">
+              <input type="hidden" name="type" value="{{ search_type }}">
+              <input type="hidden" name="options[prefix]" value="last">
+              {%- for f in search.filters -%}{%- for v in f.active_values -%}<input type="hidden" name="{{ v.param_name }}" value="{{ v.value }}">{%- endfor -%}{%- endfor -%}
+              <select id="SortBy" name="sort_by" class="field__input collection__sort-select">
+                {%- for option in search.sort_options -%}
+                  <option value="{{ option.value }}" {% if option.value == search.sort_by %}selected{% endif %}>{{ option.name }}</option>
+                {%- endfor -%}
+              </select>
+            </form>
+          {%- endif -%}
+        </div>
       </div>
-      {%- if paginate.pages > 1 -%}{{ paginate | default_pagination }}{%- endif -%}
-    {%- endpaginate -%}
+      {% render 'active-filters', results: search, clear_url: clear_url %}
+    {%- endif -%}
+
+    {%- if search.results_count > 0 -%}
+      {%- paginate search.results by 24 -%}
+        <div class="grid grid--4 reveal-stagger">
+          {%- for item in search.results -%}
+            {%- if item.object_type == 'product' -%}
+              {% render 'product-card', product: item, lazy: true %}
+            {%- else -%}
+              <article class="post">
+                <a href="{{ item.url }}" class="post__media media media--landscape">{%- if item.image -%}{{ item.image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '25vw', alt: item.title | escape }}{%- else -%}{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}{%- endif -%}</a>
+                <div class="post__info"><p class="eyebrow">{{ item.object_type }}</p><h2 class="h3"><a href="{{ item.url }}">{{ item.title }}</a></h2></div>
+              </article>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if paginate.pages > 1 -%}{{ paginate | default_pagination }}{%- endif -%}
+      {%- endpaginate -%}
+    {%- else -%}
+      <div class="search-page__empty">
+        {% render 'popular-categories', heading: true %}
+      </div>
+    {%- endif -%}
+  {%- else -%}
+    <div class="search-page__empty">
+      {% render 'popular-categories', heading: true %}
+    </div>
   {%- endif -%}
 </div>
+
+{%- if search.performed and search.filters.size > 0 -%}
+  {% render 'filter-drawer', results: search, clear_url: clear_url, search_terms: search.terms, search_type: search_type %}
+{%- endif -%}
+
 {% schema %}
 { "name": "Search", "settings": [] }
 {% endschema %}

@@ -2,6 +2,19 @@
 {%- liquid
   assign s = section.settings
   assign per_page = s.per_page
+  capture clear_url
+    echo collection.url | append: '?sort_by=' | append: collection.sort_by
+  endcapture
+  assign active_count = 0
+  for filter in collection.filters
+    if filter.type == 'price_range'
+      if filter.min_value.value != nil or filter.max_value.value != nil
+        assign active_count = active_count | plus: 1
+      endif
+    else
+      assign active_count = active_count | plus: filter.active_values.size
+    endif
+  endfor
 -%}
 <div class="collection page-width">
   <header class="page-header collection__header">
@@ -17,7 +30,7 @@
       <p class="collection__count muted" aria-live="polite">{{ 'sections.collection.results' | t: count: collection.products_count }}</p>
       <div class="collection__tools">
         {%- if s.enable_filtering and collection.filters.size > 0 -%}
-          <button type="button" class="btn btn--outline btn--sm" data-drawer-open="FilterDrawer" aria-controls="FilterDrawer" aria-expanded="false">{% render 'icon', name: 'filter', size: 16 %} {{ 'sections.collection.filter' | t }}</button>
+          <button type="button" class="btn btn--outline btn--sm" data-drawer-open="FilterDrawer" aria-controls="FilterDrawer" aria-expanded="false">{% render 'icon', name: 'filter', size: 16 %} {{ 'sections.collection.filter' | t }}{% if active_count > 0 %} <span class="filter-count">{{ active_count }}</span>{% endif %}</button>
         {%- endif -%}
         {%- if s.enable_sorting -%}
           <form method="get" class="collection__sort" data-localization-form>
@@ -32,6 +45,8 @@
         {%- endif -%}
       </div>
     </div>
+
+    {%- if s.enable_filtering -%}{% render 'active-filters', results: collection, clear_url: clear_url %}{%- endif -%}
 
     {%- if collection.products.size > 0 -%}
       <div class="grid grid--{{ s.columns }} collection__grid reveal-stagger">
@@ -59,14 +74,14 @@
     {%- else -%}
       <div class="empty-state">
         <p class="h3">{{ 'sections.collection.empty' | t }}</p>
-        <a href="{{ collection.url }}" class="btn btn--outline">{{ 'sections.collection.clear_all' | t }}</a>
+        <a href="{{ clear_url }}" class="btn btn--outline">{{ 'sections.collection.clear_all' | t }}</a>
       </div>
     {%- endif -%}
   {%- endpaginate -%}
 </div>
 
 {%- if s.enable_filtering and collection.filters.size > 0 -%}
-  {% render 'filter-drawer', collection: collection %}
+  {% render 'filter-drawer', results: collection, clear_url: clear_url %}
 {%- endif -%}
 
 {% schema %}

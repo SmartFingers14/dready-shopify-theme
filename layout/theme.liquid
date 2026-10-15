@@ -47,7 +47,8 @@
   {{ 'components.css' | asset_url | stylesheet_tag }}
   {%- if request.page_type == 'policy' %}{{ 'policies.css' | asset_url | stylesheet_tag }}{% endif -%}
   {%- if template.suffix == 'about' %}{{ 'about.css' | asset_url | stylesheet_tag }}{% endif -%}
-  {%- if template.suffix == 'contact' %}{{ 'contact.css' | asset_url | stylesheet_tag }}{% endif %}
+  {%- if template.suffix == 'contact' %}{{ 'contact.css' | asset_url | stylesheet_tag }}{% endif -%}
+  {%- if template.name == 'collection' or template.name == 'search' %}{{ 'listing.css' | asset_url | stylesheet_tag }}{% endif %}
 
   <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
   <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
