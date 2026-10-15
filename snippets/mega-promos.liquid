@@ -1,0 +1,30 @@
+{%- comment -%}
+  Image tiles for a top-level menu item (Daily Paper pattern: photo, bold title, CTA).
+  Shared by the desktop mega menu and the mobile drawer.
+  Params: promo (header mega_promo block), fallback_url, sizes, modifier ('' | 'drawer')
+{%- endcomment -%}
+{%- if promo -%}
+  <div class="mega-promos{% if modifier != blank %} mega-promos--{{ modifier }}{% endif %}" {{ promo.shopify_attributes }}>
+    {%- for i in (1..2) -%}
+      {%- assign img_key = 'image_' | append: i -%}
+      {%- assign asset_key = 'asset_' | append: i -%}
+      {%- assign cap_key = 'caption_' | append: i -%}
+      {%- assign sub_key = 'sub_' | append: i -%}
+      {%- assign url_key = 'url_' | append: i -%}
+      {%- assign tile_image = promo.settings[img_key] -%}
+      {%- assign tile_asset = promo.settings[asset_key] | strip -%}
+      {%- if tile_image != blank or tile_asset != blank -%}
+        <a href="{{ promo.settings[url_key] | default: fallback_url }}" class="mega-promo" style="--i: {{ i }}">
+          <div class="mega-promo__media">
+            {% render 'culture-image', image: tile_image, asset: tile_asset, alt: '', sizes: sizes, class: 'mega-promo__img' %}
+          </div>
+          <div class="mega-promo__body">
+            {%- if promo.settings[cap_key] != blank -%}<span class="mega-promo__title">{{ promo.settings[cap_key] }}</span>{%- endif -%}
+            {%- if promo.settings[sub_key] != blank -%}<span class="mega-promo__sub">{{ promo.settings[sub_key] }}</span>{%- endif -%}
+            <span class="mega-promo__cta">{{ 'sections.header.explore' | t }}{% render 'icon', name: 'arrow-right', size: 14 %}</span>
+          </div>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}

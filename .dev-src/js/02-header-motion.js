@@ -17,10 +17,13 @@
   }
 
   /* ---------- Mega menu (hover on desktop, click on touch; keyboard accessible) ---------- */
+  const megaHeader = qs('[data-header]');
+  const syncMegaState = () => megaHeader?.classList.toggle('is-mega-open', !!qs('[data-mega-item].is-open'));
   const closeMegaItem = (el) => {
     el.classList.remove('is-open');
     qs('.mega-menu', el)?.classList.remove('is-open');
     qs('[data-mega-trigger]', el)?.setAttribute('aria-expanded', 'false');
+    syncMegaState();
   };
   qsa('[data-mega-item]').forEach(item => {
     const trigger = qs('[data-mega-trigger]', item);
@@ -31,6 +34,7 @@
       clearTimeout(closeTimer);
       qsa('[data-mega-item].is-open').forEach(i => i !== item && closeMegaItem(i));
       item.classList.add('is-open'); panel.classList.add('is-open'); trigger.setAttribute('aria-expanded', 'true');
+      syncMegaState();
     };
     if (!isTouch) {
       item.addEventListener('mouseenter', openPanel);
@@ -53,15 +57,30 @@
       if (next) {
         e.preventDefault();
         const panel = qs(`[data-submenu="${next.getAttribute('data-submenu-open')}"]`, menu);
-        if (panel) { panel.classList.add('is-active'); panel.removeAttribute('hidden'); qs('[data-submenu-back]', panel)?.focus(); }
+        if (panel) {
+          panel.removeAttribute('hidden');
+          requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.add('is-active')));
+          next.setAttribute('aria-expanded', 'true');
+          qs('[data-submenu-back]', panel)?.focus({ preventScroll: true });
+        }
       }
       if (back) {
         e.preventDefault();
         const panel = back.closest('[data-submenu]');
         panel.classList.remove('is-active');
         setTimeout(() => panel.setAttribute('hidden', ''), 300);
-        qs(`[data-submenu-open="${panel.getAttribute('data-submenu')}"]`, menu)?.focus();
+        const opener = qs(`[data-submenu-open="${panel.getAttribute('data-submenu')}"]`, menu);
+        opener?.setAttribute('aria-expanded', 'false');
+        opener?.focus();
       }
+    });
+    // Closing the drawer returns it to the top level next time
+    menu.addEventListener('drawer:close', () => {
+      setTimeout(() => {
+        if (menu.classList.contains('is-open')) return;
+        qsa('[data-submenu].is-active', menu).forEach(p => { p.classList.remove('is-active'); p.setAttribute('hidden', ''); });
+        qsa('[data-submenu-open]', menu).forEach(b => b.setAttribute('aria-expanded', 'false'));
+      }, 400);
     });
   });
 

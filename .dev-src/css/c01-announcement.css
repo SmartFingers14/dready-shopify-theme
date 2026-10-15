@@ -45,8 +45,8 @@
    Sticky keeps the element in flow (no content jump); negative margin pulls the hero up under it. */
 .shopify-section-header { position: sticky; top: 0; z-index: var(--z-header); }
 .shopify-section-header:has(.header--transparent) { margin-bottom: calc(var(--header-height) * -1); }
-.header--transparent:not(.is-scrolled) { background: transparent; color: #fff; border-color: transparent; }
-.header--transparent:not(.is-scrolled) .header__cart-count { background: #fff; color: var(--color-fg); }
-.header--transparent:not(.is-scrolled) .header__cart-count.is-empty { background: transparent; color: #fff; }
-.header--transparent:not(.is-scrolled) .header__logo-img { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)); }
-.header--transparent:not(.is-scrolled) .header__wordmark { text-shadow: 0 1px 2px rgba(0,0,0,0.3); }
+.header--transparent:not(.is-scrolled):not(.is-mega-open) { background: transparent; color: #fff; border-color: transparent; }
+.header--transparent:not(.is-scrolled):not(.is-mega-open) .header__cart-count { background: #fff; color: var(--color-fg); }
+.header--transparent:not(.is-scrolled):not(.is-mega-open) .header__cart-count.is-empty { background: transparent; color: #fff; }
+.header--transparent:not(.is-scrolled):not(.is-mega-open) .header__logo-img { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3)); }
+.header--transparent:not(.is-scrolled):not(.is-mega-open) .header__wordmark { text-shadow: 0 1px 2px rgba(0,0,0,0.3); }

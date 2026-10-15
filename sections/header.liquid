@@ -11,7 +11,7 @@
   endif
   assign logo_h = settings.logo_height
 -%}
-<header class="header{% if transparent %} header--transparent{% endif %}{% if section.settings.sticky %} header--sticky{% endif %}" data-header {% if section.settings.hide_on_scroll %}data-hide-on-scroll{% endif %} style="--logo-h: {{ logo_h }}px;">
+<header class="header{% if transparent %} header--transparent{% endif %}{% if section.settings.sticky %} header--sticky{% endif %}{% if menu.links.size <= 5 %} header--compact-nav{% endif %}" data-header {% if section.settings.hide_on_scroll %}data-hide-on-scroll{% endif %} style="--logo-h: {{ logo_h }}px;">
   <div class="header__inner page-width">
 
     <div class="header__left">
@@ -22,14 +22,24 @@
       <nav class="header__nav" aria-label="{{ 'sections.header.menu' | t }}">
         <ul class="header__menu">
           {%- for link in menu.links -%}
+            {%- assign placeholder_url = false -%}
+            {%- if link.url == '#' or link.url == blank -%}{%- assign placeholder_url = true -%}{%- endif -%}
             {%- if link.links.size > 0 -%}
               <li class="header__menu-item" data-mega-item>
-                <a href="{{ link.url }}" class="nav-link header__menu-link{% if link.active or link.child_active %} is-active{% endif %}" data-mega-trigger aria-expanded="false" aria-haspopup="true">{{ link.title }}</a>
-                {% render 'mega-menu', link: link, section: section %}
+                {%- if placeholder_url -%}
+                  <button type="button" class="nav-link header__menu-link{% if link.child_active %} is-active{% endif %}" data-mega-trigger aria-expanded="false" aria-controls="MegaMenu-{{ forloop.index }}">
+                    <span>{{ link.title }}</span>{% render 'icon', name: 'chevron-down', size: 14 %}
+                  </button>
+                {%- else -%}
+                  <a href="{{ link.url }}" class="nav-link header__menu-link{% if link.active or link.child_active %} is-active{% endif %}" data-mega-trigger aria-expanded="false" aria-controls="MegaMenu-{{ forloop.index }}"{% if link.active %} aria-current="page"{% endif %}>
+                    <span>{{ link.title }}</span>{% render 'icon', name: 'chevron-down', size: 14 %}
+                  </a>
+                {%- endif -%}
+                {% render 'mega-menu', link: link, section: section, index: forloop.index %}
               </li>
             {%- else -%}
               <li class="header__menu-item">
-                <a href="{{ link.url }}" class="nav-link header__menu-link{% if link.active %} is-active{% endif %}">{{ link.title }}</a>
+                <a href="{{ link.url }}" class="nav-link header__menu-link{% if link.active %} is-active{% endif %}"{% if link.active %} aria-current="page"{% endif %}><span>{{ link.title }}</span></a>
               </li>
             {%- endif -%}
           {%- endfor -%}
@@ -65,6 +75,7 @@
       </button>
     </div>
   </div>
+  <div class="mega-scrim" data-mega-scrim aria-hidden="true"></div>
 </header>
 
 {% render 'menu-drawer', menu: menu, section: section %}
@@ -80,20 +91,28 @@
     { "type": "checkbox", "id": "hide_on_scroll", "label": "Hide when scrolling down", "default": false },
     { "type": "checkbox", "id": "transparent_home", "label": "Transparent over homepage hero", "default": true },
     { "type": "header", "content": "Mobile menu" },
-    { "type": "link_list", "id": "secondary_menu", "label": "Secondary links (mobile drawer footer)", "info": "e.g. Stores, FAQ, Contact" }
+    { "type": "link_list", "id": "secondary_menu", "label": "Secondary links (mobile drawer footer)", "info": "e.g. Stores, FAQ, Contact" },
+    { "type": "header", "content": "Dropdown menus" },
+    { "type": "text", "id": "mega_note", "label": "Note under the dropdown links", "default": "Made to order in the UK — allow 5 working days" }
   ],
   "blocks": [
     {
       "type": "mega_promo",
-      "name": "Mega menu images",
+      "name": "Menu image tiles",
       "settings": [
-        { "type": "text", "id": "menu_item", "label": "Menu item title", "info": "Must match a top-level menu item exactly, e.g. “Shop”." },
-        { "type": "image_picker", "id": "image_1", "label": "Image 1" },
-        { "type": "text", "id": "caption_1", "label": "Caption 1", "default": "New arrivals" },
-        { "type": "url", "id": "url_1", "label": "Link 1" },
-        { "type": "image_picker", "id": "image_2", "label": "Image 2" },
-        { "type": "text", "id": "caption_2", "label": "Caption 2", "default": "Premium" },
-        { "type": "url", "id": "url_2", "label": "Link 2" }
+        { "type": "text", "id": "menu_item", "label": "Menu item title", "info": "Must match a top-level menu item exactly, e.g. “Shop”. The tiles show in that item’s dropdown and in the mobile menu." },
+        { "type": "header", "content": "Tile 1" },
+        { "type": "image_picker", "id": "image_1", "label": "Image" },
+        { "type": "text", "id": "asset_1", "label": "Theme image file (fallback)", "info": "Used when no image is picked, e.g. music-selecta.jpg" },
+        { "type": "text", "id": "caption_1", "label": "Title", "default": "New arrivals" },
+        { "type": "text", "id": "sub_1", "label": "Subtitle" },
+        { "type": "url", "id": "url_1", "label": "Link" },
+        { "type": "header", "content": "Tile 2" },
+        { "type": "image_picker", "id": "image_2", "label": "Image" },
+        { "type": "text", "id": "asset_2", "label": "Theme image file (fallback)" },
+        { "type": "text", "id": "caption_2", "label": "Title", "default": "Premium" },
+        { "type": "text", "id": "sub_2", "label": "Subtitle" },
+        { "type": "url", "id": "url_2", "label": "Link" }
       ]
     }
   ],

@@ -19,8 +19,42 @@
         "wordmark": "DREADY",
         "sticky": true,
         "hide_on_scroll": false,
-        "transparent_home": true
-      }
+        "transparent_home": true,
+        "mega_note": "Made to order in the UK — allow 5 working days"
+      },
+      "blocks": {
+        "promo_shop": {
+          "type": "mega_promo",
+          "settings": {
+            "menu_item": "Shop",
+            "image_1": "shopify://shop_images/F3A6F079-501F-4555-B4EA-608CE7D16F2B.png",
+            "asset_1": "",
+            "caption_1": "New 26 drop",
+            "sub_1": "Just landed",
+            "url_1": "/collections/new-26-drop",
+            "image_2": "shopify://shop_images/6D58A626-C83C-48D7-8C62-3CC0ACB6B835.png",
+            "asset_2": "",
+            "caption_2": "Premium",
+            "sub_2": "From £40",
+            "url_2": "/search?q=premium&type=product"
+          }
+        },
+        "promo_culture": {
+          "type": "mega_promo",
+          "settings": {
+            "menu_item": "Culture",
+            "asset_1": "music-selecta.jpg",
+            "caption_1": "Volume On!",
+            "sub_1": "Dready Selecta",
+            "url_1": "/pages/music",
+            "asset_2": "dg-graffiti-07.jpg",
+            "caption_2": "Gallery",
+            "sub_2": "Graffiti · Photos · Fan art",
+            "url_2": "/pages/gallery"
+          }
+        }
+      },
+      "block_order": ["promo_shop", "promo_culture"]
     }
   },
   "order": ["announcement", "header"]

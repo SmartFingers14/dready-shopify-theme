@@ -1,52 +1,71 @@
 {%- comment -%}
-  Mobile menu drawer — nested sliding panels (Daily Paper mobile pattern).
+  Mobile menu drawer — nested sliding panels (Daily Paper mobile pattern) with
+  Nervous-style big numbered links, the Rasta stripe and image tiles per section.
   Params: menu (linklist), section (header section)
 {%- endcomment -%}
 <div id="MenuDrawer" class="drawer drawer--left menu-drawer" role="dialog" aria-modal="true" aria-label="{{ 'sections.header.menu' | t }}" aria-hidden="true" data-mobile-menu>
-  <div class="drawer__header">
+  <div class="drawer__header menu-drawer__header">
     <span class="label">{{ 'sections.header.menu' | t }}</span>
     <button type="button" class="drawer__close" data-drawer-close aria-label="{{ 'accessibility.close_menu' | t }}">{% render 'icon', name: 'close', size: 22 %}</button>
   </div>
 
   <div class="drawer__body menu-drawer__body">
-    <ul class="menu-drawer__list">
-      {%- for link in menu.links -%}
-        <li class="menu-drawer__item">
-          {%- if link.links.size > 0 -%}
-            <button type="button" class="menu-drawer__link" data-submenu-open="{{ forloop.index }}" aria-expanded="false">
-              <span>{{ link.title }}</span>{% render 'icon', name: 'chevron-right', size: 18 %}
-            </button>
-          {%- else -%}
-            <a href="{{ link.url }}" class="menu-drawer__link"><span>{{ link.title }}</span></a>
-          {%- endif -%}
-        </li>
-      {%- endfor -%}
-    </ul>
+    <div class="menu-drawer__main">
+      <ul class="menu-drawer__list menu-drawer__list--top">
+        {%- for link in menu.links -%}
+          <li class="menu-drawer__item" style="--i: {{ forloop.index }}">
+            {%- if link.links.size > 0 -%}
+              <button type="button" class="menu-drawer__link menu-drawer__link--top{% if link.child_active %} is-active{% endif %}" data-submenu-open="{{ forloop.index }}" aria-expanded="false" aria-controls="MenuPanel-{{ forloop.index }}">
+                <span class="menu-drawer__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span><span class="menu-drawer__text">{{ link.title }}</span>{% render 'icon', name: 'chevron-right', size: 20 %}
+              </button>
+            {%- else -%}
+              <a href="{{ link.url }}" class="menu-drawer__link menu-drawer__link--top{% if link.active %} is-active{% endif %}"{% if link.active %} aria-current="page"{% endif %}>
+                <span class="menu-drawer__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span><span class="menu-drawer__text">{{ link.title }}</span>{% render 'icon', name: 'arrow-right', size: 20 %}
+              </a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- assign first_promo = section.blocks | where: 'type', 'mega_promo' | first -%}
+      {% render 'mega-promos', promo: first_promo, fallback_url: routes.all_products_collection_url, sizes: '45vw', modifier: 'drawer' %}
+    </div>
 
     {%- for link in menu.links -%}
       {%- if link.links.size > 0 -%}
-        <div class="menu-drawer__panel" data-submenu="{{ forloop.index }}" hidden>
+        {%- liquid
+          assign panel_promo = nil
+          for block in section.blocks
+            if block.settings.menu_item == link.title
+              assign panel_promo = block
+            endif
+          endfor
+        -%}
+        <div class="menu-drawer__panel" id="MenuPanel-{{ forloop.index }}" data-submenu="{{ forloop.index }}" hidden>
           <button type="button" class="menu-drawer__back" data-submenu-back>{% render 'icon', name: 'arrow-left', size: 18 %}<span>{{ link.title }}</span></button>
           <ul class="menu-drawer__list">
-            <li class="menu-drawer__item"><a href="{{ link.url }}" class="menu-drawer__link menu-drawer__link--all"><span>{{ 'sections.header.shop_all' | t }} {{ link.title }}</span></a></li>
+            {%- unless link.url == '#' or link.url == blank -%}
+              <li class="menu-drawer__item"><a href="{{ link.url }}" class="menu-drawer__link menu-drawer__link--all"><span>{% if link.handle == 'shop' %}{{ 'sections.header.shop_all' | t }}{% else %}{{ 'sections.header.explore' | t }} {{ link.title }}{% endif %}</span>{% render 'icon', name: 'arrow-right', size: 18 %}</a></li>
+            {%- endunless -%}
             {%- for child in link.links -%}
               <li class="menu-drawer__item">
                 {%- if child.links.size > 0 -%}
                   <details class="menu-drawer__details">
                     <summary class="menu-drawer__link"><span>{{ child.title }}</span>{% render 'icon', name: 'plus', size: 16 %}</summary>
                     <ul class="menu-drawer__sublist">
-                      <li><a href="{{ child.url }}" class="menu-drawer__sublink">{{ 'sections.header.shop_all' | t }}</a></li>
+                      <li><a href="{{ child.url }}" class="menu-drawer__sublink menu-drawer__sublink--all">{{ 'sections.header.shop_all' | t }} {{ child.title }}</a></li>
                       {%- for grandchild in child.links -%}
-                        <li><a href="{{ grandchild.url }}" class="menu-drawer__sublink">{{ grandchild.title }}</a></li>
+                        <li><a href="{{ grandchild.url }}" class="menu-drawer__sublink{% if grandchild.active %} is-active{% endif %}"{% if grandchild.active %} aria-current="page"{% endif %}>{{ grandchild.title }}</a></li>
                       {%- endfor -%}
                     </ul>
                   </details>
                 {%- else -%}
-                  <a href="{{ child.url }}" class="menu-drawer__link"><span>{{ child.title }}</span></a>
+                  <a href="{{ child.url }}" class="menu-drawer__link{% if child.active %} is-active{% endif %}"{% if child.active %} aria-current="page"{% endif %}><span>{{ child.title }}</span></a>
                 {%- endif -%}
               </li>
             {%- endfor -%}
           </ul>
+          {% render 'mega-promos', promo: panel_promo, fallback_url: link.url, sizes: '45vw', modifier: 'drawer' %}
         </div>
       {%- endif -%}
     {%- endfor -%}
@@ -58,6 +77,13 @@
         {%- for link in section.settings.secondary_menu.links -%}
           <li><a href="{{ link.url }}">{{ link.title }}</a></li>
         {%- endfor -%}
+      </ul>
+    {%- else -%}
+      <ul class="menu-drawer__secondary">
+        {%- if shop.shipping_policy != blank -%}<li><a href="{{ shop.shipping_policy.url }}">{{ 'sections.header.shipping' | t }}</a></li>{%- endif -%}
+        {%- if shop.refund_policy != blank -%}<li><a href="{{ shop.refund_policy.url }}">{{ 'sections.header.returns' | t }}</a></li>{%- endif -%}
+        {%- if settings.gift_card_product != blank -%}<li><a href="{{ settings.gift_card_product.url }}">{{ 'sections.header.gift_cards' | t }}</a></li>{%- endif -%}
+        <li><a href="/pages/contact">{{ 'sections.header.contact' | t }}</a></li>
       </ul>
     {%- endif -%}
     <div class="menu-drawer__meta">

@@ -1,6 +1,9 @@
 {%- comment -%}
-  Mega menu panel for one top-level link. Daily Paper style: link columns + 2 image promos.
-  Params: link (linklist item), section (header section, for promo blocks)
+  Mega menu panel for one top-level link.
+  Daily Paper split panel (links left, image tiles right, help strip below) with
+  Nervous-style big display links for single-level items and the Rasta stripe on top.
+  Children with their own links become numbered columns; long lists flow into two columns.
+  Params: link (linklist item), section (header section, for tile blocks), index
 {%- endcomment -%}
 {%- liquid
   assign promo = nil
@@ -9,39 +12,92 @@
       assign promo = block
     endif
   endfor
+
+  assign leaf_count = 0
+  assign group_count = 0
+  assign leaves_first = false
+  for child in link.links
+    if child.links.size == 0
+      assign leaf_count = leaf_count | plus: 1
+      if forloop.first
+        assign leaves_first = true
+      endif
+    else
+      assign group_count = group_count | plus: 1
+    endif
+  endfor
+
+  if leaves_first
+    assign leaf_num = 1
+    assign group_offset = 1
+  else
+    assign leaf_num = group_count | plus: 1
+    assign group_offset = 0
+  endif
+
+  assign has_url = true
+  if link.url == '#' or link.url == blank
+    assign has_url = false
+  endif
 -%}
-<div class="mega-menu" role="region" aria-label="{{ link.title | escape }}">
+<div class="mega-menu{% if promo %} mega-menu--has-promos{% endif %}" id="MegaMenu-{{ index }}" role="region" aria-label="{{ link.title | escape }}">
   <div class="mega-menu__inner page-width">
-    <div class="mega-menu__cols">
-      {%- for child in link.links -%}
-        <div class="mega-menu__col">
-          <a href="{{ child.url }}" class="mega-menu__title">{{ child.title }}</a>
-          {%- if child.links.size > 0 -%}
-            <ul class="mega-menu__list">
-              {%- for grandchild in child.links -%}
-                <li><a href="{{ grandchild.url }}" class="mega-menu__link">{{ grandchild.title }}</a></li>
-              {%- endfor -%}
-            </ul>
+    <div class="mega-menu__main">
+      <div class="mega-menu__grid">
+        {%- capture leaves_html -%}
+          {%- if leaf_count > 0 -%}
+            <div class="mega-menu__col mega-menu__col--feature">
+              <p class="mega-menu__eyebrow"><span class="mega-menu__num">{{ leaf_num | prepend: '0' | slice: -2, 2 }}</span>{{ link.title }}</p>
+              <ul class="mega-menu__big">
+                {%- assign n = 0 -%}
+                {%- for child in link.links -%}
+                  {%- if child.links.size == 0 -%}
+                    {%- assign n = n | plus: 1 -%}
+                    <li style="--i: {{ n }}"><a href="{{ child.url }}" class="mega-menu__big-link{% if child.active %} is-active{% endif %}"{% if child.active %} aria-current="page"{% endif %}><span>{{ child.title }}</span>{% render 'icon', name: 'arrow-right', size: 20 %}</a></li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </div>
           {%- endif -%}
-        </div>
-      {%- endfor -%}
-    </div>
-    {%- if promo -%}
-      <div class="mega-menu__promos" {{ promo.shopify_attributes }}>
-        {%- for i in (1..2) -%}
-          {%- assign img_key = 'image_' | append: i -%}
-          {%- assign cap_key = 'caption_' | append: i -%}
-          {%- assign url_key = 'url_' | append: i -%}
-          {%- if promo.settings[img_key] != blank -%}
-            <a href="{{ promo.settings[url_key] | default: link.url }}" class="mega-menu__promo">
-              <div class="media media--portrait">
-                {{ promo.settings[img_key] | image_url: width: 600 | image_tag: loading: 'lazy', sizes: '300px', alt: promo.settings[cap_key] | escape }}
-              </div>
-              <span class="mega-menu__caption label">{{ promo.settings[cap_key] }} {% render 'icon', name: 'arrow-right', size: 14 %}</span>
-            </a>
+        {%- endcapture -%}
+
+        {%- if leaves_first -%}{{ leaves_html }}{%- endif -%}
+
+        {%- assign g = group_offset -%}
+        {%- for child in link.links -%}
+          {%- if child.links.size > 0 -%}
+            {%- assign g = g | plus: 1 -%}
+            <div class="mega-menu__col{% if child.links.size > 10 %} mega-menu__col--wide{% endif %}">
+              <a href="{{ child.url }}" class="mega-menu__title"><span class="mega-menu__num">{{ g | prepend: '0' | slice: -2, 2 }}</span>{{ child.title }}</a>
+              <ul class="mega-menu__list">
+                {%- for grandchild in child.links -%}
+                  <li><a href="{{ grandchild.url }}" class="mega-menu__link{% if grandchild.active %} is-active{% endif %}"{% if grandchild.active %} aria-current="page"{% endif %}>{{ grandchild.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </div>
           {%- endif -%}
         {%- endfor -%}
+
+        {%- unless leaves_first -%}{{ leaves_html }}{%- endunless -%}
       </div>
+
+      <div class="mega-menu__foot">
+        {%- if has_url -%}
+          <a href="{{ link.url }}" class="mega-menu__all">{% if link.handle == 'shop' %}{{ 'sections.header.shop_all' | t }}{% else %}{{ 'sections.header.explore' | t }} {{ link.title }}{% endif %}{% render 'icon', name: 'arrow-right', size: 14 %}</a>
+        {%- elsif section.settings.mega_note != blank -%}
+          <p class="mega-menu__note">{{ section.settings.mega_note }}</p>
+        {%- endif -%}
+        <ul class="mega-menu__help" aria-label="{{ 'sections.header.help' | t }}">
+          {%- if shop.shipping_policy != blank -%}<li><a href="{{ shop.shipping_policy.url }}">{{ 'sections.header.shipping' | t }}</a></li>{%- endif -%}
+          {%- if shop.refund_policy != blank -%}<li><a href="{{ shop.refund_policy.url }}">{{ 'sections.header.returns' | t }}</a></li>{%- endif -%}
+          {%- if settings.gift_card_product != blank -%}<li><a href="{{ settings.gift_card_product.url }}">{{ 'sections.header.gift_cards' | t }}</a></li>{%- endif -%}
+          <li><a href="/pages/contact">{{ 'sections.header.contact' | t }}</a></li>
+        </ul>
+      </div>
+    </div>
+
+    {%- if promo -%}
+      {% render 'mega-promos', promo: promo, fallback_url: link.url, sizes: '(min-width: 1024px) 260px, 45vw' %}
     {%- endif -%}
   </div>
 </div>
