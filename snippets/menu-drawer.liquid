@@ -53,7 +53,7 @@
                   <details class="menu-drawer__details">
                     <summary class="menu-drawer__link"><span>{{ child.title }}</span>{% render 'icon', name: 'plus', size: 16 %}</summary>
                     <ul class="menu-drawer__sublist">
-                      <li><a href="{{ child.url }}" class="menu-drawer__sublink menu-drawer__sublink--all">{{ 'sections.header.shop_all' | t }} {{ child.title }}</a></li>
+                      <li><a href="{{ child.url }}" class="menu-drawer__sublink menu-drawer__sublink--all">{% if link.handle == 'shop' %}{{ 'sections.header.shop_all' | t }}{% else %}{{ 'sections.header.explore' | t }}{% endif %} {{ child.title }}</a></li>
                       {%- for grandchild in child.links -%}
                         <li><a href="{{ grandchild.url }}" class="menu-drawer__sublink{% if grandchild.active %} is-active{% endif %}"{% if grandchild.active %} aria-current="page"{% endif %}>{{ grandchild.title }}</a></li>
                       {%- endfor -%}
