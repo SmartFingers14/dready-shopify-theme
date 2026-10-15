@@ -1,38 +1,47 @@
 {%- comment -%}
-  Footer — Daily Paper layout: newsletter + link columns (collapsible on mobile),
-  region/language selectors, socials, payment icons, legal line.
+  Footer — Daily Paper structure (sign-up, dense link columns, region, payments, legal row)
+  with Nervous-style swagger: Rasta stripe, a big statement, numbered columns matching the
+  mega menu, socials as words, and a giant wordmark to sign off.
+  Columns are <details> so they fold into an accordion on phones; footer JS opens them on desktop.
 {%- endcomment -%}
-<footer class="footer section--dark" role="contentinfo">
+<footer class="footer section--dark" role="contentinfo" data-footer>
+  <div class="footer__stripe" aria-hidden="true"></div>
   <div class="page-width">
     <div class="footer__top">
       <div class="footer__brand">
-        <img src="{{ 'dready-logo.png' | asset_url }}" alt="" width="72" height="72" loading="lazy" class="footer__logo">
-        {%- if section.settings.tagline != blank -%}<p class="footer__tagline h3">{{ section.settings.tagline }}</p>{%- endif -%}
+        {%- if section.settings.eyebrow != blank -%}<p class="footer__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+        {%- if section.settings.tagline != blank -%}<p class="footer__statement">{{ section.settings.tagline }}</p>{%- endif -%}
+
         {%- if section.settings.show_newsletter -%}
           <div class="footer__newsletter">
-            <p class="label">{{ section.settings.newsletter_heading }}</p>
-            {%- form 'customer', class: 'footer__form' -%}
+            {%- form 'customer', class: 'footer__form', data-footer-form: '' -%}
               <input type="hidden" name="contact[tags]" value="newsletter">
+              <label for="FooterEmail" class="footer__form-label">{{ section.settings.newsletter_heading }}</label>
+              {%- if section.settings.newsletter_text != blank -%}<p id="FooterEmailHelp" class="footer__form-help">{{ section.settings.newsletter_text }}</p>{%- endif -%}
               {%- if form.posted_successfully? -%}
-                <p class="form-status form-status--success" role="status">{{ 'general.newsletter.success' | t }}</p>
+                <p class="form-status form-status--success footer__form-success" role="status">{% render 'icon', name: 'check', size: 16 %}{{ 'general.newsletter.success' | t }}</p>
               {%- else -%}
-                <div class="inline-form">
-                  <label for="FooterEmail" class="visually-hidden">{{ 'general.newsletter.label' | t }}</label>
-                  <input id="FooterEmail" type="email" name="contact[email]" class="field__input" placeholder="{{ 'general.newsletter.label' | t }}" required autocomplete="email" {% if form.errors %}aria-invalid="true" aria-describedby="FooterEmailError"{% endif %}>
-                  <button type="submit" class="btn btn--inverse" aria-label="{{ 'general.newsletter.button' | t }}">{% render 'icon', name: 'arrow-right', size: 18 %}</button>
+                <div class="footer__field">
+                  <input id="FooterEmail" type="email" name="contact[email]" class="footer__input" placeholder="you@example.com" required autocomplete="email" inputmode="email" aria-describedby="{% if section.settings.newsletter_text != blank %}FooterEmailHelp{% endif %}{% if form.errors %} FooterEmailError{% endif %}" {% if form.errors %}aria-invalid="true"{% endif %}>
+                  <button type="submit" class="footer__submit">
+                    <span>{{ 'sections.footer.sign_up' | t }}</span>{% render 'icon', name: 'arrow-right', size: 16 %}
+                  </button>
                 </div>
-                {%- if form.errors -%}<p id="FooterEmailError" class="field__error">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>{%- endif -%}
+                {%- if form.errors -%}<p id="FooterEmailError" class="field__error" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>{%- endif -%}
               {%- endif -%}
             {%- endform -%}
           </div>
         {%- endif -%}
       </div>
 
-      <div class="footer__cols">
+      <nav class="footer__nav" aria-label="{{ 'sections.footer.menu' | t }}">
+        {%- assign col = 0 -%}
         {%- for block in section.blocks -%}
+          {%- assign col = col | plus: 1 -%}
+          {%- capture col_num -%}<span class="footer__num" aria-hidden="true">{{ col | prepend: '0' | slice: -2, 2 }}</span>{%- endcapture -%}
           {%- if block.type == 'menu' and block.settings.menu != blank -%}
-            <details class="footer__col" {{ block.shopify_attributes }}>
-              <summary class="footer__col-title label">{{ block.settings.heading | default: block.settings.menu.title }} {% render 'icon', name: 'plus', size: 14, class: 'footer__col-icon' %}</summary>
+            <details class="footer__col" open {{ block.shopify_attributes }}>
+              <summary class="footer__col-title">{{ col_num }}<span>{{ block.settings.heading | default: block.settings.menu.title }}</span>{% render 'icon', name: 'plus', size: 14, class: 'footer__col-icon' %}</summary>
               <ul class="footer__links">
                 {%- for link in block.settings.menu.links -%}
                   {%- comment -%} A placeholder parent ("#") lists its own links instead of a dead one {%- endcomment -%}
@@ -45,8 +54,8 @@
               </ul>
             </details>
           {%- elsif block.type == 'links' -%}
-            <details class="footer__col" {{ block.shopify_attributes }}>
-              <summary class="footer__col-title label">{{ block.settings.heading }} {% render 'icon', name: 'plus', size: 14, class: 'footer__col-icon' %}</summary>
+            <details class="footer__col" open {{ block.shopify_attributes }}>
+              <summary class="footer__col-title">{{ col_num }}<span>{{ block.settings.heading }}</span>{% render 'icon', name: 'plus', size: 14, class: 'footer__col-icon' %}</summary>
               <ul class="footer__links">
                 {%- for i in (1..6) -%}
                   {%- assign l_label = 'label_' | append: i -%}
@@ -57,32 +66,62 @@
             </details>
           {%- elsif block.type == 'text' -%}
             <div class="footer__col footer__col--text" {{ block.shopify_attributes }}>
-              <p class="label footer__col-title">{{ block.settings.heading }}</p>
+              <p class="footer__col-title">{{ col_num }}<span>{{ block.settings.heading }}</span></p>
               <div class="footer__text rte">{{ block.settings.text }}</div>
             </div>
           {%- endif -%}
         {%- endfor -%}
-      </div>
+      </nav>
     </div>
+
+    <div class="footer__mid">
+      {%- if section.settings.email != blank -%}
+        <div class="footer__hello">
+          <p class="footer__mid-label">{{ 'sections.footer.say_hello' | t }}</p>
+          <a href="mailto:{{ section.settings.email }}" class="footer__email">{{ section.settings.email }}{% render 'icon', name: 'arrow-up-right', size: 20 %}</a>
+        </div>
+      {%- endif -%}
+      <div class="footer__follow">
+        <p class="footer__mid-label">{{ 'sections.footer.follow' | t }}</p>
+        <ul class="footer__socials">
+          {%- if settings.social_instagram != blank -%}<li><a href="{{ settings.social_instagram }}" target="_blank" rel="noopener">{% render 'icon', name: 'instagram', size: 18 %}<span>Instagram</span></a></li>{%- endif -%}
+          {%- if settings.social_tiktok != blank -%}<li><a href="{{ settings.social_tiktok }}" target="_blank" rel="noopener">{% render 'icon', name: 'tiktok', size: 18 %}<span>TikTok</span></a></li>{%- endif -%}
+          {%- if settings.social_youtube != blank -%}<li><a href="{{ settings.social_youtube }}" target="_blank" rel="noopener">{% render 'icon', name: 'youtube', size: 18 %}<span>YouTube</span></a></li>{%- endif -%}
+          {%- if settings.social_facebook != blank -%}<li><a href="{{ settings.social_facebook }}" target="_blank" rel="noopener">{% render 'icon', name: 'facebook', size: 18 %}<span>Facebook</span></a></li>{%- endif -%}
+          {%- if settings.social_twitter != blank -%}<li><a href="{{ settings.social_twitter }}" target="_blank" rel="noopener">{% render 'icon', name: 'twitter', size: 18 %}<span>X</span></a></li>{%- endif -%}
+          {%- if settings.social_spotify != blank -%}<li><a href="{{ settings.social_spotify }}" target="_blank" rel="noopener">{% render 'icon', name: 'spotify', size: 18 %}<span>Spotify</span></a></li>{%- endif -%}
+          {%- if settings.social_bandcamp != blank -%}<li><a href="{{ settings.social_bandcamp }}" target="_blank" rel="noopener">{% render 'icon', name: 'bandcamp', size: 18 %}<span>Bandcamp</span></a></li>{%- endif -%}
+        </ul>
+      </div>
+      <button type="button" class="footer__top-btn" data-back-to-top>
+        <span>{{ 'sections.footer.back_to_top' | t }}</span>{% render 'icon', name: 'arrow-up-right', size: 16 %}
+      </button>
+    </div>
+
+    {%- if section.settings.wordmark != blank -%}
+      <a href="{{ routes.root_url }}" class="footer__wordmark" aria-label="{{ shop.name | escape }}" data-footer-wordmark>
+        <span class="footer__wordmark-text" aria-hidden="true">{{ section.settings.wordmark }}</span>
+      </a>
+    {%- endif -%}
 
     <div class="footer__bottom">
       <div class="footer__left">
         {%- if section.settings.show_locale or section.settings.show_country -%}
           {% render 'footer-localization', show_country: section.settings.show_country, show_locale: section.settings.show_locale %}
         {%- endif -%}
-        {% render 'social-links', size: 18 %}
-      </div>
-      <div class="footer__right">
         {%- if section.settings.show_payment and shop.enabled_payment_types.size > 0 -%}
           <ul class="footer__payments" aria-label="{{ 'sections.footer.payment' | t }}">
             {%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag: class: 'footer__payment-icon' }}</li>{%- endfor -%}
           </ul>
         {%- endif -%}
-        {%- if shop.policies.size > 0 -%}
-          <ul class="footer__policies">
-            {%- for policy in shop.policies -%}<li><a href="{{ policy.url }}">{{ policy.title }}</a></li>{%- endfor -%}
-          </ul>
-        {%- endif -%}
+      </div>
+      <div class="footer__right">
+        <ul class="footer__policies" aria-label="{{ 'sections.footer.legal' | t }}">
+          {%- for policy in shop.policies -%}<li><a href="{{ policy.url }}">{{ policy.title }}</a></li>{%- endfor -%}
+          {%- if section.settings.legal_menu != blank -%}
+            {%- for link in section.settings.legal_menu.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
+          {%- endif -%}
+        </ul>
         <p class="footer__legal">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ section.settings.legal_text }}</p>
       </div>
     </div>
@@ -94,12 +133,17 @@
   "name": "Footer",
   "class": "shopify-section-footer",
   "settings": [
-    { "type": "text", "id": "tagline", "label": "Tagline", "default": "Born in Birmingham, 1983. Music, art & street culture." },
+    { "type": "text", "id": "eyebrow", "label": "Small line above the statement", "default": "Roots • Culture • Peace" },
+    { "type": "text", "id": "tagline", "label": "Statement", "default": "Born in Birmingham, 1983. Music, art & street culture." },
     { "type": "checkbox", "id": "show_newsletter", "label": "Show newsletter", "default": true },
-    { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Join the community" },
+    { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Join the family" },
+    { "type": "text", "id": "newsletter_text", "label": "Newsletter text" },
+    { "type": "text", "id": "email", "label": "Contact email", "default": "info@dreadyoriginal.com" },
+    { "type": "text", "id": "wordmark", "label": "Giant wordmark", "default": "DREADY", "info": "Leave blank to hide." },
     { "type": "checkbox", "id": "show_country", "label": "Show region/currency selector", "default": true },
     { "type": "checkbox", "id": "show_locale", "label": "Show language selector", "default": true },
     { "type": "checkbox", "id": "show_payment", "label": "Show payment icons", "default": true },
+    { "type": "link_list", "id": "legal_menu", "label": "Extra legal links", "info": "Shown beside the store policies, e.g. “Your privacy choices”." },
     { "type": "text", "id": "legal_text", "label": "Legal line", "default": "All rights reserved." }
   ],
   "blocks": [

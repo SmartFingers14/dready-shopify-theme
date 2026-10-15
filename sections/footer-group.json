@@ -6,17 +6,35 @@
       "type": "footer",
       "blocks": {
         "shop": {
-          "type": "menu",
+          "type": "links",
           "settings": {
             "heading": "Shop",
-            "menu": "main-menu"
+            "label_1": "New in",
+            "url_1": "/collections/new-in",
+            "label_2": "Sista",
+            "url_2": "/collections/sista",
+            "label_3": "Junior Dready",
+            "url_3": "/collections/dready-kids",
+            "label_4": "Premium",
+            "url_4": "/search?q=premium&type=product",
+            "label_5": "Gift cards",
+            "url_5": "/products/dready-gift-card"
           }
         },
         "dready": {
-          "type": "menu",
+          "type": "links",
           "settings": {
             "heading": "Dready",
-            "menu": "footer"
+            "label_1": "Our story",
+            "url_1": "/pages/history-about-us",
+            "label_2": "News",
+            "url_2": "/pages/news",
+            "label_3": "Music",
+            "url_3": "/pages/music",
+            "label_4": "Collabs",
+            "url_4": "/pages/collabs",
+            "label_5": "Gallery",
+            "url_5": "/pages/gallery"
           }
         },
         "help": {
@@ -25,10 +43,10 @@
             "heading": "Get help",
             "label_1": "Contact us",
             "url_1": "/pages/contact",
-            "label_2": "Gift cards",
-            "url_2": "/products/dready-gift-card",
-            "label_3": "Shipping & returns",
-            "url_3": "/policies/shipping-policy",
+            "label_2": "Shipping",
+            "url_2": "/policies/shipping-policy",
+            "label_3": "Returns",
+            "url_3": "/policies/refund-policy",
             "label_4": "Wholesale enquiries",
             "url_4": "/pages/wholesale-enquiries",
             "label_5": "Licensing enquiries",
@@ -42,12 +60,17 @@
         "help"
       ],
       "settings": {
+        "eyebrow": "Roots • Culture • Peace",
         "tagline": "Born in Birmingham, 1983. Music, art & street culture.",
         "show_newsletter": true,
-        "newsletter_heading": "Join the community",
+        "newsletter_heading": "Join the family",
+        "newsletter_text": "New drops, stories and events, straight to your inbox.",
+        "email": "info@dreadyoriginal.com",
+        "wordmark": "DREADY",
         "show_country": true,
         "show_locale": true,
         "show_payment": true,
+        "legal_menu": "footer",
         "legal_text": "All rights reserved."
       }
     }
