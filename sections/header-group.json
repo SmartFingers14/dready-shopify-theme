@@ -54,7 +54,10 @@
           }
         }
       },
-      "block_order": ["promo_shop", "promo_culture"]
+      "block_order": [
+        "promo_shop",
+        "promo_culture"
+      ]
     }
   },
   "order": ["announcement", "header"]
