@@ -51,6 +51,8 @@
 .footer__top-btn:hover, .footer__top-btn:focus-visible { border-color: var(--color-dark-fg); background: var(--color-dark-fg); color: var(--color-dark-bg); }
 
 /* Giant wordmark sign-off: fills the width, Rasta colours slide through on hover */
+/* Its glyph box is taller than its tight line-height, so the rows either side sit above it and keep their clicks */
+.footer__mid, .footer__bottom { position: relative; z-index: 1; }
 .footer__wordmark { display: block; margin-top: var(--space-4); line-height: 0.78; user-select: none; }
 .footer__wordmark-text { display: block; font-size: calc((min(100vw, var(--page-max)) - 2 * var(--gutter)) * 0.285); font-weight: 700; letter-spacing: -0.06em; text-transform: uppercase; white-space: nowrap; text-align: center; color: var(--color-dark-fg); background: linear-gradient(90deg, var(--color-brand-green) 0 33.33%, var(--color-accent) 33.33% 66.66%, var(--color-brand-red) 66.66%) 0 0 / 0% 100% no-repeat, var(--color-dark-fg); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; transition: background-size 900ms var(--ease-out); }
 .footer__wordmark:hover .footer__wordmark-text, .footer__wordmark:focus-visible .footer__wordmark-text { background-size: 100% 100%, auto; }
