@@ -34,7 +34,14 @@
             <details class="footer__col" {{ block.shopify_attributes }}>
               <summary class="footer__col-title label">{{ block.settings.heading | default: block.settings.menu.title }} {% render 'icon', name: 'plus', size: 14, class: 'footer__col-icon' %}</summary>
               <ul class="footer__links">
-                {%- for link in block.settings.menu.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}
+                {%- for link in block.settings.menu.links -%}
+                  {%- comment -%} A placeholder parent ("#") lists its own links instead of a dead one {%- endcomment -%}
+                  {%- if link.url == '#' or link.url == blank -%}
+                    {%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}
+                  {%- else -%}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {%- endif -%}
+                {%- endfor -%}
               </ul>
             </details>
           {%- elsif block.type == 'links' -%}
@@ -69,6 +76,11 @@
         {%- if section.settings.show_payment and shop.enabled_payment_types.size > 0 -%}
           <ul class="footer__payments" aria-label="{{ 'sections.footer.payment' | t }}">
             {%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag: class: 'footer__payment-icon' }}</li>{%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if shop.policies.size > 0 -%}
+          <ul class="footer__policies">
+            {%- for policy in shop.policies -%}<li><a href="{{ policy.url }}">{{ policy.title }}</a></li>{%- endfor -%}
           </ul>
         {%- endif -%}
         <p class="footer__legal">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ section.settings.legal_text }}</p>

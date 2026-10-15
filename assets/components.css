@@ -505,6 +505,9 @@
 .footer__payments { display: flex; flex-wrap: wrap; gap: var(--space-1); }
 .footer__payment-icon { height: 24px; width: auto; opacity: 0.85; }
 .footer__legal { font-size: var(--text-xs); color: var(--color-dark-muted); }
+.footer__policies { display: flex; flex-wrap: wrap; gap: 0 var(--space-4); font-size: var(--text-xs); color: var(--color-dark-muted); }
+.footer__policies a { display: inline-flex; align-items: center; min-height: 32px; transition: color var(--dur-fast); }
+.footer__policies a:hover, .footer__policies a:focus-visible { color: var(--color-dark-fg); }
 
 /* ---------- Collection page ---------- */
 .collection__header { padding-top: var(--space-6); }
