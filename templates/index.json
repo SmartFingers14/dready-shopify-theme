@@ -106,12 +106,13 @@
         "premium": {
           "type": "tier",
           "settings": {
-            "title": "Premium",
+            "title": "PREMIUM - HIGH ROLLER",
             "badge": "Premium",
             "spec": "Ultra-heavy 320–500g fleece · 385g tees · embroidered",
             "price_text": "From £40",
             "collection": "",
-            "image": "shopify://shop_images/6D58A626-C83C-48D7-8C62-3CC0ACB6B835.png",
+            "image": "",
+            "asset": "tier-premium-high-roller.jpg",
             "url": "/search?q=premium&type=product",
             "cta": "Shop Premium",
             "featured": true
@@ -120,12 +121,13 @@
         "standard": {
           "type": "tier",
           "settings": {
-            "title": "Regular",
+            "title": "REGULAR - PLAYERS",
             "badge": "Regular",
             "spec": "Classic 285g hoods · 145g tees · embroidered & printed",
             "price_text": "From £30",
             "collection": "",
-            "image": "shopify://shop_images/12A3467D-39BE-4B00-87E8-FBFDF4823469.png",
+            "image": "",
+            "asset": "tier-regular-players.jpg",
             "url": "/search?q=regular&type=product",
             "cta": "Shop Regular",
             "featured": false
