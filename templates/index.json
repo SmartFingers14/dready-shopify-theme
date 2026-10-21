@@ -175,9 +175,9 @@
         "f3"
       ],
       "settings": {
-        "image": "shopify://shop_images/in-the-beginning-image-v2.jpg",
-        "asset": "",
-        "image_alt": "Dready character in a Rasta hat in front of a graffiti wall reading Peace",
+        "image": "",
+        "asset": "brand-story-checks-out-his-roots.jpg",
+        "image_alt": "Comic panel of Dready leaning in with a magnifying glass, captioned Checks out his roots",
         "image_side": "left",
         "wordmark": "shopify://shop_images/EBDDCE4A-459F-4865-8595-0A1E42F67EA0.png",
         "eyebrow": "Our roots",
