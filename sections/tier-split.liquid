@@ -34,6 +34,9 @@
         <div class="tier__media media">
           {%- if b.image != blank -%}
             {{ b.image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(min-width: 768px) 50vw, 100vw', widths: '600, 900, 1200, 1600', alt: b.title | escape }}
+          {%- elsif b.asset != blank -%}
+            {%- assign tier_alt = b.title | escape -%}
+            {% render 'culture-image', asset: b.asset, alt: tier_alt, sizes: '(min-width: 768px) 50vw, 100vw' %}
           {%- elsif coll != blank and coll.image -%}
             {{ coll.image | image_url: width: 1600 | image_tag: loading: 'lazy', sizes: '(min-width: 768px) 50vw, 100vw', alt: b.title | escape }}
           {%- else -%}
@@ -78,6 +81,7 @@
         { "type": "text", "id": "price_text", "label": "Price text (fallback)", "info": "Used if no collection is set, e.g. “From £65”." },
         { "type": "collection", "id": "collection", "label": "Collection", "info": "“From” price is calculated from this collection." },
         { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "asset", "label": "Theme image file (fallback)", "info": "Used when no image is picked, e.g. tier-premium-high-roller.jpg" },
         { "type": "url", "id": "url", "label": "Link (defaults to collection)" },
         { "type": "text", "id": "cta", "label": "Button text", "default": "Shop Premium" },
         { "type": "checkbox", "id": "featured", "label": "Highlight with accent", "default": false }
