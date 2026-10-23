@@ -91,7 +91,7 @@
       "settings": {
         "eyebrow": "New 26 drop",
         "heading": "Now live",
-        "collection": "new-26-drop",
+        "collection": "best-sellers",
         "limit": 8,
         "layout": "grid",
         "columns": 4,
@@ -111,7 +111,6 @@
             "spec": "Ultra-heavy 320–500g fleece · 385g tees · embroidered",
             "price_text": "From £40",
             "collection": "",
-            "image": "",
             "asset": "tier-premium-high-roller.jpg",
             "url": "/search?q=premium&type=product",
             "cta": "Shop Premium",
@@ -126,7 +125,6 @@
             "spec": "Classic 285g hoods · 145g tees · embroidered & printed",
             "price_text": "From £30",
             "collection": "",
-            "image": "",
             "asset": "tier-regular-players.jpg",
             "url": "/search?q=regular&type=product",
             "cta": "Shop Regular",
@@ -175,7 +173,6 @@
         "f3"
       ],
       "settings": {
-        "image": "",
         "asset": "brand-story-checks-out-his-roots.jpg",
         "image_alt": "Comic panel of Dready leaning in with a magnifying glass, captioned Checks out his roots",
         "image_side": "left",
