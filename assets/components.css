@@ -297,6 +297,11 @@
 .hero__media { position: absolute; inset: 0; }
 .hero__media video, .hero__media img, .hero__video, .hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .hero__placeholder { position: absolute; inset: 0; }
+/* Phones: a landscape video is shown whole at screen width, its edges fading into a matching background, instead of a narrow centre crop */
+@media (max-width: 767px) {
+  .hero--mobile-contain { background: #0f0e1a; }
+  .hero--mobile-contain .hero__media .hero__video { inset: auto 0; top: max(calc(var(--header-height) + var(--announcement-height, 0px) + var(--space-6)), 16%); height: auto; aspect-ratio: 16 / 9; object-fit: cover; -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%); mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%); }
+}
 .hero__placeholder svg { width: 100%; height: 100%; }
 .hero__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,calc(var(--overlay) + 0.35)) 0%, rgba(0,0,0,var(--overlay)) 45%, rgba(0,0,0,var(--overlay)) 100%); }
 .hero__content { position: relative; z-index: 1; display: flex; align-items: flex-end; padding-block: var(--space-10); padding-top: calc(var(--header-height) + var(--announcement-height) + var(--space-8)); }

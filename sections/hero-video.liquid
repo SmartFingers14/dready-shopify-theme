@@ -6,17 +6,31 @@
 {%- liquid
   assign s = section.settings
   assign has_video = false
-  if s.video != blank or s.video_url != blank
+  if s.video != blank or s.video_url != blank or s.video_asset != blank
     assign has_video = true
   endif
+  assign poster_src = nil
+  if s.poster != blank
+    assign poster_src = s.poster | image_url: width: 1920
+  elsif s.poster_asset != blank
+    assign poster_src = s.poster_asset | asset_url
+  endif
+  assign mobile_contain = false
+  if has_video and s.mobile_fit_contain != false
+    assign mobile_contain = true
+  endif
 -%}
-<section class="hero hero--{{ s.height }} hero--align-{{ s.align }}" data-video-hero style="--overlay: {{ s.overlay | divided_by: 100.0 }};">
+<section class="hero hero--{{ s.height }} hero--align-{{ s.align }}{% if mobile_contain %} hero--mobile-contain{% endif %}" data-video-hero style="--overlay: {{ s.overlay | divided_by: 100.0 }};">
   <div class="hero__media">
     {%- if has_video -%}
       {%- if s.video != blank -%}
         {{ s.video | video_tag: image_size: '1920x', autoplay: false, loop: true, muted: true, playsinline: true, controls: false, preload: 'metadata', class: 'hero__video' }}
+      {%- elsif s.video_asset != blank -%}
+        <video class="hero__video" muted loop playsinline preload="metadata" {% if poster_src %}poster="{{ poster_src }}"{% endif %}>
+          <source src="{{ s.video_asset | asset_url }}" type="video/mp4">
+        </video>
       {%- else -%}
-        <video class="hero__video" muted loop playsinline preload="metadata" {% if s.poster != blank %}poster="{{ s.poster | image_url: width: 1920 }}"{% endif %}>
+        <video class="hero__video" muted loop playsinline preload="metadata" {% if poster_src %}poster="{{ poster_src }}"{% endif %}>
           <source src="{{ s.video_url }}" type="video/mp4">
         </video>
       {%- endif -%}
@@ -56,8 +70,11 @@
   "class": "shopify-section-hero",
   "settings": [
     { "type": "video", "id": "video", "label": "Video (Shopify-hosted)", "info": "Upload to Content → Files. Muted, looping, 16:9 or 9:16 recommended." },
-    { "type": "url", "id": "video_url", "label": "Or external MP4 URL", "info": "Used if no Shopify video is set." },
+    { "type": "text", "id": "video_asset", "label": "Or a video file in the theme", "info": "Filename in the theme's assets, e.g. dready-hero.mp4. Used if no Shopify video is set." },
+    { "type": "url", "id": "video_url", "label": "Or external MP4 URL", "info": "Used if neither of the above is set." },
+    { "type": "checkbox", "id": "mobile_fit_contain", "label": "Phones: show the whole video", "default": true, "info": "Fits a landscape video to the screen width on phones instead of cropping it." },
     { "type": "image_picker", "id": "poster", "label": "Poster / fallback image", "info": "Shown before the video loads and when reduced motion is on." },
+    { "type": "text", "id": "poster_asset", "label": "Or a poster file in the theme", "info": "e.g. dready-hero-poster.jpg" },
     { "type": "range", "id": "overlay", "min": 0, "max": 60, "step": 5, "unit": "%", "label": "Overlay darkness", "default": 15 },
     { "type": "select", "id": "height", "label": "Height", "options": [ { "value": "full", "label": "Full screen" }, { "value": "large", "label": "Large (85vh)" }, { "value": "medium", "label": "Medium (70vh)" } ], "default": "full" },
     { "type": "select", "id": "align", "label": "Text position", "options": [ { "value": "bottom-left", "label": "Bottom left" }, { "value": "center", "label": "Centre" }, { "value": "bottom-center", "label": "Bottom centre" } ], "default": "bottom-left" },
