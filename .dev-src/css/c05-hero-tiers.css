@@ -7,6 +7,8 @@
 .hero__media { position: absolute; inset: 0; }
 .hero__media video, .hero__media img, .hero__video, .hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .hero__placeholder { position: absolute; inset: 0; }
+/* Desktop: when the screen is narrower than the video, trim the right side (the video's text starts at its left edge) */
+@media (min-width: 768px) { .hero--mobile-contain .hero__video { object-position: 0% 50%; } }
 /* Phones: a landscape video is shown whole at screen width, its edges fading into a matching background, instead of a narrow centre crop */
 @media (max-width: 767px) {
   .hero--mobile-contain { background: #0f0e1a; }
