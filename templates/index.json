@@ -13,9 +13,9 @@
       "type": "hero-video",
       "settings": {
         "video_asset": "dready-hero.mp4",
-        "poster_asset": "dready-hero-poster.jpg",
-        "mobile_fit_contain": true,
         "video_url": "https://cdn.shopify.com/videos/c/o/v/03cbc74ba39547b99b79480ecd433b97.mp4",
+        "mobile_fit_contain": true,
+        "poster_asset": "dready-hero-poster.jpg",
         "overlay": 20,
         "height": "full",
         "align": "bottom-left",
@@ -321,7 +321,7 @@
         "tag": "Sale",
         "limit": 8,
         "cta_text": "Shop DBAY",
-        "cta_url": "",
+        "cta_url": "shopify://collections/dbay",
         "style": "accent"
       }
     },
