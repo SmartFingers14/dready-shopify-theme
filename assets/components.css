@@ -389,6 +389,10 @@
 @media (max-width: 1023px) { .dbay__head { grid-template-columns: 1fr; gap: var(--space-6); } }
 .dbay__title-wrap { display: grid; gap: var(--space-3); }
 .dbay__title { line-height: 0.85; }
+/* Logo title: white plate so the logo's yellow letter stays visible on the gold band */
+.dbay__title--logo { line-height: 0; }
+.dbay__logo { display: inline-block; width: min(100%, 520px); padding: clamp(12px, 2vw, 20px) clamp(16px, 2.6vw, 28px); background: #fff; border: 2px solid var(--color-fg); box-shadow: 6px 6px 0 var(--color-fg); }
+.dbay__logo img { display: block; width: 100%; height: auto; }
 .dbay__text { max-width: 48ch; }
 .dbay__meta { display: grid; gap: var(--space-4); justify-items: start; }
 .dbay__info { display: flex; gap: var(--space-3); align-items: flex-start; }

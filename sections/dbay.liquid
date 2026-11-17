@@ -59,7 +59,26 @@
     <div class="dbay__head">
       <div class="dbay__title-wrap">
         {%- if s.eyebrow != blank -%}<p class="eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
-        <h2 class="dbay__title h-hero">{{ s.heading }}</h2>
+        {%- if s.logo != blank or s.logo_asset != blank -%}
+          {%- liquid
+            if s.logo != blank
+              assign logo_src = s.logo | image_url: width: 1200
+              assign logo_w = s.logo.width
+              assign logo_h = s.logo.height
+            else
+              assign logo_src = s.logo_asset | asset_url
+              capture logo_size
+                render 'culture-asset-size', file: s.logo_asset
+              endcapture
+              assign logo_wh = logo_size | strip | split: 'x'
+              assign logo_w = logo_wh[0]
+              assign logo_h = logo_wh[1]
+            endif
+          -%}
+          <h2 class="dbay__title dbay__title--logo"><span class="dbay__logo"><img src="{{ logo_src }}" alt="{{ s.heading | escape }}" width="{{ logo_w }}" height="{{ logo_h }}" loading="lazy"></span></h2>
+        {%- else -%}
+          <h2 class="dbay__title h-hero">{{ s.heading }}</h2>
+        {%- endif -%}
         {%- if s.text != blank -%}<p class="dbay__text body-lg">{{ s.text }}</p>{%- endif -%}
       </div>
       <div class="dbay__meta">
@@ -116,6 +135,8 @@
   "settings": [
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Sales & returns" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "DBAY" },
+    { "type": "image_picker", "id": "logo", "label": "Logo (replaces the heading)", "info": "The heading text is kept for screen readers and search." },
+    { "type": "text", "id": "logo_asset", "label": "Or a logo file in the theme", "info": "e.g. dbay-logo.png" },
     { "type": "textarea", "id": "text", "label": "Text", "default": "Last pieces, end-of-line colours and returned stock — checked, re-pressed and priced to go." },
     { "type": "collection", "id": "collection", "label": "Collection", "info": "e.g. a “DBAY” or “Sale” collection." },
     { "type": "text", "id": "tag", "label": "…or product tag", "info": "Used when no collection is chosen, e.g. Sale. Shows available products with this tag." },
