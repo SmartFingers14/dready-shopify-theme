@@ -316,6 +316,7 @@
       "settings": {
         "eyebrow": "Sales & returns",
         "heading": "DBAY",
+        "logo_asset": "dbay-logo.png",
         "text": "Last pieces, end-of-line colours and returned stock — checked, re-pressed and priced to go.",
         "collection": "dbay",
         "tag": "Sale",
@@ -328,6 +329,32 @@
     "collabs": {
       "type": "collabs",
       "blocks": {
+        "clubfc": {
+          "type": "collab",
+          "settings": {
+            "title": "Dready × Club FC",
+            "text": "The Dready × Club FC football shirt.",
+            "status": "Live",
+            "asset": "collab-club-fc-logo.jpg",
+            "contain": true,
+            "collection": "",
+            "url": "/products/dready-x-club-fc",
+            "cta": "Shop the shirt"
+          }
+        },
+        "rompa": {
+          "type": "collab",
+          "settings": {
+            "title": "Dready × Rompa's Reggae Shack",
+            "text": "Soon come!",
+            "status": "",
+            "asset": "collab-rompas-reggae-shack-logo.jpg",
+            "contain": true,
+            "collection": "",
+            "url": "",
+            "cta": ""
+          }
+        },
         "c1": {
           "type": "collab",
           "settings": {
@@ -366,6 +393,8 @@
         }
       },
       "block_order": [
+        "clubfc",
+        "rompa",
         "c1",
         "c3",
         "c4"
