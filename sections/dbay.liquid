@@ -43,6 +43,16 @@
     endfor
   endif
   assign max_label = max_off | append: '%'
+
+  # Liquid has no and/or precedence (it reads right to left), so decide in steps
+  assign show_products = false
+  if use_tag
+    if tagged > 0
+      assign show_products = true
+    endif
+  elsif coll != blank and coll.products.size > 0
+    assign show_products = true
+  endif
 -%}
 <section class="section dbay dbay--{{ s.style }}" data-scroller-wrap>
   <div class="page-width">
@@ -71,7 +81,7 @@
       </div>
     </div>
 
-    {%- if use_tag and tagged > 0 or use_tag == false and coll != blank and coll.products.size > 0 -%}
+    {%- if show_products -%}
       <div class="dbay__products">
         <div class="dbay__controls scroller-controls">
           <button type="button" class="icon-btn" data-scroller-prev aria-label="{{ 'accessibility.previous_slide' | t }}">{% render 'icon', name: 'arrow-left' %}</button>
