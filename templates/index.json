@@ -347,12 +347,10 @@
           "settings": {
             "title": "Dready × Rompa's Reggae Shack",
             "text": "Soon come!",
-            "status": "",
             "asset": "collab-rompas-reggae-shack-logo.jpg",
             "contain": true,
-            "collection": "",
-            "url": "",
-            "cta": ""
+            "collection": ""
+            
           }
         },
         "c1": {
