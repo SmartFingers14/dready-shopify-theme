@@ -349,7 +349,9 @@
             "text": "Soon come!",
             "asset": "collab-rompas-reggae-shack-logo.jpg",
             "contain": true,
-            "collection": ""
+            "status": "",
+            "collection": "",
+            "cta": ""
             
           }
         },
