@@ -28,8 +28,8 @@
             assign url = b.collection.url
           endif
         -%}
-        <a href="{{ url }}" class="collab" {{ block.shopify_attributes }}>
-          <div class="collab__media media media--landscape">
+        {%- if url != blank -%}<a href="{{ url }}" class="collab" {{ block.shopify_attributes }}>{%- else -%}<div class="collab collab--static" {{ block.shopify_attributes }}>{%- endif -%}
+          <div class="collab__media media media--landscape{% if b.contain %} collab__media--contain{% endif %}">
             {%- if b.image != blank or b.asset != blank -%}
               {%- assign collab_alt = b.title | escape -%}
               {% render 'culture-image', image: b.image, asset: b.asset, alt: collab_alt, sizes: '(min-width: 1024px) 33vw, 80vw' %}
@@ -42,9 +42,9 @@
           <div class="collab__info">
             <h3 class="collab__title h3">{{ b.title }}</h3>
             {%- if b.text != blank -%}<p class="collab__text muted">{{ b.text }}</p>{%- endif -%}
-            <span class="link-underline">{{ b.cta | default: 'View' }}</span>
+            {%- if url != blank -%}<span class="link-underline">{{ b.cta | default: 'View' }}</span>{%- endif -%}
           </div>
-        </a>
+        {%- if url != blank -%}</a>{%- else -%}</div>{%- endif -%}
       {%- endfor -%}
     </div>
   </div>
@@ -70,6 +70,7 @@
         { "type": "text", "id": "text", "label": "Short line", "default": "The Walking Dread embroidered cuff beanie." },
         { "type": "text", "id": "status", "label": "Status badge", "default": "Live", "info": "e.g. Live, Sold out, Coming soon" },
         { "type": "image_picker", "id": "image", "label": "Image (3:2)" }, { "type": "text", "id": "asset", "label": "Theme image file", "info": "Used when no image is picked above." },
+        { "type": "checkbox", "id": "contain", "label": "Show the whole image (for logos)", "default": false, "info": "Centres the image on white instead of cropping it to fill the card." },
         { "type": "image_picker", "id": "logo", "label": "Partner logo (optional)" },
         { "type": "collection", "id": "collection", "label": "Collection" },
         { "type": "url", "id": "url", "label": "Link (defaults to collection)" },

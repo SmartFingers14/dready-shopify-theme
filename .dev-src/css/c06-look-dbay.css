@@ -62,6 +62,9 @@
 .collab { display: grid; gap: var(--space-3); }
 .collab__media img { transition: transform 1s var(--ease-out); }
 .collab:hover .collab__media img { transform: scale(1.04); }
+.collab__media--contain { background: #fff; }
+.collab__media--contain img { object-fit: contain; padding: 6% 10%; }
+.collab--static:hover .collab__media img { transform: none; }
 .collab__logo { position: absolute; left: var(--space-3); bottom: var(--space-3); z-index: 1; width: 96px; padding: var(--space-2); background: rgba(255,255,255,0.9); }
 .collab__logo img { width: 100%; height: auto; }
 .collab__status { position: absolute; top: var(--space-3); left: var(--space-3); z-index: 1; }
