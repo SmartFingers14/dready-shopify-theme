@@ -17,3 +17,9 @@ node_modules/
 
 # Firecrawl scrape cache
 .firecrawl/
+
+# graphify knowledge graph (local only)
+graphify-out/
+.graphifyignore
+CLAUDE.md
+.claude/
