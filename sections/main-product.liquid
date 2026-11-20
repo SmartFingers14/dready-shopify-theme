@@ -87,6 +87,28 @@
   </div>
 </div>
 
+{%- comment -%} Klaviyo "Viewed Product" event (powers browse-abandonment flows). Queues until the Klaviyo app embed loads. {%- endcomment -%}
+<script>
+  (function () {
+    var item = {
+      Name: {{ product.title | json }},
+      ProductID: {{ product.id | json }},
+      Categories: {{ product.collections | map: 'title' | json }},
+      ImageURL: {{ product.featured_image | image_url: width: 600 | prepend: 'https:' | json }},
+      URL: {{ shop.secure_url | append: product.url | json }},
+      Brand: {{ product.vendor | json }},
+      Price: {{ product.price | money | json }},
+      CompareAtPrice: {{ product.compare_at_price_max | money | json }}
+    };
+    window._learnq = window._learnq || [];
+    window._learnq.push(['track', 'Viewed Product', item]);
+    window._learnq.push(['trackViewedItem', {
+      Title: item.Name, ItemId: item.ProductID, Categories: item.Categories,
+      ImageUrl: item.ImageURL, Url: item.URL, Metadata: { Brand: item.Brand, Price: item.Price, CompareAtPrice: item.CompareAtPrice }
+    }]);
+  })();
+</script>
+
 {%- comment -%} Structured data for Google (Product + BreadcrumbList) {%- endcomment -%}
 <script type="application/ld+json">
   {{ product | structured_data }}

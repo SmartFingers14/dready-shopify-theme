@@ -1,0 +1,28 @@
+{%- comment -%}
+  Apps — full-width home for app blocks (e.g. Klaviyo product reviews widget)
+  on any template. Add it in the theme editor: Add section → Apps.
+{%- endcomment -%}
+<div class="section apps-section{% if section.settings.dark %} section--dark{% endif %}">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="h2 apps-section__title">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+    {%- for block in section.blocks -%}
+      <div class="apps-section__block">{% render block %}</div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Apps",
+  "tag": "section",
+  "class": "section-apps",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading" },
+    { "type": "checkbox", "id": "dark", "label": "Dark background", "default": false }
+  ],
+  "blocks": [{ "type": "@app" }],
+  "presets": [{ "name": "Apps" }]
+}
+{% endschema %}
