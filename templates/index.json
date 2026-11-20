@@ -392,7 +392,13 @@
           }
         }
       },
-      "block_order": ["clubfc", "rompa", "c1", "c3", "c4"],
+      "block_order": [
+        "clubfc",
+        "rompa",
+        "c1",
+        "c3",
+        "c4"
+      ],
       "settings": {
         "eyebrow": "Collaborations",
         "heading": "Collabs",

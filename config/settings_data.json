@@ -1,20 +1,43 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
+    "logo_height": 44,
+    "color_accent": "#f8c010",
+    "page_width": 1600,
     "card_hover_swap": true,
     "card_quick_add": true,
     "card_show_vendor": false,
-    "cart_note": "Embroidered items are made to order — please allow 5 working days.",
     "cart_type": "drawer",
-    "color_accent": "#f8c010",
+    "cart_note": "Embroidered items are made to order — please allow 5 working days.",
+    "social_instagram": "https://www.instagram.com/dreadybrand/",
+    "social_facebook": "https://www.facebook.com/profile.php?id=100083340129198",
+    "social_twitter": "https://twitter.com/dreadybrand",
+    "social_youtube": "https://www.youtube.com/@dreadyselecta",
     "gift_card_product": "dready-gift-card",
-    "logo_height": 44,
-    "page_width": 1600,
     "seo_home_title": "Dready Original: Sustainable Streetwear & Lifestyle Brand",
     "show_gift_nudge": true,
-    "social_facebook": "https://www.facebook.com/profile.php?id=100083340129198",
-    "social_instagram": "https://www.instagram.com/dreadybrand/",
-    "social_twitter": "https://twitter.com/dreadybrand",
-    "social_youtube": "https://www.youtube.com/@dreadyselecta"
+    "sections": {
+      "cart-drawer": {
+        "type": "cart-drawer",
+        "settings": {}
+      }
+    },
+    "content_for_index": [],
+    "blocks": {
+      "855628211100114053": {
+        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
+        "disabled": false,
+        "settings": {}
+      }
+    }
   },
   "presets": {
     "Default": {
