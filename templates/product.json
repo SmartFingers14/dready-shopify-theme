@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -34,9 +43,12 @@
         "show_vendor": false,
         "show_quantity": true,
         "show_dynamic_checkout": true,
+        "show_share": true,
         "swatches": true,
+        "size_guide": "",
         "made_to_order_text": "Hand-embroidered to order. Please allow 5 working days before dispatch.",
-        "show_share": true
+        "shipping_text": "<p>Every piece is made to order in the UK — please allow five working days. 30 days to request a return on unworn items with tags; sale items 14 days, exchange only. <a href=\"/policies/shipping-policy\" title=\"Shipping policy\">Shipping</a> · <a href=\"/policies/refund-policy\" title=\"Refund policy\">Returns</a></p>",
+        "care_text": "<p>Wash cold inside out. Do not tumble dry embroidery.</p>"
       }
     },
     "recs": {
@@ -76,31 +88,36 @@
         "i1": {
           "type": "interest",
           "settings": {
-            "label": "Drops"
+            "label": "Drops",
+            "tag": ""
           }
         },
         "i2": {
           "type": "interest",
           "settings": {
-            "label": "Music"
+            "label": "Music",
+            "tag": ""
           }
         },
         "i3": {
           "type": "interest",
           "settings": {
-            "label": "Events"
+            "label": "Events",
+            "tag": ""
           }
         },
         "i4": {
           "type": "interest",
           "settings": {
-            "label": "Sista"
+            "label": "Sista",
+            "tag": ""
           }
         },
         "i5": {
           "type": "interest",
           "settings": {
-            "label": "Junior Dready"
+            "label": "Junior Dready",
+            "tag": ""
           }
         },
         "w01": {
@@ -312,10 +329,27 @@
         "social_text": "Tag @dreadybrand to get on the wall.",
         "dark": true
       }
+    },
+    "179519676040f56d76": {
+      "type": "apps",
+      "blocks": {
+        "klaviyo_reviews_product_reviews_WBzyjP": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_product_reviews_WBzyjP"
+      ],
+      "settings": {
+        "heading": "",
+        "dark": false
+      }
     }
   },
   "order": [
     "main",
+    "179519676040f56d76",
     "recs",
     "family"
   ]
